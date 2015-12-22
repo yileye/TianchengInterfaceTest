@@ -1,0 +1,91 @@
+2015-12-17 11:41:16,651 - DEBUG - TianchengTest.py[179] - 测试开始时间: 2015-12-17 11:41:16
+2015-12-17 11:41:16,653 - DEBUG - TianchengTest.py[26] - 运行模式：部分执行
+2015-12-17 11:41:16,654 - DEBUG - TianchengTest.py[183] - 待执行用例: {'CCS': [1]}
+2015-12-17 11:41:16,654 - DEBUG - TianchengTest.py[186] - Starting thread: TestRunThread
+2015-12-17 11:41:16,655 - DEBUG - TianchengTest.py[145] - [TestRunThread] 开始执行用例: (CCS, 1)
+---
+2015-12-17 11:41:16,657 - DEBUG - Interface_DriverEngine.py[159] - [TestRunThread] 驱动执行:TestData:[(u'friend_request', [u'update_time', u'json', u'handle_type', 'id'], [1447654250, 'e3UnUmVhbE5hbWUnOiB1J0FcdTc1MjhcdTYyMzcnLCB1J1Bob25lRmllbmRMaXN0JzogW3t1J1JlYWxOYW1lJzogdSdCXHU3NTI4XHU2MjM3JywgdSdVc2VySUQnOiB1J2IwMTk4MGNhLWM1NTctNDM4Mi05ZTM0LTkzYjc5YTNhOWQ2NicsIHUnSXNQcm92ZSc6IDEsIHUnUGhvbmUnOiB1JzEzNjAwMDAwMDAyJywgdSdJZGVudGl0eXRDYXJkJzogdScwMjIwMDIxOTYxMDExNzAwMDEnLCB1J0NvaW5jaWRlJzogMC4zLCB1J1R5cGUnOiAxfV0sIHUnVXNlcklEJzogdSdhMDE5ODBjYS1jNTU3LTQzODItOWUzNC05M2I3OWEzYTlkNjYnLCB1J0lzUHJvdmUnOiAxLCB1J1Bob25lJzogdScxMzYwMDAwMDAwMScsIHUnSWRlbnRpdHl0Q2FyZCc6IHUnMDIyMDAxMTk2MTAxMTcwMDAxJ30=', 120, '0711af00-a470-11e5-8ab7-64006a053be1'])]
+2015-12-17 11:41:16,657 - DEBUG - Interface_Driver.py[54] - [TestRunThread] connecting mysql db: ccs_tianchengtest 192.168.18.85:3306 write/tc12345
+2015-12-17 11:41:16,677 - DEBUG - Interface_Driver.py[86] - [TestRunThread] 向表中插入数据: 参数:[(u'friend_request', [u'update_time', u'json', u'handle_type', 'id'], [1447654250, 'e3UnUmVhbE5hbWUnOiB1J0FcdTc1MjhcdTYyMzcnLCB1J1Bob25lRmllbmRMaXN0JzogW3t1J1JlYWxOYW1lJzogdSdCXHU3NTI4XHU2MjM3JywgdSdVc2VySUQnOiB1J2IwMTk4MGNhLWM1NTctNDM4Mi05ZTM0LTkzYjc5YTNhOWQ2NicsIHUnSXNQcm92ZSc6IDEsIHUnUGhvbmUnOiB1JzEzNjAwMDAwMDAyJywgdSdJZGVudGl0eXRDYXJkJzogdScwMjIwMDIxOTYxMDExNzAwMDEnLCB1J0NvaW5jaWRlJzogMC4zLCB1J1R5cGUnOiAxfV0sIHUnVXNlcklEJzogdSdhMDE5ODBjYS1jNTU3LTQzODItOWUzNC05M2I3OWEzYTlkNjYnLCB1J0lzUHJvdmUnOiAxLCB1J1Bob25lJzogdScxMzYwMDAwMDAwMScsIHUnSWRlbnRpdHl0Q2FyZCc6IHUnMDIyMDAxMTk2MTAxMTcwMDAxJ30=', 120, '0711af00-a470-11e5-8ab7-64006a053be1'])]
+2015-12-17 11:41:16,678 - DEBUG - Interface_Driver.py[103] - [TestRunThread] 执行插入SQL: query_str: INSERT INTO friend_request(update_time,json,handle_type,id) VALUES(%s,%s,%s,%s)  query_value: (1447654250, 'e3UnUmVhbE5hbWUnOiB1J0FcdTc1MjhcdTYyMzcnLCB1J1Bob25lRmllbmRMaXN0JzogW3t1J1JlYWxOYW1lJzogdSdCXHU3NTI4XHU2MjM3JywgdSdVc2VySUQnOiB1J2IwMTk4MGNhLWM1NTctNDM4Mi05ZTM0LTkzYjc5YTNhOWQ2NicsIHUnSXNQcm92ZSc6IDEsIHUnUGhvbmUnOiB1JzEzNjAwMDAwMDAyJywgdSdJZGVudGl0eXRDYXJkJzogdScwMjIwMDIxOTYxMDExNzAwMDEnLCB1J0NvaW5jaWRlJzogMC4zLCB1J1R5cGUnOiAxfV0sIHUnVXNlcklEJzogdSdhMDE5ODBjYS1jNTU3LTQzODItOWUzNC05M2I3OWEzYTlkNjYnLCB1J0lzUHJvdmUnOiAxLCB1J1Bob25lJzogdScxMzYwMDAwMDAwMScsIHUnSWRlbnRpdHl0Q2FyZCc6IHUnMDIyMDAxMTk2MTAxMTcwMDAxJ30=', 120, '0711af00-a470-11e5-8ab7-64006a053be1')
+2015-12-17 11:41:16,683 - DEBUG - Interface_DriverEngine.py[162] - [TestRunThread] 执行结果:DriverResult:True
+2015-12-17 11:41:16,683 - DEBUG - Interface_Driver.py[64] - [TestRunThread] closing mysql db connection
+2015-12-17 11:41:17,654 - DEBUG - TianchengTest.py[193] - Starting thread: TestAssertThread
+2015-12-17 11:41:17,657 - DEBUG - TianchengTest.py[200] - 等待子线程TestRunThread结束...
+2015-12-17 11:41:17,657 - DEBUG - TianchengTest.py[75] - [TestAssertThread] 从队列taskassert_queue中取出一条任务: ('CCS', 1, u'30', 0, '0711af00-a470-11e5-8ab7-64006a053be1')
+2015-12-17 11:41:17,657 - DEBUG - TianchengTest.py[99] - [TestAssertThread] 状态处理后timestate: {('CCS', 1): {'timeoutdelay': 0.0, 'timeouttask': 30.0}}
+2015-12-17 11:41:17,658 - DEBUG - TianchengTest.py[107] - [TestAssertThread] 调用断言模块进行处理: CCS 1 0711af00-a470-11e5-8ab7-64006a053be1
+2015-12-17 11:41:17,660 - DEBUG - Interface_AssertEngine.py[119] - [TestAssertThread] 驱动断言:ExpectationDict:{u'sum_info': {u'iAddFriend': 3000}, u'friend_history': {u'identity_card': u'022001196101170001', u'userid': u'a01980ca-c557-4382-9e34-93b79a3a9d66', u'add_friend': 3000, u'real_name': u'A\u7528\u6237', u'friend_list': u'b01980ca-c557-4382-9e34-93b79a3a9d66;', u'is_success': 1, u'moble_phone': u'13600000001'}} unique_id: 0711af00-a470-11e5-8ab7-64006a053be1
+2015-12-17 11:41:17,664 - DEBUG - Interface_Assert.py[41] - [TestAssertThread] init connecting mysql db: ccs_tianchengtest 192.168.18.85:3306 write/tc12345
+2015-12-17 11:41:17,667 - DEBUG - ModCCS.py[123] - [TestAssertThread] 执行SQL查询: query_str: SELECT sum_info, request, result,identity_card,userid,add_friend,real_name,friend_list,is_success,moble_phone FROM friend_history WHERE uid = %s ('0711af00-a470-11e5-8ab7-64006a053be1',)
+2015-12-17 11:41:17,683 - DEBUG - TianchengTest.py[202] - 子线程：TestRunThread结束
+2015-12-17 11:41:17,684 - DEBUG - TianchengTest.py[204] - 等待子线程TestAssertThread结束...
+2015-12-17 11:41:18,408 - DEBUG - ModCCS.py[127] - [TestAssertThread] 数据库查询结果result: None
+2015-12-17 11:41:18,410 - DEBUG - Interface_Assert.py[55] - [TestAssertThread] Release  public resources
+2015-12-17 11:41:18,410 - DEBUG - TianchengTest.py[120] - [TestAssertThread] 放回队列继续处理: ('CCS', 1, 1450323678.41, 1450323678.41, '0711af00-a470-11e5-8ab7-64006a053be1')
+...
+2015-12-17 11:41:23,410 - DEBUG - TianchengTest.py[75] - [TestAssertThread] 从队列taskassert_queue中取出一条任务: ('CCS', 1, 1450323678.41, 1450323678.41, '0711af00-a470-11e5-8ab7-64006a053be1')
+2015-12-17 11:41:23,411 - DEBUG - TianchengTest.py[99] - [TestAssertThread] 状态处理后timestate: {('CCS', 1): {'timeoutdelay': 0.0, 'timeouttask': 25.0}}
+2015-12-17 11:41:23,411 - DEBUG - TianchengTest.py[107] - [TestAssertThread] 调用断言模块进行处理: CCS 1 0711af00-a470-11e5-8ab7-64006a053be1
+2015-12-17 11:41:23,411 - DEBUG - Interface_AssertEngine.py[119] - [TestAssertThread] 驱动断言:ExpectationDict:{u'sum_info': {u'iAddFriend': 3000}, u'friend_history': {u'identity_card': u'022001196101170001', u'userid': u'a01980ca-c557-4382-9e34-93b79a3a9d66', u'add_friend': 3000, u'real_name': u'A\u7528\u6237', u'friend_list': u'b01980ca-c557-4382-9e34-93b79a3a9d66;', u'is_success': 1, u'moble_phone': u'13600000001'}} unique_id: 0711af00-a470-11e5-8ab7-64006a053be1
+2015-12-17 11:41:23,417 - DEBUG - Interface_Assert.py[41] - [TestAssertThread] init connecting mysql db: ccs_tianchengtest 192.168.18.85:3306 write/tc12345
+2015-12-17 11:41:23,420 - DEBUG - ModCCS.py[123] - [TestAssertThread] 执行SQL查询: query_str: SELECT sum_info, request, result,identity_card,userid,add_friend,real_name,friend_list,is_success,moble_phone FROM friend_history WHERE uid = %s ('0711af00-a470-11e5-8ab7-64006a053be1',)
+2015-12-17 11:41:24,134 - DEBUG - ModCCS.py[127] - [TestAssertThread] 数据库查询结果result: None
+2015-12-17 11:41:24,135 - DEBUG - Interface_Assert.py[55] - [TestAssertThread] Release  public resources
+2015-12-17 11:41:24,135 - DEBUG - TianchengTest.py[120] - [TestAssertThread] 放回队列继续处理: ('CCS', 1, 1450323684.136, 1450323684.136, '0711af00-a470-11e5-8ab7-64006a053be1')
+...
+2015-12-17 11:41:29,138 - DEBUG - TianchengTest.py[75] - [TestAssertThread] 从队列taskassert_queue中取出一条任务: ('CCS', 1, 1450323684.136, 1450323684.136, '0711af00-a470-11e5-8ab7-64006a053be1')
+2015-12-17 11:41:29,138 - DEBUG - TianchengTest.py[99] - [TestAssertThread] 状态处理后timestate: {('CCS', 1): {'timeoutdelay': 0.0, 'timeouttask': 19.997999906539917}}
+2015-12-17 11:41:29,138 - DEBUG - TianchengTest.py[107] - [TestAssertThread] 调用断言模块进行处理: CCS 1 0711af00-a470-11e5-8ab7-64006a053be1
+2015-12-17 11:41:29,140 - DEBUG - Interface_AssertEngine.py[119] - [TestAssertThread] 驱动断言:ExpectationDict:{u'sum_info': {u'iAddFriend': 3000}, u'friend_history': {u'identity_card': u'022001196101170001', u'userid': u'a01980ca-c557-4382-9e34-93b79a3a9d66', u'add_friend': 3000, u'real_name': u'A\u7528\u6237', u'friend_list': u'b01980ca-c557-4382-9e34-93b79a3a9d66;', u'is_success': 1, u'moble_phone': u'13600000001'}} unique_id: 0711af00-a470-11e5-8ab7-64006a053be1
+2015-12-17 11:41:29,144 - DEBUG - Interface_Assert.py[41] - [TestAssertThread] init connecting mysql db: ccs_tianchengtest 192.168.18.85:3306 write/tc12345
+2015-12-17 11:41:29,147 - DEBUG - ModCCS.py[123] - [TestAssertThread] 执行SQL查询: query_str: SELECT sum_info, request, result,identity_card,userid,add_friend,real_name,friend_list,is_success,moble_phone FROM friend_history WHERE uid = %s ('0711af00-a470-11e5-8ab7-64006a053be1',)
+2015-12-17 11:41:29,878 - DEBUG - ModCCS.py[127] - [TestAssertThread] 数据库查询结果result: None
+2015-12-17 11:41:29,878 - DEBUG - Interface_Assert.py[55] - [TestAssertThread] Release  public resources
+2015-12-17 11:41:29,881 - DEBUG - TianchengTest.py[120] - [TestAssertThread] 放回队列继续处理: ('CCS', 1, 1450323689.879, 1450323689.879, '0711af00-a470-11e5-8ab7-64006a053be1')
+...
+2015-12-17 11:41:34,881 - DEBUG - TianchengTest.py[75] - [TestAssertThread] 从队列taskassert_queue中取出一条任务: ('CCS', 1, 1450323689.879, 1450323689.879, '0711af00-a470-11e5-8ab7-64006a053be1')
+2015-12-17 11:41:34,881 - DEBUG - TianchengTest.py[99] - [TestAssertThread] 状态处理后timestate: {('CCS', 1): {'timeoutdelay': 0.0, 'timeouttask': 14.995999813079834}}
+2015-12-17 11:41:34,882 - DEBUG - TianchengTest.py[107] - [TestAssertThread] 调用断言模块进行处理: CCS 1 0711af00-a470-11e5-8ab7-64006a053be1
+2015-12-17 11:41:34,884 - DEBUG - Interface_AssertEngine.py[119] - [TestAssertThread] 驱动断言:ExpectationDict:{u'sum_info': {u'iAddFriend': 3000}, u'friend_history': {u'identity_card': u'022001196101170001', u'userid': u'a01980ca-c557-4382-9e34-93b79a3a9d66', u'add_friend': 3000, u'real_name': u'A\u7528\u6237', u'friend_list': u'b01980ca-c557-4382-9e34-93b79a3a9d66;', u'is_success': 1, u'moble_phone': u'13600000001'}} unique_id: 0711af00-a470-11e5-8ab7-64006a053be1
+2015-12-17 11:41:34,888 - DEBUG - Interface_Assert.py[41] - [TestAssertThread] init connecting mysql db: ccs_tianchengtest 192.168.18.85:3306 write/tc12345
+2015-12-17 11:41:34,891 - DEBUG - ModCCS.py[123] - [TestAssertThread] 执行SQL查询: query_str: SELECT sum_info, request, result,identity_card,userid,add_friend,real_name,friend_list,is_success,moble_phone FROM friend_history WHERE uid = %s ('0711af00-a470-11e5-8ab7-64006a053be1',)
+2015-12-17 11:41:35,622 - DEBUG - ModCCS.py[127] - [TestAssertThread] 数据库查询结果result: None
+2015-12-17 11:41:35,624 - DEBUG - Interface_Assert.py[55] - [TestAssertThread] Release  public resources
+2015-12-17 11:41:35,625 - DEBUG - TianchengTest.py[120] - [TestAssertThread] 放回队列继续处理: ('CCS', 1, 1450323695.624, 1450323695.624, '0711af00-a470-11e5-8ab7-64006a053be1')
+...
+2015-12-17 11:41:40,627 - DEBUG - TianchengTest.py[75] - [TestAssertThread] 从队列taskassert_queue中取出一条任务: ('CCS', 1, 1450323695.624, 1450323695.624, '0711af00-a470-11e5-8ab7-64006a053be1')
+2015-12-17 11:41:40,630 - DEBUG - TianchengTest.py[99] - [TestAssertThread] 状态处理后timestate: {('CCS', 1): {'timeoutdelay': 0.0, 'timeouttask': 9.991999864578247}}
+2015-12-17 11:41:40,632 - DEBUG - TianchengTest.py[107] - [TestAssertThread] 调用断言模块进行处理: CCS 1 0711af00-a470-11e5-8ab7-64006a053be1
+2015-12-17 11:41:40,638 - DEBUG - Interface_AssertEngine.py[119] - [TestAssertThread] 驱动断言:ExpectationDict:{u'sum_info': {u'iAddFriend': 3000}, u'friend_history': {u'identity_card': u'022001196101170001', u'userid': u'a01980ca-c557-4382-9e34-93b79a3a9d66', u'add_friend': 3000, u'real_name': u'A\u7528\u6237', u'friend_list': u'b01980ca-c557-4382-9e34-93b79a3a9d66;', u'is_success': 1, u'moble_phone': u'13600000001'}} unique_id: 0711af00-a470-11e5-8ab7-64006a053be1
+2015-12-17 11:41:40,648 - DEBUG - Interface_Assert.py[41] - [TestAssertThread] init connecting mysql db: ccs_tianchengtest 192.168.18.85:3306 write/tc12345
+2015-12-17 11:41:40,653 - DEBUG - ModCCS.py[123] - [TestAssertThread] 执行SQL查询: query_str: SELECT sum_info, request, result,identity_card,userid,add_friend,real_name,friend_list,is_success,moble_phone FROM friend_history WHERE uid = %s ('0711af00-a470-11e5-8ab7-64006a053be1',)
+2015-12-17 11:41:41,390 - DEBUG - ModCCS.py[127] - [TestAssertThread] 数据库查询结果result: None
+2015-12-17 11:41:41,391 - DEBUG - Interface_Assert.py[55] - [TestAssertThread] Release  public resources
+2015-12-17 11:41:41,391 - DEBUG - TianchengTest.py[120] - [TestAssertThread] 放回队列继续处理: ('CCS', 1, 1450323701.391, 1450323701.391, '0711af00-a470-11e5-8ab7-64006a053be1')
+...
+2015-12-17 11:41:46,394 - DEBUG - TianchengTest.py[75] - [TestAssertThread] 从队列taskassert_queue中取出一条任务: ('CCS', 1, 1450323701.391, 1450323701.391, '0711af00-a470-11e5-8ab7-64006a053be1')
+2015-12-17 11:41:46,398 - DEBUG - TianchengTest.py[99] - [TestAssertThread] 状态处理后timestate: {('CCS', 1): {'timeoutdelay': 0.0, 'timeouttask': 4.98799991607666}}
+2015-12-17 11:41:46,400 - DEBUG - TianchengTest.py[107] - [TestAssertThread] 调用断言模块进行处理: CCS 1 0711af00-a470-11e5-8ab7-64006a053be1
+2015-12-17 11:41:46,405 - DEBUG - Interface_AssertEngine.py[119] - [TestAssertThread] 驱动断言:ExpectationDict:{u'sum_info': {u'iAddFriend': 3000}, u'friend_history': {u'identity_card': u'022001196101170001', u'userid': u'a01980ca-c557-4382-9e34-93b79a3a9d66', u'add_friend': 3000, u'real_name': u'A\u7528\u6237', u'friend_list': u'b01980ca-c557-4382-9e34-93b79a3a9d66;', u'is_success': 1, u'moble_phone': u'13600000001'}} unique_id: 0711af00-a470-11e5-8ab7-64006a053be1
+2015-12-17 11:41:46,418 - DEBUG - Interface_Assert.py[41] - [TestAssertThread] init connecting mysql db: ccs_tianchengtest 192.168.18.85:3306 write/tc12345
+2015-12-17 11:41:46,421 - DEBUG - ModCCS.py[123] - [TestAssertThread] 执行SQL查询: query_str: SELECT sum_info, request, result,identity_card,userid,add_friend,real_name,friend_list,is_success,moble_phone FROM friend_history WHERE uid = %s ('0711af00-a470-11e5-8ab7-64006a053be1',)
+2015-12-17 11:41:47,163 - DEBUG - ModCCS.py[127] - [TestAssertThread] 数据库查询结果result: None
+2015-12-17 11:41:47,164 - DEBUG - Interface_Assert.py[55] - [TestAssertThread] Release  public resources
+2015-12-17 11:41:47,164 - DEBUG - TianchengTest.py[120] - [TestAssertThread] 放回队列继续处理: ('CCS', 1, 1450323707.164, 1450323707.164, '0711af00-a470-11e5-8ab7-64006a053be1')
+...
+2015-12-17 11:41:52,167 - DEBUG - TianchengTest.py[75] - [TestAssertThread] 从队列taskassert_queue中取出一条任务: ('CCS', 1, 1450323707.164, 1450323707.164, '0711af00-a470-11e5-8ab7-64006a053be1')
+2015-12-17 11:41:52,171 - DEBUG - TianchengTest.py[99] - [TestAssertThread] 状态处理后timestate: {('CCS', 1): {'timeoutdelay': 0.0, 'timeouttask': 0.0}}
+2015-12-17 11:41:52,174 - DEBUG - TianchengTest.py[107] - [TestAssertThread] 调用断言模块进行处理: CCS 1 0711af00-a470-11e5-8ab7-64006a053be1
+2015-12-17 11:41:52,178 - DEBUG - Interface_AssertEngine.py[119] - [TestAssertThread] 驱动断言:ExpectationDict:{u'sum_info': {u'iAddFriend': 3000}, u'friend_history': {u'identity_card': u'022001196101170001', u'userid': u'a01980ca-c557-4382-9e34-93b79a3a9d66', u'add_friend': 3000, u'real_name': u'A\u7528\u6237', u'friend_list': u'b01980ca-c557-4382-9e34-93b79a3a9d66;', u'is_success': 1, u'moble_phone': u'13600000001'}} unique_id: 0711af00-a470-11e5-8ab7-64006a053be1
+2015-12-17 11:41:52,187 - DEBUG - Interface_Assert.py[41] - [TestAssertThread] init connecting mysql db: ccs_tianchengtest 192.168.18.85:3306 write/tc12345
+2015-12-17 11:41:52,194 - DEBUG - ModCCS.py[123] - [TestAssertThread] 执行SQL查询: query_str: SELECT sum_info, request, result,identity_card,userid,add_friend,real_name,friend_list,is_success,moble_phone FROM friend_history WHERE uid = %s ('0711af00-a470-11e5-8ab7-64006a053be1',)
+2015-12-17 11:41:52,914 - DEBUG - ModCCS.py[127] - [TestAssertThread] 数据库查询结果result: None
+2015-12-17 11:41:52,914 - DEBUG - Interface_Assert.py[55] - [TestAssertThread] Release  public resources
+2015-12-17 11:41:52,915 - DEBUG - TianchengTest.py[113] - [TestAssertThread] 结果放入测试结果中: CCS 1 ('FAIL', u'\u6570\u636e\u5e93\uff1afriend_history \u67e5\u8be2\u7ed3\u679c\u4e3a\u7a7a')
+...
+2015-12-17 11:42:07,917 - DEBUG - TianchengTest.py[124] - [TestAssertThread] 从队列taskassert_queue中取任务超时
+2015-12-17 11:42:07,921 - DEBUG - TianchengTest.py[206] - 子线程：TestAssertThread结束
+2015-12-17 11:42:07,924 - DEBUG - TianchengTest.py[214] - 测试结束时间: 2015-12-17 11:42:07
+2015-12-17 11:42:07,927 - DEBUG - TianchengTest.py[217] - testcase_result: {('CCS', 1): ('FAIL', u'\u6570\u636e\u5e93\uff1afriend_history \u67e5\u8be2\u7ed3\u679c\u4e3a\u7a7a')}
+2015-12-17 11:42:07,937 - DEBUG - GenerateReport.py[126] - 生成测试结果报告: .\result\Test_Report_Filename20151217114207.html
