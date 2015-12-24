@@ -3,7 +3,7 @@
 #filename:ModCCS.py
 #author:defias
 #date:2015-12
-#function: CCS相关
+#function: CCS相关 test
 #######################################################
 from Global import *
 from public import EncryptLib
