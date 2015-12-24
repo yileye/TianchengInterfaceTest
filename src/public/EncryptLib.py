@@ -125,3 +125,32 @@ def getde_base64(encrypted):
 #     result = base64.b64decode(data)
 #     decrypted = cipher.decrypt(result)
 #     return  unpad(decrypted)
+
+if __name__ == '__main__':
+    # data = u'tesing加密testing'
+    # data = data.encode("utf8")
+    # endata = get_base64(data)
+    # print type(endata)
+    # print endata
+
+    # ddd = {u"水电费":u"sdfsdf水电费"}
+    # ddd = unicode(ddd).encode('utf8')
+    # print ddd
+    # enddd = get_base64(ddd)
+    # print type(enddd)
+    # print enddd
+
+    ddaa = u'''{"水电费":"sdfsdf水电费"}'''
+    import json
+    ddaa = json.loads(ddaa)
+    print type(ddaa)
+    print 'ddaa: ', ddaa
+
+    ddaa = json.dumps(ddaa, ensure_ascii=False)
+    print type(ddaa)
+    print 'ddaa: ', ddaa
+
+    ddaa = ddaa.encode('utf8')
+    enddaa = get_base64(ddaa)
+    print type(enddaa)
+    print 'enddaa: ',enddaa

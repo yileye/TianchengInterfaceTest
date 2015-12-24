@@ -11,6 +11,7 @@ import threading
 import Config
 import uuid
 import json
+import json_tools
 
 class ModCCS(object):
     def __init__(self):
@@ -65,7 +66,8 @@ class ModCCS(object):
                 #json字段数据进行base64加密
                 for i in xrange(len(fields)):
                     if fields[i] == 'json':
-                        values[i] = EncryptLib.get_base64(str(values[i]))
+                        jsonvalue = json.dumps(values[i], ensure_ascii=False)
+                        values[i] = EncryptLib.get_base64(jsonvalue.encode('utf8'))
 
                 #添加唯一id字段
                 fields.append('id')
@@ -110,7 +112,6 @@ class ModCCS_Assert(object):
             curMy = obj.connMy.cursor()
 
             sum_infoExpDict = ExpectationDict.pop('sum_info')
-            iAddFriendExpDict = sum_infoExpDict['iAddFriend']
             for table in ExpectationDict.keys():
                 fields = ExpectationDict[table].keys()
                 values = ExpectationDict[table].values()
@@ -133,22 +134,25 @@ class ModCCS_Assert(object):
                 result = list(result)
                 sum_info = EncryptLib.getde_base64(result.pop(0))
                 request = EncryptLib.getde_base64(result.pop(0))
-                result = EncryptLib.getde_base64(result.pop(0))
+                resultresult = EncryptLib.getde_base64(result.pop(0))
                 PrintLog('debug', '[%s] 数据库表中sum_info字段值: %s', threading.currentThread().getName(), str(sum_info).rstrip())
                 PrintLog('debug', '[%s] 数据库表中request字段值: %s', threading.currentThread().getName(), str(request).rstrip())
-                PrintLog('debug', '[%s] 数据库表中result字段值: %s', threading.currentThread().getName(), str(result).rstrip())
+                PrintLog('debug', '[%s] 数据库表中result字段值: %s', threading.currentThread().getName(), str(resultresult).rstrip())
 
                 result = tuple(result)
                 expvalues = tuple(values)
                 PrintLog('debug', '[%s] 比较数据库表中数据与期望数据: result: %s\nexpvalues: %s', threading.currentThread().getName(), result, expvalues)
                 assert result == expvalues, u'检查入库数据不正确'
 
-                #检查sum_info中的iAddFriend
+                #检查sum_info中的各字段
                 sum_infoDict = json_tools.loads(sum_info)
-                iAddFriend = sum_infoDict['iAddFriend']
+                for key in sum_infoExpDict:
+                    assert key in sum_infoDict, u'sum_info中无期望的字段: {}'.format(key)
 
-                PrintLog('debug', '[%s] 比较数据库表中resultJson字段部分数据: iAddFriendExpDict: %s\niAddFriend: %s', threading.currentThread().getName(), iAddFriendExpDict, iAddFriend)
-                assert iAddFriendExpDict == iAddFriend, u'检查sum_info中的iAddFriend数据有误'
+                sum_infoDict = {key:sum_infoDict[key] for key in sum_infoExpDict}
+
+                PrintLog('debug', '[%s] 比较数据库表中sum_info字段部分数据: sum_infoExpDict: %s\nsum_infoDict: %s', threading.currentThread().getName(), sum_infoExpDict, sum_infoDict)
+                assert json_tools.diff(sum_infoExpDict, sum_infoDict) == [], u'检查sum_info中数据有误'
 
             return 'PASS',
 
