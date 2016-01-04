@@ -1,0 +1,295 @@
+syntax = "proto2";
+package UBAS_niiwoo;
+import "common.proto";
+
+/////////////////你我金融综合授信
+
+//性别
+enum en_sex
+{
+    en_sex_unknown              = 0;     //未知
+    en_sex_man                  = 1;     //男
+    en_sex_woman                = 2;     //女
+}
+
+enum en_marry
+{
+    en_marry_no                 = 0;     //未婚
+    en_marry_ok                 = 1;     //已婚
+    en_marry_bye                = 2;     //离异
+    en_death_spouse             = 3;     //丧偶
+}
+
+enum en_home
+{
+    en_home_other               = 0;     //其他
+    en_home_my                  = 1;     //自有
+    en_home_rent                = 2;     //租房
+    em_home_parents             = 3;     //父母同住
+    en_home_public              = 4;     //学校/单位宿舍
+}
+
+//有业用户
+message user_info
+{
+    optional bytes              user_id                        = 1;       //用户ID
+    optional bytes              user_nickname                  = 2;       //用户别名
+    optional bytes              college_name                   = 3;       //学院
+    optional common.degree      eduction_degree                = 4;       //学历
+    optional en_sex             sex                            = 5;       //性别
+    optional int32              age                            = 6;       //年龄
+    optional en_marry           marry                          = 7;       //婚姻状况
+    optional bytes              card_address                   = 8;       //身份证原件上省份城市
+    optional bytes              home_sheng                     = 9;       //常住地址省份
+    optional bytes              home_city                      = 10;      //常住地址城市
+    optional int32              money_for_year                 = 11;      //年收入
+    optional int32              mobile_number_sum              = 12;      //通讯录电话号码数量(-1表示未授权)
+    optional en_home            home_type                      = 13;      //住宅类型
+}
+
+// 用户类型
+enum en_user
+{
+    en_user_student                                            = 0;   //学生用户
+    en_user_tuandai                                            = 1;   //有业用户(团贷网用户)
+    en_user_no_tuandai                                         = 2;   //有业用户(非团贷网用户)
+}
+
+message niiwoo_UBAS_ask
+{
+    optional en_user                        user_type          = 1;	//用户类型
+    optional bytes                          identity_card      = 2; 	//用户身份证
+    optional bytes                          real_name          = 3; 	//账号名字
+    optional bytes                          mobile_phone       = 4;	//手机号码
+    optional common.common_ask_header       ask_header         = 5;	//返回结果接收主题
+}
+
+//学生用户
+message niiwoo_student_UBAS_ans
+{
+    optional bytes                          user_id            = 1;  //用户ID
+    optional bytes                          user_nickname      = 2;  //用户别名
+    optional en_sex                         sex                = 3;  //性别
+    optional bytes                          college_name       = 4;  //学院
+    optional common.degree                  eduction_degree    = 5;  //学历
+    optional bytes                          school_end_date    = 6;  //毕业日期(无法获取填空字符串)
+    optional bytes                          school_sheng       = 7;  //学校的省份
+    optional bytes                          school_city        = 8;  //学校的城市
+    optional bytes                          card_address       = 9;  //身份证原件上省份城市
+    optional int32                          mobile_number_sum  = 10; //通讯录电话号码数量(-1表示未授权)
+    optional common.errorinfo               error              = 11; //错误代码
+}
+
+//有业用户(团贷网用户)
+message niiwoo_tuandai_UBAS_ans
+{
+    optional user_info                      info               = 1;  //用户信息
+    optional common.errorinfo               error              = 2;  //错误代码
+}
+
+//有业用户(非团贷网用户)
+message niiwoo_no_tuandai_UBAS_ans
+{
+    optional user_info                      info               = 1;	//用户信息
+    optional common.errorinfo               error              = 2; 	//错误代码
+}
+
+
+/////////////////熟人授信
+enum niiwoo_ask_type
+{
+    friend_credit                           = 1;  // 熟人授信
+    address_phone_list                      = 2;  // 查询通讯录列表
+    overdue_status                          = 3;  // 逾期情况查询
+    loan_assure_info_list                   = 4;  // 借款与担保用户历史信息
+    person_position_track                   = 5;  // 用户位置历史查询
+}
+
+message user_info_ask
+{
+    optional common.common_ask_header       ask_header          = 1;   //返回结果接收主题
+    optional niiwoo_ask_type                query_type          = 2;   //请求接口类型
+    optional bytes                          identity_card       = 3;   //用户身份证
+    optional bytes                          real_name           = 4;   //身份证名字
+    optional bytes                          mobile_phone        = 5;   //手机号码
+}
+
+/////////////////熟人授信
+message friend_data
+{
+    optional bytes                          friend_card          = 1;	//好友身份证
+    optional bool                           is_prove             = 2;	//好友是否实名认证
+}
+
+message user_info_ans
+{
+    optional bytes                          identity_card       = 1;   //用户身份证
+    optional bytes                          real_name           = 2;   //身份证名字
+    optional bytes                          mobile_phone        = 3;   //手机号码
+    optional bytes                          user_id             = 4;   //用户ID
+    optional bytes                          user_nickname       = 5;   //用户别名
+    optional bytes                          college_name        = 6;   //学院
+    optional common.degree                  eduction_degree     = 7;   //学历
+    optional bool                           is_prove            = 8;   //是否实名认证
+    repeated friend_data                    friend_data_list    = 9;   //好友列表
+    optional common.errorinfo               error               = 10;  //错误代码
+}
+
+
+message address_information
+{
+    optional bytes                          name                = 1;  // 是通讯录中姓名string
+    optional bytes                          mobile              = 2;  // 是通讯录中手机号string
+}
+
+
+/////////////////用户通讯录列表
+message user_address_phone_list_ans
+{
+    repeated address_information           address_list        = 1;  //用户的好友身份证列表
+    optional common.errorinfo              error               = 2;  //错误代码
+}
+
+/////////////////用户借款,担保逾期状态查询
+message user_overdue_status_ans
+{
+    optional bool                          is_loan_overdue     = 1;    // 是否有借款逾期情况
+    optional bool                          is_assure_overdue   = 2;    // 是否担保逾期未垫付情况
+    optional int32                         income              = 3;    // 年收入单位元
+    optional common.errorinfo              error               = 4;    // 错误代码
+}
+
+message loan_or_assure_info
+{
+    optional bytes                         id                  = 1;    // 项目ID
+    optional int32                         overdue_day         = 2;    // 逾期天数
+}
+
+message borrow_info
+{
+	optional bytes bid_id 				= 1; //标id
+	optional int32 overdue_times 		= 2; //逾期次数
+	optional int32 should_repay_periods = 3; //应还期数
+}
+/////////////////借款与担保用户历史信息
+message loan_assure_info_list_ans
+{
+    optional int32                         Loan_history_bad_debt_count = 1;    // 借款出现过坏账数量
+    repeated loan_or_assure_info           loan_list           = 2;    // 记录历史借款逾期信息
+    repeated loan_or_assure_info           assure_list         = 3;    // 记录历史担保逾期未垫付信息
+	repeated borrow_info           	   	   borrower_info_list  = 4;    // 每笔的逾期次数,每笔的应还期数
+    optional common.errorinfo              error               = 5;    // 错误代码
+}
+
+/////////////////用户还款信息
+enum en_apply_status
+{
+	en_applying=0;                  //申请中
+	en_applying_investigation=1;    //申请尽调中
+	en_investigating=2;             //尽调中
+	en_guaranteeing=3;              //担保中
+	en_toubiaoing=4;                //投标中
+	en_bid_success=5;               //成标
+	en_repayment_success=6;         //还款成功
+
+	en_investigation_fail=31;       //尽掉不通过
+    en_guarantee_not_full=32;       //担保未满
+	en_not_full=33;                 //投标未满
+	en_mannual_discard_bid=34;      //手动流标
+	en_yellow_warning=41;           //黄色警告
+	en_red_warning=42;              //红色警告
+	en_overdue=43;                  //逾期
+	en_bad_bill=44;                 //坏账
+	en_bad_complete=45;             //坏账已结清
+}
+/*
+enum en_apply_status
+{
+	en_applying=0;                  //申请中
+	en_applying_investigation=1;    //申请尽调中
+	en_investigating=2;             //尽调中
+	en_guaranteeing=3;              //担保中
+	en_guarantee_not_full=4;        //担保未满
+	en_toubiaoing=5;                //投标中
+	en_bid_success=6;               //成标
+	en_repayment_success=7;         //还款成功
+
+	en_investigation_fail=31;       //尽掉不通过
+	en_not_full=33;                 //投标未满
+	en_mannual_discard_bid=34;      //手动流标
+	en_yellow_warning=41;           //黄色警告
+	en_red_warning=42;              //红色警告
+	en_overdue=43;                  //逾期
+	en_bad_bill=44;                 //坏账
+	en_bad_complete=45;             //坏账已结清
+}
+*/
+message niiwoo_UBAS_borrow_info_item
+{
+	optional bytes                   identity_card       = 1;
+	optional bytes                   bid_id              = 2;
+	optional en_apply_status         apply_status        = 3;
+	optional int32                   overdue_days        = 4;
+}
+
+message niiwoo_UBAS_borrow_detail_ask
+{
+    optional common.common_ask_header   ask_header          = 1;   //返回结果接收主题
+    optional bytes                      identity_card       = 2; 	//用户身份证
+}
+
+message niiwoo_UBAS_borrow_detail_ans
+{
+    repeated niiwoo_UBAS_borrow_info_item  borror_info        = 1;
+    optional common.errorinfo              error              = 2;  //错误代码
+	optional int32  max_overduemoney                          = 3;
+}
+
+/////////////////用户基础信息
+enum en_address_type
+{
+    en_address_type_work=1;
+    en_address_type_home=2;
+}
+message user_address_t
+{
+   optional en_address_type               address_type       = 1;
+   optional bytes                         address            = 2;
+}
+message user_contact_t
+{
+    optional bytes                         name                = 1;
+    optional bytes                         phone               = 2;
+    optional int32                         is_delete           = 3;  // 是否被删除(0 否, 1 是)
+    optional bytes                         delete_time         = 4;  // 更新时间(yyyymmddHHMMSS)
+}
+
+message niiwoo_UBAS_info_ask
+{
+    optional common.common_ask_header      ask_header          = 1;   //返回结果接收主题
+    optional bytes                         identity_card       = 2; 	//用户身份证
+}
+
+message niiwoo_UBAS_info_ans
+{
+	repeated user_address_t                addres             =1;  //用户地址
+	repeated user_contact_t                relations          =2;  //联系人
+	repeated user_contact_t                constacts          =3;  //通讯录
+    optional common.errorinfo              error              = 4;  //错误代码
+}
+
+///////////////////////////通讯录重合度查询接口/////////////////////
+message niiwoo_UBAS_coincide_ask
+{
+    optional common.common_ask_header             ask_header           = 1;   //返回结果接收主题
+    optional int32                                ask_funcode          = 2;   //返回结果接收功能号
+    optional common.user_basic_identification     user_1               = 3;   //用户1信息,帐号名字或身份证或电话号码
+    optional common.user_basic_identification     user_2               = 4;   //用户2信息,帐号名字或身份证或电话号码
+}
+
+message niiwoo_UBAS_coincide_ans
+{
+    optional float                                coincide             = 1;  //通讯录重合度
+    optional common.result_info                   result               = 2;  //结果信息
+}
+

@@ -1,0 +1,24 @@
+
+----------新增proto文件请看这--------
+1. 按照protobuf协议的语法写好 *.proto文件，目前使用的是3.0版本
+   2.x版本语法请在文件第一行加入syntax = "proto2";
+   3.0版本只有repeated关键字，新建的proto文件必须使用3.0语法，简单易用
+ 
+3.0支持了map类型 
+   message Foo {
+  map<string, string> values = 1;
+}
+
+以及any类型
+
+
+2. 在本目录中的gen_proto.bat, gen_proto.sh两个脚本中添加新增的proto文件名 放到参数变量后面
+
+----------修改proto文件请看这---------
+3. 在windows或者linux的当前目录相应的执行 gen_proto.bat, gen_proto.sh 脚本, 分别生成cpp java python三份代码
+
+4. 请到 linux环境的 00.PublicCode\common\proto\src\cpp 目录中执行 make all ，此时.a自动送到libs下
+
+5. 到 00.PublicCode\common\libs目录中 执行
+        svn commit libprotobufcommon.a -m ""
+    将生成的 libprotobufcommon.a 提交到代码库

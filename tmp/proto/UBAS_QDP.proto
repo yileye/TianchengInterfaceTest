@@ -1,0 +1,79 @@
+syntax = "proto2";
+import "common.proto";
+
+package BUAS_QDP;
+
+/////////////////////经纬度转行为 具体的省市区位置
+message LocationPoint
+{
+    optional bytes                         lng_lat          = 1;    //  经纬度位置信息, 格式("longitude, Latitude")
+    optional bytes                         localID          = 2;    //  查询localID
+}
+
+message Location2Position_ask
+{
+    repeated LocationPoint                 lng_lat_list    = 1;    //  查询信息数据体, 最大20个
+}
+
+message LocationInfo
+{
+    optional bytes                         position_info   = 1;    //  具体的位置信息里面是 Json 串
+    optional bytes                         localID         = 2;    //  查询localID
+    optional bytes                         lng_lat         = 3;    //  经纬度位置信息,格式("longitude, Latitude")
+}
+
+message Location2Position_ans
+{
+    optional common.errorinfo              error           = 1;    //  返回码信息, 返回0 失败;  1 成功;
+    repeated LocationInfo                  position_info   = 2;    //  位置信息数据体
+}
+
+enum UserCredentialsType
+{
+    Unknown                     = 0;    // 未知类型
+    IDCard                      = 1;    // 身份证
+}
+
+/////////////////////请求查询用户信息 回流给芝麻信用
+message ZhimaDataFlowReflux_ask
+{
+    optional UserCredentialsType  user_credentials_type     = 1;   // 证件类型, 默认都是使用身份证
+    optional bytes          identity_card                   = 2;   // 证件号
+    optional bytes          real_name                       = 3;   // 身份证名字
+    optional bytes          mobile_phone                    = 4;   // 手机号码
+}
+
+///////////借款信息
+message LoanRecordInfo
+{
+    optional bytes          orderNo                         = 1;   // 标ID
+    optional bytes          orderType                       = 2;   // 担保方式
+    optional bytes          bizType                         = 3;   // 业务类型
+    optional bytes          gmtOrderStart                   = 4;   // 首次放款日期
+    optional bytes          gmtDue                          = 5;   // 贷款期限
+    optional bytes          payFreq                         = 6;   // 贷款频率
+    optional bytes          payMonth                        = 7;   // 还款月份
+    optional bytes          gmtOvdDate                      = 8;   // 应还款日期 yyyymmdd
+}
+
+///////////担保信息
+message AssureRecordInfo
+{
+    optional bytes          identity                        = 1;  // 担保订单ID
+    optional bytes          orderNo                         = 2;  // 标ID
+    optional bytes          orderType                       = 3;  // 担保方式
+    optional bytes          guaAmt                          = 4;  // 改订单的担保金额
+}
+
+//////////////////// 用户数据返回
+message ZhimaDataFlowReflux_ans
+{
+    optional UserCredentialsType user_credentials_type      = 1;   // 证件类型, 默认都是使用身份证
+    optional bytes          identity_card                   = 2;   // 证件号
+    optional bytes          real_name                       = 3;   // 身份证名字
+    optional bytes          mobile_phone                    = 4;   // 手机号码
+    repeated LoanRecordInfo    loan_info                    = 5;   // 借款信息, 只需要一条记录
+    repeated AssureRecordInfo  assure_info                  = 6;   // 担保信息, 只需要一条记录
+    optional bytes          remindCnt                       = 7;   // 当前借款人的逾期期数
+    optional bytes          amtOverdue                      = 8;   // 当前借款逾期总金额(借款人的逾期总额，本金+利息)
+}

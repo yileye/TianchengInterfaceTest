@@ -1,0 +1,394 @@
+syntax = "proto2";
+package UPS_niiwoo;
+import "common.proto";
+
+/////////////////你我金融用户画像系统
+//标签类型
+message label_type
+{
+    optional int32              type_id                        = 1;       //标签类型ID
+    optional bytes              type_name                  	   = 2;       //标签类型名称
+    optional int32              parent_id                      = 3;    	  //父类id
+    optional int32              type_prefix                    = 4;    	  //类型前缀
+    optional bytes              type_note                      = 5;    	  //备注
+    optional bytes              add_time                       = 6;       //添加时间
+    optional bytes              update_time                    = 7;       //更新时间
+}
+
+//标签
+message label
+{
+    optional int32              label_id                       = 1;       //标签ID
+    optional int32              type_id                        = 2;       //标签类型ID
+    optional bytes              label_name                     = 3;       //标签名称
+    optional int32              parent_id                      = 4;    	  //父类id
+    optional bytes              label_note                     = 5;    	  //备注
+    optional bytes              add_time                       = 6;       //添加时间
+    optional bytes              update_time                    = 7;       //更新时间
+}
+
+//标签类型列表查询ask
+message label_type_list_ask
+{
+    optional common.common_ask_header   ask_header             = 1;   	//返回结果接收主题
+    optional int32                      type_id                = 2;     //标签类型ID
+    optional bytes                      type_name              = 3; 	//标签类型名称
+    optional int32                      page_num               = 4;     //请求页面数量
+    optional int32                      cur_page               = 5;     //当前请求页面
+}
+
+//标签类型列表查询ans
+message label_type_list_ans
+{
+    repeated label_type                 list                   = 1;     //标签类型信息
+    optional int32                      total_number           = 2;     //总条数
+    optional common.errorinfo           error                  = 3;     //错误代码
+}
+
+//标签类型明细查询ask
+message label_type_detail_ask
+{
+	optional common.common_ask_header   ask_header             = 1;     //返回结果接收主题
+	optional int32                      type_id                = 2;     //标签类型ID
+}
+
+//标签类型明细查询ans
+message label_type_detail_ans
+{
+	optional label_type                 info                   = 1;     //标签类型明细
+	optional common.errorinfo           error                  = 2;     //返回结果
+}
+
+//标签类型保存ask
+message label_type_save_ask
+{
+	optional common.common_ask_header   ask_header             = 1;     //返回结果接收主题
+	optional label_type                 info                   = 2;     //标签类型信息
+}
+
+//标签类型保存ans
+message label_type_save_ans
+{
+	optional common.errorinfo           error                  = 1;     //返回结果
+}
+
+//删除标签类型
+message label_type_remove_ask
+{
+	optional common.common_ask_header   ask_header             = 1;     //返回结果接收主题
+	optional int32                      type_id                = 2;     //标签类型ID
+}
+
+//删除标签类型
+message label_type_remove_ans
+{
+	optional common.errorinfo           error                  = 1;     //返回结果
+}
+
+//标签类型树查询ask
+message label_type_tree_ask
+{
+    optional common.common_ask_header   ask_header             = 1;   	//返回结果接收主题
+    optional int32                      type_id                = 2; 	//标签类型ID
+}
+
+//标签类型树查询ans
+message label_type_tree_ans
+{
+    repeated label_type                 list                   = 1;     //标签类型信息
+    optional common.errorinfo           error                  = 2;     //错误代码
+}
+
+
+
+//标签列表查询ask
+message label_list_ask
+{
+    optional common.common_ask_header   ask_header             = 1;   	//返回结果接收主题
+    optional int32                      type_id                = 2;     //标签类型ID
+    optional bytes                      label_name             = 3; 	//标签名称
+    optional int32                      page_num               = 4;     //请求页面数量
+    optional int32                      cur_page               = 5;     //当前请求页面
+}
+
+//标签列表查询ans
+message label_list_ans
+{
+    repeated label                      list                   = 1;     //标签信息
+    optional int32                      total_number           = 2;     //总条数
+    optional common.errorinfo           error                  = 3;     //错误代码
+}
+
+//标签明细查询ask
+message label_detail_ask
+{
+	optional common.common_ask_header   ask_header             = 1;     //返回结果接收主题
+	optional int32                      label_id               = 2;     //标签ID
+}
+
+//标签明细查询ans
+message label_detail_ans
+{
+	optional label                      info                   = 1;     //标签明细
+	optional common.errorinfo           error                  = 2;     //返回结果
+}
+
+//标签保存ask
+message label_save_ask
+{
+	optional common.common_ask_header   ask_header             = 1;     //返回结果接收主题
+	optional label                      info                   = 2;     //标签信息
+}
+
+//标签保存ans
+message label_save_ans
+{
+	optional common.errorinfo           error                  = 1;     //返回结果
+}
+
+//删除标签ask
+message label_remove_ask
+{
+	optional common.common_ask_header   ask_header             = 1;     //返回结果接收主题
+	optional int32                      label_id               = 2;     //标签ID
+}
+
+//删除标签ans
+message label_remove_ans
+{
+	optional common.errorinfo           error                  = 1;     //返回结果
+}
+
+//查询用户标签
+message user_labels_ask
+{
+	optional common.common_ask_header   ask_header             = 1;     //返回结果接收主题
+	optional bytes id_card                                     = 2;     //用户身份证
+	optional bytes mobile_phone                                = 3;     //用户手机号码
+}
+
+//查询用户标签
+message user_labels_ans
+{
+	repeated bytes                      labels                  = 1;     //标签集合
+	optional common.result_info         result                  = 2;     //返回结果
+}
+
+//标签查询用户
+message label_users_ask
+{
+	optional common.common_ask_header   ask_header = 1;                 //返回结果接收主题
+	repeated int32 label_ids                       = 2;                 //标签ID集合
+	optional int32 all_in                          = 3[default = 2];    //1:in,2:all
+	optional int32 page_num                        = 4;                 //请求页面数量
+    optional int32 cur_page                        = 5;                 //当前请求页面
+}
+
+//用户基本信息
+message user_basic_info
+{
+	optional bytes user_name                        = 1; //姓名
+	optional bytes mobile_phone                     = 2; //手机号
+	optional bytes id_card_no                       = 3; //用户证件
+	optional bytes position                         = 4; //职业
+	optional bytes living_loc_info                  = 5; //居住地位置信息
+	optional bytes id_card_address                  = 6; //证件地址
+	optional bytes living_province                  = 7; //居住省
+	optional bytes living_city                     	= 8; //居住城市
+	optional bytes living_address                   = 9; //居住详细地址
+}
+
+//标签查询用户
+message label_users_ans
+{
+	repeated user_basic_info            users                   = 1;     // 用户集合
+	optional int32                      total_number            = 2;     // 总条数
+	optional common.result_info         result                  = 3;     // 返回结果
+}
+
+//查询用户头像
+message user_avatar_ask
+{
+	optional common.common_ask_header   ask_header = 1;                 //返回结果接收主题
+    optional int32 num                             = 2;                 //查询条数
+}
+
+//查询用户头像
+message user_avatar_ans
+{
+	repeated bytes                      avatars                 = 1;     //头像地址集合
+	optional common.result_info         result                  = 2;     //返回结果
+}
+
+//收入来源
+message income_source
+{
+	optional int32 sourceType            = 1;  //收入来源类型(1工资收入，2经营收入，3其他,4生活费，5兼职收入（4/5只有学生有）)
+	optional int32 monthAvg              = 2;  //月均收入
+	                                           //创建时间
+	optional bytes LastUpdateTime        = 3;  //更新的时间(时间戳,精确到微妙)
+	                                           //收入证明
+}
+
+//房产信息
+message user_house_info
+{
+	optional int32 HouseType            = 1;  //房产类型(1商品房、2别墅、3厂房、4自建房、5写字楼、6其他)
+	optional int32 Mortgage             = 2;  //有无房贷(0无，1有)
+	                                          //购买年份
+	optional double HouseAmount         = 3;  //房产价值
+	optional double HouseSize           = 4;  //建筑面积
+	optional double MortgageAmount      = 5;  //房贷金额
+	optional int32 Mortgageterm         = 6;  //房贷年限
+	optional int32 HouseLoan            = 7;  //房贷情况(1、无房贷，2、月供1000元以下，3、月供1001~2000，4、月供2001~3000，5、月供3000~5000，6、月供5000以上)   ---------- 月供？
+	optional bytes HouseProvince        = 8;  //房产所在省
+	optional bytes HouseCity            = 9;  //房产所在市
+	optional bytes HouseArea            = 10; //房产小区名   --------------房产所在区？
+	optional bytes HouseAddress         = 11; //房产所在详细地址
+	                                          //创建时间
+    optional bytes LastUpdateTime       = 12; //更新的时间(yyyymmddHHMMSSmmmuuu)
+                                              //是否被删除
+                                              //房产证明材料
+}
+
+//车产信息
+message user_car_info
+{
+	optional bytes CarPlate             = 1;  //车牌号
+	optional int32 Carloans             = 2;  //有无车贷(0无，1有)
+	optional bytes CarBrand         = 3;  //品牌型号
+
+	optional int32 CarAge               = 4;  //购买年份
+	optional double CarAmount           = 5;  //车产价值
+	optional double CarloansAmount      = 6;  //车贷金额
+	optional int32 Carloansterm         = 7;  //车贷年限
+	                                          //创建时间
+	optional bytes LastUpdateTime       = 9;  //更新的时间(yyyymmddHHMMSSmmmuuu)
+	                                          //是否被删除
+                                              //房产证明材料
+}
+
+//查询用户基本信息
+message user_basic_info_ask
+{
+	optional common.common_ask_header   ask_header             = 1;     //返回结果接收主题
+	optional bytes id_card                                     = 2;     //用户身份证
+	optional bytes mobile_phone                                = 3;     //用户手机号码
+}
+
+
+//返回用户基本信息
+message user_basic_info_ans
+{
+	optional bytes UserId                = 99; //用户ID
+	optional bytes usernickname          = 1;  //用户昵称
+	optional bytes UserRealName          = 2;  //用户真实名
+	optional bytes Avatar                = 60; //用户头像
+	optional int32 age                   = 3;  //年龄
+	optional int32 sex                   = 4;  //性别(0未设置, 1男, 2女)
+	optional int32 UserStatus            = 66; //用户身份
+    optional double lateCharge           = 61; //逾期金额
+    optional double advanceAmount        = 62; //担保垫付逾期金额
+    optional int32 lateCnt               = 63; //逾期次数
+	optional int32 advanceAmountCnt      = 64; //担保垫付逾期次数
+	optional bytes MobilePhone           = 8;  //手机号
+	optional bytes UserIDCard            = 9;  //用户身份证ID
+	optional bytes phonePlace            = 10; //手机号归属地
+	optional int32 AddressType           = 11; //住址类型(1自有, 2租房, 3父母同住, 4学校或单位宿舍, 5其他)
+	optional bytes Hometown              = 12; //籍贯
+	optional int32 CardType              = 13; //证件类型(1身份证, 2港澳台胞证, 3回乡证)
+	                                           //证件号
+	optional int32 MaritalStatus         = 15; //是否已婚(0未婚, 1已婚, 2离异, 3丧偶)
+	optional bytes CardAddress           = 16; //(身份证)证件地址
+	optional int32 ChildrenStatus        = 17; //是否有子女(0无, 1有)
+	optional bytes LivingAddress         = 18; //居住地址
+
+	                                           //家庭地址
+	                                           //家庭联系方式
+
+	optional bytes EduSchool             = 21; //学校
+	optional bytes AttendingCollege      = 22; //就读院系
+	optional bytes AttendingGrade        = 23; //就读年级
+	optional bytes SchoolAddress         = 24; //学校详细地址
+	optional bytes StudentProfessional   = 25; //就读专业
+	optional bytes AttendingClass        = 26; //就读班级
+
+	optional int32 EducationApplyType    = 27; //学历提交类型(0未提交，1自动提交，2手动提交)
+	optional int32 IsVerify              = 28; //是否通过学历验证(1是，0否)
+	optional bytes Major                 = 29; //专业
+	optional bytes EducationApplyTime    = 30; //学历提交时间(yyyymmddHHMMSSmmmuuu)
+	optional bytes GraduateSchool        = 31; //学校名称
+	optional int32 DegreeType            = 32; //学历类型(1大专以下, 2大专, 3本科, 4硕士, 5博士及以上)
+	optional bytes EntranceDate          = 33; //入学时间(yyyymmddHHMMSSmmmuuu)
+	optional bytes GraduateDate          = 34; //毕业时间(yyyymmddHHMMSSmmmuuu)
+	optional bytes EduConclusion         = 35; //学籍状态
+	optional bytes EduForm               = 36; //学习形式
+
+
+	optional bytes CompanyName           = 37; //公司名称
+	optional bytes Position              = 38; //职位
+	optional bytes JobProvince           = 39; //工作省份
+	optional bytes Deparment             = 40; //部门
+	optional bytes CompanyAddress        = 41; //公司地址
+	optional bytes JobCity               = 42; //工作城市
+	optional bytes JobArea               = 43; //工作区域
+	optional int32 Industry              = 44; //工作行业(1: 制造业 2: IT  3: 政府机关 4: 媒体/广告 5: 零售/批发 6: 教育/培训 7: 公共事业8: 交通运输业9: 房地产业 10: 能源业 11: 金融/法律 12: 餐馆/旅馆业 13: 医疗/卫生/保健 14: 建筑工程 15: 农业 16: 娱乐服务业 17: 体育/艺术 18: 公益组织 19: 其它)
+	                                           //公司规模
+	optional int32 Years                = 46; //工作年限
+	optional int32 KnowWorkYears         = 47; //当前单位工作年限(　0、1年以内，1、1~2年，2、3~5年，3、6~7年，4、8~10年，5、10年以上)
+	optional bytes Email                 = 48; //邮箱
+	optional bytes workPics	             = 49; //工作证明照片   多张图片以“,”分隔
+
+
+	optional int32 IsEnterprisLegalPerson = 50; //是否法人(0否, 1是)
+	optional bytes EnterpRegistrTime      = 51; //企业注册时间(yyyymmddHHMMSSmmmuuu)
+	optional bytes EnterpRegistrCapital   = 52; //企业注册资本
+	optional bytes EnterpRegistrState     = 53; //企业经营状态
+									            //企业注册信息
+
+
+    repeated income_source IncomeSource              = 55;  //收入信息
+    repeated user_house_info UserHousePropertyInfo   = 56;  //房产信息
+    repeated user_car_info UserCarPropertyInfo       = 57;  //车产信息
+
+    optional common.result_info         result       = 100;     //返回结果
+}
+
+
+//查询信息通用请求接口
+message user_common_ask
+{
+	optional common.common_ask_header ask_header             = 1;     //返回结果接收主题
+	optional bytes id_card                                   = 2;     //用户身份证
+	optional bytes mobile_phone                              = 3;     //用户手机号码
+}
+
+//查询信息通用返回接口
+message user_common_ans
+{
+	optional common.result_info result     = 1;     //返回结果
+	optional bytes result_json             = 2;     //返回信息JSON
+}
+
+//分类查询用户标签
+message user_labels_by_type_ask
+{
+	optional common.common_ask_header   ask_header             = 1;     //返回结果接收主题
+	optional bytes id_card                                     = 2;     //用户身份证
+	optional bytes mobile_phone                                = 3;     //用户手机号码
+	repeated int32 label_type_ids                              = 4;     //标签类型集合
+}
+
+message label_set
+{
+	optional int32 label_type_id                               = 1;     //标签类型ID
+	optional bytes label_type                                  = 2;     //标签一级类型名称
+	repeated bytes labels                                      = 3;     //标签集合
+}
+
+//查询用户标签
+message user_labels_by_type_ans
+{
+	repeated label_set                  labels                  = 1;     //标签集合
+	optional common.result_info         result                  = 2;     //返回结果
+}

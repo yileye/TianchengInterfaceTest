@@ -1,0 +1,505 @@
+syntax = "proto2";
+package common;
+
+
+enum function_id_
+{
+    // 0 通用功能号分段
+    COMMON_FUNC_CODE_BEGIN                               = 0;                                // 
+    COMMON_CHAT_HEARTBEAT_CODE                           = 1;                                // 心跳包功能号
+    COMMON_FUNC_PARAMETER_NOTIFY                         = 2;                                // 配置参数通知功能号
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // 100000 反欺诈平台功能号分段
+    AFP_FUNC_CODE_BEGIN                                  = 100000;
+    AFP_FUNC_CODE_BUSINESS                               = 100001;          //你我金融数据产品与统一接入平台的公共接口功能号  
+
+
+    AFP_FUNC_CODE_VERIFY                                 = 100100;
+    
+    
+    //你我金融数据产品1.0开始  
+//    AFP_FUNC_CODE_NIIWOO_UAP                             = 100119;           //你我金融数据产品与统一接入平台的公共接口功能号   
+                     
+    AFP_FUNC_CODE_NIIWOO_REGISTER_UAP                    = 100120;           //你我金融数据产品1.0——注册
+    AFP_FUNC_CODE_NIIWOO_LOGIN_UAP                       = 100121;           //你我金融数据产品1.0——登陆
+    AFP_FUNC_CODE_BORROWER_CREDIT_UAP                    = 100122;           //借款人获取额度环节(只返回通过和不通过)
+    AFP_FUNC_CODE_BORROWER_CREDIT_LIMIT_UAP              = 100123;           //借款人获取额度环节(只返相应的额度)
+    AFP_FUNC_CODE_LOAN_APPLICATION_UAP                   = 100124;           //借款人首次发布借款
+    AFP_FUNC_CODE_LOAN_APPLICATION_REPEAT_UAP            = 100125;           //借款人再次发布借款
+    AFP_FUNC_CODE_APPLY_FOR_GUARANTOR_UAP                = 100126;           //担保人资格申请环节
+    AFP_FUNC_CODE_GO_GUARANTEE_UAP                       = 100127;           //正式担保环节
+    AFP_FUNC_CODE_GO_INVESTMENT_UAP                      = 100128;           //投资环节
+    AFP_FUNC_CODE_IN_MONEY_UAP                           = 100129;           //入金
+    AFP_FUNC_CODE_OUT_MONEY_UAP                          = 100130;           //出金,提现
+    AFP_FUNC_CODE_PAY_MONEY_UAP                          = 100131;           //支付（暂时不做）
+    AFP_FUNC_CODE_LETTER_CAREFUL_REVIEW_UAP              = 100132;           //信审审核数据结果回流
+    AFP_FUNC_CODE_OPINION_UAP                            = 100133;           //大数据意见
+    AFP_FUNC_CODE_MOBILE_ADDRESS_BOOK_ANALYSIS_IMP       = 100134;           //手机通讯录分析
+    AFP_FUNC_CODE_USER_VERIFICATION_LIST_IMP             = 100135;           //第三方平台功能的验证
+    AFP_FUNC_CODE_BATCH_VERIFY_IMP                       = 100136;           //批量导入验证
+    AFP_FUNC_CODE_LOCATION_TRACK_IMP                     = 100137;           //用户地理位置跟踪
+    AFP_FUNC_CODE_USER_INFO_INQUIRERS_IMP                = 100138;           //用户信息查询
+	AFP_FUNC_CODE_CREDIT_HISTORY                         = 100139;           //历史信用查询
+    AFP_FUNC_CODE_PROVINCE_CITY_INQUIRE                  = 100140;           //省市查询
+    AFP_FUNC_CODE_CANCEL_THE_WARNING                     = 100141;           //取消预警
+    AFP_FUNC_CODE_DETAIL_EARLY_WARNING                   = 100142;           //预警明细
+    AFP_FUNC_CODE_STATISTICAL_EARLY_WARNING              = 100143;           //预警统计
+	AFP_FUNC_CODE_GET_FRIEND_GROUP_LIST                  = 100144;           //获取好友群列表
+	AFP_FUNC_CODE_GET_SINGLE_MSG_LIST                    = 100145;           //获取好友单聊详情
+	AFP_FUNC_CODE_GET_GROUP_MSG_LIST                     = 100146;           //获取好友群聊天详情
+	AFP_FUNC_CODE_GET_BASIC_OVERDUE_INFO                 = 100147;           //获取好友基本逾期信息	
+	AFP_FUNC_CODE_GET_AFP_DETAIL_INFO                    = 100148;           //获取反欺诈模型信息
+	AFP_FUNC_CODE_QIAOQIAO_AFP_LOAN_INFO                 = 100149;           //获取悄悄借借款反欺诈
+	AFP_FUNC_CODE_FACE_VERIFICATION_INFO                 = 100150;           //获取人脸识别信息
+	AFP_FUNC_CODE_QIAOQIAO_BIGDATA_INFO                  = 100151;           //获取悄悄借借款大数据意见
+	AFP_FUNC_CODE_AFP_MONITOR_REQUEST_INFO               = 100152;            //获取反欺诈请求监控队列
+	AFP_FUNC_CODE_AFP_MONITOR_RESPONSE_INFO              = 100153;            //获取反欺诈结果监控队列
+	AFP_FUNC_CODE_CREDIT_MONITOR_REQUEST_INFO            = 100154;            //获取信用借授信，微担保请求监控队列
+	AFP_FUNC_CODE_CREDIT_MONITOR_RESPONSE_INFO           = 100155;            //获取信用借授信，微担保结果监控队列
+	
+	AFP_FUNC_CODE_WARN_GET_PROVINCE_AND_CITY_INFO_DW     = 100156;            //智能预警 获得省市基本信息
+	AFP_FUNC_CODE_WARN_INTEL_STATIC_DW          		 = 100157;            //智能预警 统计
+	AFP_FUNC_CODE_WARN_INTEL_DETAIL_DW          		 = 100158;            //智能预警 详情
+	AFP_FUNC_CODE_WARN_INTEL_UPDATE_DW          		 = 100159;           //智能预警 更新修改
+	AFP_FUNC_CODE_USER_VERIFICATION_HISTORY              = 100160;           //单个验证查询历史功能
+	
+
+    //你我金融数据产品1.0结束
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // 200000 数据量化平台功能号分段
+    QDP_FUNC_CODE_BEGIN                                  = 200000;
+    QDP_FUNC_CODE_SESAME_CREDIT_USERAUT_UAP              = 200001;           //芝麻信用功能号起始值 用户授权
+    QDP_FUNC_CODE_SESAME_CREDIT_QUERY_AFP                = 200002;           //芝麻信用功能号起始值 反欺诈平台查询芝麻信用个人信息
+    QDP_FUNC_CODE_SESAME_CREDIT_QUERY_CCS                = 200003;           //芝麻信用功能号起始值 综合授信平台查询芝麻信个人信息
+    QDP_FUNC_CODE_SESAME_CREDIT_RELATION_AFP             = 200004;           //芝麻信用功能号起始值 反欺诈平台查询芝麻信用关系人关系
+    QDP_FUNC_CODE_SESAME_CREDIT_USER_DATA_RETRUN_UBAS    = 200005;           //芝麻信用功能号起始值 行为分析系统回流用户数据给芝麻信用暂时统一使用这个功能号
+    QDP_FUNC_CODE_SESAME_CREDIT_ORDER_DATA_RETRUN_UBAS   = 200006;           //芝麻信用功能号起始值 行为分析系统回流担保数据给芝麻信用
+    
+    QDP_FUNC_CODE_SHARE_SHIELD_LOAN                      = 200100;           //同盾功能号起始值 借款事件
+    QDP_FUNC_CODE_SHARE_SHIELD_REGISTER                  = 200101;           //同盾功能号起始值 注册事件
+    QDP_FUNC_CODE_SHARE_SHIELD_LOGIN                     = 200102;           //同盾功能号起始值 登陆事件
+    QDP_FUNC_CODE_SHARE_SHIELD_PAY                       = 200103;           //同盾功能号起始值 支付事件
+    QDP_FUNC_CODE_SHARE_SHIELD_RECHARGE                  = 200104;           //同盾功能号起始值 充值事件
+    QDP_FUNC_CODE_SHARE_SHIELD_WITHDRAW                  = 200105;           //同盾功能号起始值 提现事件
+    QDP_FUNC_CODE_SHARE_SHIELD_MODIFY                    = 200106;           //同盾功能号起始值 修改事件
+
+    QDP_FUNC_CODE_YUANJIN_NCIIC                          = 200200;           //爰金功能号起始值
+
+    QDP_FUNC_CODE_QIANHAI_CREDIT                         = 200300;           //前海征信功能号起始值 好信度接口
+    QDP_FUNC_CODE_QIANHAI_BALCK_CHECK                    = 200301;           //前海征信功能号起始值 黑名单接口
+    
+    QDP_FUNC_CODE_PENGYUAN_BANK_CHECK                    = 200400;           //鹏元征信功能号起始值 银行流水验证接口
+    QDP_FUNC_CODE_PENGYUAN_MOBILE_CHECK                  = 200401;           //鹏元征信功能号起始值 手机号码查询
+    QDP_FUNC_CODE_PENGYUAN_POLICE_CHECK                  = 200402;           //鹏元征信功能号起始值 个人身份认证及个人风险汇总
+    QDP_FUNC_CODE_PENGYUAN_DEGREE_CHECK                  = 200403;           //鹏元征信功能号起始值 学历查询
+    QDP_FUNC_CODE_PENGYUAN_BANK_CHECK_YEWU               = 200404;           //鹏元征信功能号起始值 业务查询银行流水验证接口
+    QDP_FUNC_CODE_PENGYUAN_DEGREE_CHECK_YEWU             = 200405;           //鹏元征信功能号起始值 业务查询个人身份认证及个人风险汇总
+    
+    QDP_FUNC_CODE_JUXINLI_CREDIT                         = 200500;           //聚信立功功能号起始值
+
+    QDP_FUNC_CODE_ANRONG_CREATE_APPLY                    = 200600;           //安融功能号--贷款申请
+    QDP_FUNC_CODE_ANRONG_CHECK_APPLY                     = 200601;           //安融功能号--提交贷款审批结果
+    QDP_FUNC_CODE_ANRONG_CONTRACT_APPLY                  = 200602;           //安融功能号--提交合同数据
+    QDP_FUNC_CODE_ANRONG_LOAN_CREDITOR                   = 200603;           //安融功能号--提交贷款债权信息
+    QDP_FUNC_CODE_ANRONG_LOAN_OVERDUE                    = 200604;           //安融功能号--提交贷款逾期信息
+    QDP_FUNC_CODE_ANRONG_PATCH_CREDITOR                  = 200605;           //安融功能号--提交信息补录债权信息
+    QDP_FUNC_CODE_ANRONG_PATCH_OVERDUE                   = 200606;           //安融功能号--提交信息补录逾期信息
+
+    QDP_FUNC_CODE_YANGHANG_CREDIT                        = 200700;           //央行征信
+    QDP_FUNC_CODE_YANGHANG_CREDIT_QUERY_SUMMARY_RECORD   = 200701;           //查询征信报告记录汇总数据接口
+    QDP_FUNC_CODE_YANGHANG_CREDIT_QUERY_DETAIL_RECORD    = 200702;           //查询征信报告记录详细数据接口
+    QDP_FUNC_CODE_YANGHANG_CREDIT_QUERY_PUBLIC_RECORD    = 200703;           //查询征信报告公共记录接口
+    QDP_FUNC_CODE_YANGHANG_CREDIT_QUERY_INQUIRY_RECORD   = 200704;           //查询征信报告查询接口
+    
+    
+    QDP_FUNC_CODE_LAOLAI_CRAWLER                         = 200800;           //老赖查询爬虫
+    
+    QDP_FUNC_CODE_BAIRONG_CREDIT                         = 200900;           //百融信贷接口功能号
+    QDP_FUNC_CODE_BAIRONG_AFP_SPECIAL_LIST               = 200901;           //百融反欺诈-特殊名单功能号
+    
+    QDP_FUNC_CODE_LOCALTION_SREVER_UBAS                  = 201000;           //高德地图地理经纬度反查地理标识
+    
+    QDP_FUNC_CODE_EDUCATION_DEGREE                       = 201100;           //考拉征信功能号起始值 学历验证
+
+
+    QDP_FUNC_CODE_REPTINIT                               = 201201;          //爬虫数据初始化
+    QDP_FUNC_CODE_REPLACE_REPTCONIG                      = 201202;          //替换爬虫配置
+    QDP_FUNC_CODE_SCHEDULE_INFO                          = 201203;          //爬虫进度信息
+    QDP_FUNC_CODE_HISTORY_RECORD                         = 201204;          //爬虫历史数据
+    QDP_FUNC_CODE_QUERY_REPTCONFIG                       = 201205;          //查询爬虫配置信息
+    QDP_FUNC_CODE_QUERY_REPTCONFIG_ANS                   = 201206;          //查询爬虫配置信息的反馈
+    QDP_FUNC_CODE_SET_REPTCONFIG                         = 201207;          //设置爬虫配置信息
+    QDP_FUNC_CODE_SET_REPTCONFIG_ANS                     = 201208;          //设置爬虫配置信息的反馈
+    QDP_FUNC_CODE_OPERATE_REPT                           = 201209;          //操作爬虫
+    QDP_FUNC_CODE_OPERATE_REPT_ANS                       = 201210;          //操作爬虫的反馈
+    QDP_FUNC_CODE_REPT_ABNORMAL                          = 201211;          //爬虫异常
+    QDP_FUNC_CODE_REPT_QUERY_BLACKLIST_USERINFO          = 201212;          //查询黑名单用户信息
+    QDP_FUNC_CODE_REPT_QUERY_BLACKLIST_USERINFO_ANS      = 201213;          //查询黑明单返回用户信息
+    QDP_FUNC_CODE_REPT_QUERY_STATISTICS_INFOQUERY        = 201214;          //查询集群数据统计信息
+    QDP_FUNC_CODE_REPT_QUERY_DETAIL_INFOQUERY            = 201215;          //查询集群数据明细信息
+    QDP_FUNC_CODE_REPT_QUERY_MONITORING_INFOQUERY        = 201216;          //集群监控
+    QDP_FUNC_CODE_REPT_MONITORING_MANAGE_ASK             = 201217;          //爬虫集群爬虫监控 开启/关闭
+    QDP_FUNC_CODE_REPT_MONITORING_MANAGE_ANS             = 201218;          //爬虫集群爬虫监控 开启/关闭
+    QDP_FUNC_CODE_REPT_CONF_QUERY                        = 201219;          //爬虫集群配置
+    QDP_FUNC_CODE_REPT_CONF_EDIT                         = 201220;          //爬虫集群配置更改
+    QDP_FUNC_CODE_DATA_SOURCE_QUERY                      = 201221;          //爬虫集群数据来源查询
+    QDP_FUNC_CODE_BLIACK_LIST_STATISTICS_QUERY           = 201222;          //网贷黑名单统计(饼图)
+    QDP_FUNC_CODE_BLIACK_LIST_BLOCK_QUERY                = 201223;          //网贷黑名单列表
+    QDP_FUNC_CODE_REPTE_HEARTBEAT_SERVER_CLIENT          = 201224;          //爬虫服务器端客户端心跳
+    
+    QDP_FUNC_CODE_SOCIAL_SECURITY                        = 201300;          //社保查询
+    QDP_FUNC_CODE_P2PBLACK                               = 201400;          //p2pblack网站
+    QDP_FUNC_CODE_REG007                                 = 201500;          //REG007
+    
+    QDP_FUNC_CODE_FACE_RECOGNIZE                         = 201600;          //人脸识别，将图片中的人脸勾选出来
+    QDP_FUNC_CODE_FACE_COMPARISON                        = 201601;          //人脸识别，对比人脸相似度
+    QDP_FUNC_CODE_FACE_IMAGE_CUT                         = 201602;          //人脸识别，图片切割，一张图片有两个人脸，切割成两张图片
+    
+    QDP_FUNC_CODE_UNICOM                                 = 201700;          //中国联通通话记录查询
+    
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // 300000 统一接入平台功能号分段
+    UAP_FUNC_CODE_BEGIN                                  = 300000;
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // 400000 综合授信平台功能号分段
+    CCS_FUNC_CODE_BEGIN                                  = 400000;
+    CCS_FUNC_CODE_UAP                   			 	 = 400001;              //数据回流只用这一个
+	
+	CCS_FUNC_CODE_NIIWOO_FROM_UAP			             = 400011;              //综合授信功能号
+	CCS_FUNC_CODE_NIIWOO_FROM_UBAS						 = 400012;				//综合授信从UBAS发来
+	CCS_FUNC_CODE_NIIWOO_FROM_AFP						 = 400013;				//综合授信从AFP发来
+	
+	CCS_FUNC_CODE_FRIEND_FROM_UAP                		 = 400021;              //熟人授信功能号
+    CCS_FUNC_CODE_FRIEND_FROM_UBAS                       = 400022;              //熟人授信从UBAS发来
+	CCS_FUNC_CODE_FRIEND_FROM_UBAS_TUISONG               = 400023;              //熟人授信从UBAS推送
+	
+	CCS_FUNC_CODE_FENXI_CREDIT							 = 401001;				//授信分析额度统计（主模块和子模块）
+	CCS_FUNC_CODE_FENXI_DETAIL							 = 401002;				//授信分析明细
+
+	CCS_FUNC_CODE_SET_CREDIT_LOAD						 = 401011;				//授信模型管理加载
+	CCS_FUNC_CODE_SET_CREDIT_SAVE						 = 401012;				//授信模型管理保存
+	CCS_FUNC_CODE_GET_CCS_DETAIL_INFO                    = 401013;              //获取授信模型信息
+	CCS_FUNC_CODE_QIAOQIAO_GET_CCS_DETAIL_INFO           = 401014;              //悄悄借授信模型信息
+	CCS_FUNC_CODE_WEIDANBAO_GET_CCS_DETAIL_INFO          = 401015;             //微担保借授信模型信息
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // 500000 用户行为分析系统功能号分段
+    UBAS_FUNC_CODE_BEGIN                                 = 500000;
+    UBAS_FUNC_CODE_COMMON_FROM_UAP                       = 500001;              //现在数据回流接口都是用这一个
+    UBAS_FUNC_CODE_RESULT                                = 500002;              //现在数据回流接口返回值
+    UBAS_FUNC_CODE_SYNC                                  = 500003;              //现在数据回流接口同步数据请求
+    UBAS_FUNC_CODE_FRIEND_FROM_CCS                       = 500004;              //综合授信平台熟人授信请求
+    UBAS_FUNC_CODE_WEBVIEW_FROM_IMP                      = 500005;              //综合管理平台请求用户行为数据展示
+    UBAS_FUNC_CODE_GEN_CREDIT_FROM_CCS                   = 500006;              //综合授信用户信息请求
+    UBAS_FUNC_CODE_TERMINAL_USER_BASIC_IMP               = 500007;              //综合管理平台请求用户终端和用户基础分析
+    UBAS_FUNC_CODE_FRIEND_UPDATE_FROM_PUSH               = 500008;              //熟人授信请求，好友更新推送
+    UBAS_FUNC_CODE_AFP_GET_ADDRESS_LIST_INFO             = 500009;              //反欺诈取通信录信息
+    UBAS_FUNC_CODE_AFP_GET_USER_CURRENT_LOAN_INFO        = 500010;              //反欺诈取当前借款逾期信息
+    UBAS_FUNC_CODE_AFP_GET_USER_HISTORY_LOAN_INFO        = 500011;              //反欺诈取历史借款逾期信息
+    
+    UBAS_FUNC_CODE_AFP_GET_USER_LOAN_INFO                = 500012;              //反欺诈取借款信息
+    UBAS_FUNC_CODE_AFP_GET_USER_CONTACT_INFO             = 500013;              //反欺诈取用户联系信息
+    UBAS_FUNC_CODE_GET_USER_CONTACT_EXT_INFO             = 500014;              //获取用户各设备上的全量通讯录以及关联设备上的历史登陆者
+    UBAS_FUNC_CODE_BATCH_GET_USER_LOAN_INFO              = 500015;              //批量获取用户逾期信息
+    UBAS_FUNC_CODE_GET_USER_BASIC_INFO                   = 500016;              //获取用户基础信息
+    UBAS_FUNC_CODE_GET_USER_LOCATION_TRACK               = 500017;              //用户的地理位置跟踪
+    UBAS_FUNC_CODE_GET_USER_PROFILES_INFO                = 500018;              //用户概况数据需求
+    UBAS_FUNC_CODE_GET_USER_LOAD_DAYS_INFO               = 500019;              //用户登陆天数
+	UBAS_FUNC_CODE_GET_QUIETLOAN_USER_BASIC_INFO         = 500020;              //悄悄借用户基本信息
+    UBAS_FUNC_CODE_GET_FRIEND_COINCIDE_INFO              = 500021;              //用户通讯录重合度
+    UBAS_FUNC_CODE_GET_BLACKLIST_INFO                    = 500022;              //用户黑名单信息
+    UBAS_FUNC_CODE_GET_USER_BATCH_INFO                   = 500023;              //获取批量用户基础信息
+    
+    // ODP<------------>UBAS(大屏幕)
+    UBAS_FUNC_CODE_PAY_WITHDRAW_FROM_ODP                 = 500100;              //运营决策平台请求用充值、提现数据展示
+    UBAS_FUNC_CODE_UNFINISHED_BID_FROM_ODP               = 500101;              //运营决策平台请求用未满标数据展示
+    UBAS_FUNC_CODE_CITY_BID_FROM_ODP                     = 500102;              //运营决策平台请求城市当前借款标数据展示
+    UBAS_FUNC_CODE_USER_DISTR_FROM_ODP                   = 500103;              //运营决策平台请求 用户的分布 数据展示
+    UBAS_FUNC_CODE_CUR_DAY_TRADING_FROM_ODP              = 500104;              //运营决策平台请求 当天交易量 数据展示
+    UBAS_FUNC_CODE_PROV_TRANDING_FROM_ODP                = 500105;              //运营决策平台请求 省交易量 数据展示
+    UBAS_FUNC_CODE_REAL_TIME_REG_FROM_ODP                = 500106;              //运营决策平台请求 实时注册 数据展示
+    UBAS_FUNC_CODE_MONTH_REG_FROM_ODP                    = 500107;              //运营决策平台请求 月注册量 数据展示
+    UBAS_FUNC_CODE_REAL_TIME_CHARGE_FROM_ODP             = 500108;              //运营决策平台请求 实时充值 数据展示
+    UBAS_FUNC_CODE_CUR_TRADING_COUNT_FROM_ODP            = 500109;              //运营决策平台请求 当天交易笔数 数据展示
+    UBAS_FUNC_CODE_MONTH_TRADING_FROM_ODP                = 500110;              //运营决策平台请求 月交易量 数据展示
+    
+    //运营决策平台请求 (其它屏幕)
+    UBAS_FUNC_CODE_CUR_FUND_DETAIL_FROM_ODP                             = 500200;              // 实时资金流水明细监控
+    UBAS_FUNC_CODE_HISTORY_FUND_DETAIL_FROM_ODP                         = 500201;              // 历史资金流水明细
+    UBAS_FUNC_CODE_CLIENT_VERSIONS_TENDENCY_FROM_ODP                    = 500202;              // 终端版本分布 TOP10版本趋势图  最新10个版本(折线图)
+    UBAS_FUNC_CODE_CLIENT_VERSIONS_DISTRIBUTION_FROM_ODP                = 500203;              // 终端版本统计 所有(列表)
+    UBAS_FUNC_CODE_CLIENT_VERSIONS_DISTRIBUTION_DETAIL_FROM_ODP         = 500204;              // 终端版本详情 在统计列表中选中某一行进入(折线图)
+    UBAS_FUNC_CODE_CLIENT_VERSIONS_DISTRIBUTION_DETAIL_LIST_FROM_ODP    = 500205;              // 每个终端版本详情(列表)
+    UBAS_FUNC_CODE_START_COUNT_ANALYZE_FROM_ODP                         = 500206;              // 启动次数分析折线图
+    UBAS_FUNC_CODE_START_COUNT_ANALYZE_LIST_FROM_ODP                    = 500207;              // 启动次数分析列表
+    UBAS_FUNC_CODE_NEW_ADD_USER_ANALYZE_FROM_ODP                        = 500208;              // 新增用户分析折线图
+    UBAS_FUNC_CODE_NEW_ADD_USER_ANALYZE_LIST_FROM_ODP                   = 500209;              // 新增用户分析列表
+    UBAS_FUNC_CODE_ACTIVE_USER_ANALYZE_FROM_ODP                         = 500210;              // 活跃用户分析折线图
+    UBAS_FUNC_CODE_ACTIVE_USER_ANALYZE_LIST_FROM_ODP                    = 500211;              // 活跃用户分析列表
+    UBAS_FUNC_CODE_USER_FRESHNESS_ANALYZE_FROM_ODP                      = 500212;              // 用户新鲜度分析柱状图
+	UBAS_FUNC_CODE_USER_FRESHNESS_ANALYZE_LIST_FROM_ODP                 = 500213;              // 用户新鲜度分析列表
+    UBAS_FUNC_CODE_USER_RETAIN_ANALYZE_FROM_ODP                         = 500214;              // 用户留存分析列表
+    UBAS_FUNC_CODE_USE_TIME_ANALYZE_FROM_ODP                            = 500215;              // 使用时长分布
+    UBAS_FUNC_CODE_USE_COUNT_ANALYZE_FROM_ODP                           = 500216;              // 使用频率分布
+    UBAS_FUNC_CODE_USE_INTERVAL_ANALYZE_FROM_ODP                        = 500217;              // 使用间隔分布
+    UBAS_FUNC_CODE_DOWNLOAD_SRC_ANALYZE_FROM_ODP                        = 500218;              // 下载渠道分析  TOP10渠道
+    UBAS_FUNC_CODE_DOWNLOAD_SRC_ANALYZE_DETAIL_FROM_ODP                 = 500219;              // 下载渠道分析详细
+    UBAS_FUNC_CODE_THIRD_PARTY_LOGIN_ANALYZE_FROM_ODP                   = 500220;              // TOP10第三方登录列表柱状图
+    UBAS_FUNC_CODE_THIRD_PARTY_LOGIN_ANALYZE_LIST_FROM_ODP              = 500221;              // 第三方登录列表
+    UBAS_FUNC_CODE_HISTORY_FUND_DETAIL_FROM_ODP_DROPLIST                = 500222;              // 历史资金流水明细(下拉框)
+
+    // 2015-10-10, 借款标分析
+  	UBAS_FUNC_CODE_BID_INTEREST_DISTRIBUTION_STAT_FROM_ODP              = 500223;              // 投资利率分布
+  	UBAS_FUNC_CODE_BID_INTEREST_DISTRIBUTION_DETAIL_FROM_ODP            = 500224;              // 借款标利率分布详情页
+  	UBAS_FUNC_CODE_BID_REPAYMENT_TYPE_STAT_FROM_ODP                     = 500225;              // 还款方式统计
+  	UBAS_FUNC_CODE_BID_REPAYMENT_TYPE_DETAIL_FROM_ODP                   = 500226;              // 借款标还款方式详情页
+  	UBAS_FUNC_CODE_BID_REPAYMENT_PERIOD_STAT_FROM_ODP                   = 500227;              // 还款期限统计
+  	UBAS_FUNC_CODE_BID_REPAYMENT_PERIOD_DETAIL_FROM_ODP                 = 500228;              // 借款标还款期限详情页
+  	UBAS_FUNC_CODE_BID_AMOUNT_DISTRIBUTION_STAT_FROM_ODP                = 500229;              // 借款金额分布
+  	UBAS_FUNC_CODE_BID_AMOUNT_DISTRIBUTION_DETAIL_FROM_ODP              = 500230;              // 借款标借款金额详情页
+  	UBAS_FUNC_CODE_BID_FULL_RATE_STAT_FROM_ODP                          = 500231;              // 满标速度
+  	UBAS_FUNC_CODE_BID_FULL_RATE_DETAIL_FROM_ODP                        = 500232;              // 借款标满标速度详情页
+  	UBAS_FUNC_CODE_BID_STATE_STAT_FROM_ODP                              = 500233;              // 借款标状态统计
+  	UBAS_FUNC_CODE_BID_STATE_DETAIL_FROM_ODP                            = 500234;              // 借款标状态详情页
+  	UBAS_FUNC_CODE_BID_FAIL_REASON_STAT_FROM_ODP                        = 500235;              // 流标原因分析
+  	UBAS_FUNC_CODE_BID_FAIL_REASON_DETAIL_FROM_ODP                      = 500236;              // 借款标流标原因详情页
+  	UBAS_FUNC_CODE_BID_DIFF_INTEREST_FULL_RATE_STAT_FROM_ODP            = 500237;              // 不同利率借款标的满标速度分析
+  	UBAS_FUNC_CODE_BID_DIFF_INTEREST_FULL_RATE_DETAIL_FROM_ODP          = 500238;              // 不同利率借款标的满标速度详情页
+  	UBAS_FUNC_CODE_BID_AREA_DISTRIBUTION_STAT_FROM_ODP                  = 500239;              // 借款标地区分布
+  	UBAS_FUNC_CODE_BID_AREA_DISTRIBUTION_DETAIL_FROM_ODP                = 500240;              // 借款标详细页面
+    
+    UBAS_FUNC_CODE_USER_BUSINESS_TRACE_IMP                              = 500241;              // 用户业务轨迹统计
+    UBAS_FUNC_CODE_SINGLE_USER_BUSINESS_TRACE_IMP                       = 500242;              // 用户业务轨迹查询
+    UBAS_FUNC_CODE_PAGE_ACCESS_TIMES_COUNT_IMP                          = 500243;              // 页面访问次数统计
+    UBAS_FUNC_CODE_PAGE_STAY_SECONDS_COUNT_IMP                          = 500244;              // 页面停留时间统计
+	
+	UBAS_FUNC_CODE_CLIENT_VERSIONS_DROPLIST_FROM_ODP                    = 500245;              // 终端版本分布下拉框
+	UBAS_FUNC_CODE_PROVINCE_CITY_INQUIRE_FROM_ODP                       = 500246;              // 借款标省市级联查询
+    
+    //位置分析计算
+    UBAS_FUNC_CODE_COORD_CALC_FROM_EVENT_TABLE                         	= 500300;              // 事件表中地理坐标算分析
+    
+
+	UBAS_FUNC_CODE_WARN_GET_PROVINCE_AND_CITY_INFO_AFP                  = 500301;              // 智能预警 获得省市基本信息
+	UBAS_FUNC_CODE_WARN_INTEL_STATIC_AFP                          		= 500302;              // 智能预警 统计
+	UBAS_FUNC_CODE_WARN_INTEL_DETAIL_AFP                          		= 500303;              // 智能预警 详情
+    UBAS_FUNC_CODE_WARN_INTEL_UPDATE_AFP                          		= 500304;              // 智能预警 更新修改
+	
+	
+	// 用户画像
+	UBAS_FUNC_CODE_USER_PORTRAIT_LOCATION                               = 500401;              // 位置场所特征
+	UBAS_FUNC_CODE_USER_PORTRAIT_VERSION                                = 500502;              // 用户版本轨迹
+	UBAS_FUNC_CODE_USER_PORTRAIT_DEVICE                                 = 500403;              // 设备特征
+	UBAS_FUNC_CODE_USER_PORTRAIT_LOGIN                                  = 500404;              // 登录分析
+	UBAS_FUNC_CODE_USER_PORTRAIT_BUSINESS                               = 500405;              // 业务偏好
+	UBAS_FUNC_CODE_USER_PORTRAIT_AUTH                                   = 500406;              // 认证信息
+	UBAS_FUNC_CODE_USER_PORTRAIT_AMOUNT                                 = 500407;              // 额度信息
+	UBAS_FUNC_CODE_USER_PORTRAIT_DILIGENCE                              = 500408;              // 尽调统计
+	UBAS_FUNC_CODE_USER_PORTRAIT_DILIGENCE_HISTORY                      = 500409;              // 尽调历史
+	UBAS_FUNC_CODE_USER_PORTRAIT_INVEST                                 = 500410;              // 投资统计
+	UBAS_FUNC_CODE_USER_PORTRAIT_INVEST_HISTORY                         = 500411;              // 投资历史
+	UBAS_FUNC_CODE_USER_PORTRAIT_GUARANTEE                              = 500412;              // 担保统计
+	UBAS_FUNC_CODE_USER_PORTRAIT_GUARANTEE_HISTORY                      = 500413;              // 担保历史
+	UBAS_FUNC_CODE_USER_PORTRAIT_LOAN                                   = 500414;              // 借款统计
+	UBAS_FUNC_CODE_USER_PORTRAIT_LOAN_HISTORY                           = 500415;              // 借款历史
+    UBAS_FUNC_CODE_USER_PORTRAIT_DANGER                                 = 500416;              // 风险分析
+    
+    UBAS_FUNC_CODE_PAGE_ACCESS_TRACE                    = 500417;              // 页面访问轨迹
+    UBAS_FUNC_CODE_PAGE_ACCESS_TIMES_STAT               = 500418;              // 页面访问次数统计
+    UBAS_FUNC_CODE_PAGE_ACCESS_DURATION_STAT            = 500419;              // 页面访问停留时间统计
+    UBAS_FUNC_CODE_PAGE_ACCESS_STAT_DETAILS             = 500420;              // 页面访问统计明细
+    UBAS_FUNC_CODE_OPERATION_TRACK                      = 500421;              // 页面操作轨迹
+	
+	
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // 600000 用户画像系统功能号分段
+//    UPS_FUNC_CODE_BEGIN                                  = 600000;
+//    UPS_FUNC_CODE_WEB_LOGIN_ASK                          = 600001;              //登陆页面请求(600001这个值已被UAP透传占用)
+
+
+    UPS_FUNC_CODE_LABEL_TYPE_LIST_IMP                    = 600002;              //标签类型列表查询
+    UPS_FUNC_CODE_LABEL_TYPE_DETAIL_IMP                  = 600003;              //标签类型明细查询
+    UPS_FUNC_CODE_LABEL_TYPE_SAVE_IMP                    = 600004;              //标签类型保存
+    UPS_FUNC_CODE_LABEL_TYPE_REMOVE_IMP                  = 600005;              //删除标签类型
+    UPS_FUNC_CODE_LABEL_TYPE_TREE_IMP                    = 600006;              //标签类型树查询
+    UPS_FUNC_CODE_LABEL_LIST_IMP                         = 600007;              //标签列表查询
+    UPS_FUNC_CODE_LABEL_DETAIL_IMP                       = 600008;              //标签明细查询
+    UPS_FUNC_CODE_LABEL_SAVE_IMP                         = 600009;              //标签保存
+    UPS_FUNC_CODE_LABEL_REMOVE_IMP                       = 600010;              //删除标签
+
+    //天秤外部查询接口
+    UPS_FUNC_CODE_USER_LABELS                            = 600021;              //查询用户标签
+    UPS_FUNC_CODE_LABEL_USERS                            = 600022;              //标签查询用户
+
+    UPS_FUNC_CODE_USER_TYPE_LABELS                       = 600023;              //查询用户标签并分类
+
+    //天秤内部查询接口
+	TC_UPS_FUNC_CODE_USER_LABELS                         = 600051;              //查询用户标签
+	TC_UPS_FUNC_CODE_LABEL_USERS                         = 600052;              //标签查询用户
+
+    UPS_FUNC_CODE_USER_AVATAR_LIST                       = 600101;
+
+    UPS_FUNC_CODE_USER_BASIC_INFO                        = 600102;              //查询用户基本信息
+    UPS_FUNC_CODE_USER_REGIST_INFO                       = 600103;              //查询用户注册信息
+    UPS_FUNC_CODE_USER_YANGHANG_CREDIT_QUERY             = 600104;              //查询用户央行征信信息
+	
+	
+	UPS_FUNC_CODE_USER_PORTRAIT_LOCATION                 = 600105;              // 位置场所特征
+	UPS_FUNC_CODE_USER_PORTRAIT_VERSION                  = 600106;              // 用户版本轨迹
+	UPS_FUNC_CODE_USER_PORTRAIT_DEVICE                   = 600107;              // 设备特征
+	UPS_FUNC_CODE_USER_PORTRAIT_LOGIN                    = 600108;              // 登录分析
+	UPS_FUNC_CODE_USER_PORTRAIT_BUSINESS                 = 600109;              // 业务偏好
+	UPS_FUNC_CODE_USER_PORTRAIT_AUTH                     = 600110;              // 认证信息
+	UPS_FUNC_CODE_USER_PORTRAIT_AMOUNT                   = 600111;              // 额度信息
+	UPS_FUNC_CODE_USER_PORTRAIT_DILIGENCE                = 600112;              // 尽调统计
+	UPS_FUNC_CODE_USER_PORTRAIT_DILIGENCE_HISTORY        = 600113;              // 尽调历史
+	UPS_FUNC_CODE_USER_PORTRAIT_INVEST                   = 600114;              // 投资统计
+	UPS_FUNC_CODE_USER_PORTRAIT_INVEST_HISTORY           = 600115;              // 投资历史
+	UPS_FUNC_CODE_USER_PORTRAIT_GUARANTEE                = 600116;              // 担保统计
+	UPS_FUNC_CODE_USER_PORTRAIT_GUARANTEE_HISTORY        = 600117;              // 担保历史
+	UPS_FUNC_CODE_USER_PORTRAIT_LOAN                     = 600118;              // 借款统计
+	UPS_FUNC_CODE_USER_PORTRAIT_LOAN_HISTORY             = 600119;              // 借款历史
+    UPS_FUNC_CODE_USER_PORTRAIT_DANGER                   = 600120;              // 风险分析
+    
+    UPS_FUNC_CODE_PAGE_ACCESS_TRACE                    = 600121;              // 页面访问轨迹
+    UPS_FUNC_CODE_PAGE_ACCESS_TIMES_STAT               = 600122;              // 页面访问次数统计
+    UPS_FUNC_CODE_PAGE_ACCESS_DURATION_STAT            = 600123;              // 页面访问停留时间统计
+    UPS_FUNC_CODE_PAGE_ACCESS_STAT_DETAILS             = 600124;              // 页面访问统计明细
+	
+	UPS_FUNC_CODE_OPERATION_TRACK                      = 600125;              // 页面操作轨迹
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // 700000 运营决策平台功能号分段
+    ODP_FUNC_CODE_BEGIN                                  = 700000;
+
+    /***********************************运营决策平台*******************************/
+    /******************************************************************************/
+    // ODP<------------>IMP(大屏幕)
+    ODP_FUNC_CODE_PAY_WITHDRAW_IMP                            = 700001;              //充值/提现 //一段时间内的充值金额和提现金额，以天为单位（如果结束的日期，大于当前日期，则用预测数据补充）
+    ODP_FUNC_CODE_NFINISHED_BID_IMP                           = 700002;              //所有未满标城市中文名；每个标相对应的标的借款人，投资人，担保人，尽调人所在城市中文名
+    ODP_FUNC_CODE_ITY_BID_COUNT_IMP                           = 700003;              //当前借款标分布 (数据来源：城市中文名、每个城市借款标的数量)
+    ODP_FUNC_CODE_USER_DISTRIBUTION_IMP                       = 700004;              //用户的分布
+    ODP_FUNC_CODE_CUR_TRADING_VOLUME_IMP                      = 700005;              //当天交易量(每次抛送48个时间段的数据,每隔半小时统计一次，当前24小时之内的数据)
+    ODP_FUNC_CODE_CUR_PROVINCE_TRADING_VOLUME_IMP             = 700006;              //省交易量
+    ODP_FUNC_CODE_REAL_TIME_REGISTRATION_IMP                  = 700007;              //实时注册（最新一小时内的）
+    ODP_FUNC_CODE_MONTH_REGISTRATION_IMP                      = 700008;              //月注册量(下发12个月)
+    ODP_FUNC_CODE_REAL_TIME_CHARGE_IMP                        = 700009;              //实时充值（最新一小时内的）
+    ODP_FUNC_CODE_CUR_TRADING_COUNT_IMP                       = 700010;              //当天交易笔数(每次抛送48个时间点数据,每隔半小时统计一次，当前24小时之内的数据)
+    ODP_FUNC_CODE_MONTH_TRADING_IMP                           = 700011;              //月交易量(下发12个月)
+                                                              
+    // ODP<------------>IMP(其它屏幕)  
+	
+    ODP_FUNC_CODE_CUR_FUND_DETAIL_IMP                             = 700012;              // 实时资金流水明细监控
+    ODP_FUNC_CODE_HISTORY_FUND_DETAIL_IMP                         = 700013;              // 历史资金流水明细
+    ODP_FUNC_CODE_CLIENT_VERSIONS_TENDENCY_IMP                    = 700014;              // 终端版本分布 TOP10版本趋势图  最新10个版本(折线图)
+    ODP_FUNC_CODE_CLIENT_VERSIONS_DISTRIBUTION_IMP                = 700015;              // 终端版本统计 所有(列表)
+    ODP_FUNC_CODE_CLIENT_VERSIONS_DISTRIBUTION_DETAIL_IMP         = 700016;              // 终端版本详情 在统计列表中选中某一行进入(折线图)
+    ODP_FUNC_CODE_CLIENT_VERSIONS_DISTRIBUTION_DETAIL_LIST_IMP    = 700017;              // 每个终端版本详情(列表)
+    ODP_FUNC_CODE_START_COUNT_ANALYZE_IMP                         = 700018;              // 启动次数分析折线图
+    ODP_FUNC_CODE_START_COUNT_ANALYZE_LIST_IMP                    = 700019;              // 启动次数分析列表
+    ODP_FUNC_CODE_NEW_ADD_USER_ANALYZE_IMP                        = 700020;              // 新增用户分析折线图
+    ODP_FUNC_CODE_NEW_ADD_USER_ANALYZE_LIST_IMP                   = 700021;              // 新增用户分析列表
+    ODP_FUNC_CODE_ACTIVE_USER_ANALYZE_IMP                         = 700022;              // 活跃用户分析折线图
+    ODP_FUNC_CODE_ACTIVE_USER_ANALYZE_LIST_IMP                    = 700023;              // 活跃用户分析列表
+    ODP_FUNC_CODE_USER_FRESHNESS_ANALYZE_IMP                      = 700024;              // 用户新鲜度分析柱状图
+	ODP_FUNC_CODE_USER_FRESHNESS_ANALYZE_LIST_IMP                 = 700025;              // 用户新鲜度分析列表
+    ODP_FUNC_CODE_USER_RETAIN_ANALYZE_IMP                         = 700026;              // 用户留存分析列表
+    ODP_FUNC_CODE_USE_TIME_ANALYZE_IMP                            = 700027;              // 使用时长分布
+    ODP_FUNC_CODE_USE_COUNT_ANALYZE_IMP                           = 700028;              // 使用频率分布
+    ODP_FUNC_CODE_USE_INTERVAL_ANALYZE_IMP                        = 700029;              // 使用间隔分布
+    ODP_FUNC_CODE_DOWNLOAD_SRC_ANALYZE_IMP                        = 700030;              // 下载渠道分析  TOP10渠道
+    ODP_FUNC_CODE_DOWNLOAD_SRC_ANALYZE_DETAIL_IMP                 = 700031;              // 下载渠道分析详细
+    ODP_FUNC_CODE_THIRD_PARTY_LOGIN_ANALYZE_IMP                   = 700032;              // TOP10第三方登录列表柱状图
+    ODP_FUNC_CODE_THIRD_PARTY_LOGIN_ANALYZE_LIST_IMP              = 700033;              // 第三方登录列表
+    ODP_FUNC_CODE_HISTORY_FUND_DETAIL_IMP_DROPLIST                = 700034;              // 历史资金流水明细(下拉框)
+
+
+    // 2015-10-10, 借款标分析   
+  	ODP_FUNC_CODE_BID_INTEREST_DISTRIBUTION_STAT_IMP              = 700035;              // 投资利率分布
+  	ODP_FUNC_CODE_BID_INTEREST_DISTRIBUTION_DETAIL_IMP            = 700036;              // 借款标利率分布详情页
+  	ODP_FUNC_CODE_BID_REPAYMENT_TYPE_STAT_IMP                     = 700037;              // 还款方式统计
+  	ODP_FUNC_CODE_BID_REPAYMENT_TYPE_DETAIL_IMP                   = 700038;              // 借款标还款方式详情页
+  	ODP_FUNC_CODE_BID_REPAYMENT_PERIOD_STAT_IMP                   = 700039;              // 还款期限统计
+  	ODP_FUNC_CODE_BID_REPAYMENT_PERIOD_DETAIL_IMP                 = 700040;              // 借款标还款期限详情页
+  	ODP_FUNC_CODE_BID_AMOUNT_DISTRIBUTION_STAT_IMP                = 700041;              // 借款金额分布
+  	ODP_FUNC_CODE_BID_AMOUNT_DISTRIBUTION_DETAIL_IMP              = 700042;              // 借款标借款金额详情页
+  	ODP_FUNC_CODE_BID_FULL_RATE_STAT_IMP                          = 700043;              // 满标速度
+  	ODP_FUNC_CODE_BID_FULL_RATE_DETAIL_IMP                        = 700044;              // 借款标满标速度详情页
+  	ODP_FUNC_CODE_BID_STATE_STAT_IMP                              = 700045;              // 借款标状态统计
+  	ODP_FUNC_CODE_BID_STATE_DETAIL_IMP                            = 700046;              // 借款标状态详情页
+  	ODP_FUNC_CODE_BID_FAIL_REASON_STAT_IMP                        = 700047;              // 流标原因分析
+  	ODP_FUNC_CODE_BID_FAIL_REASON_DETAIL_IMP                      = 700048;              // 借款标流标原因详情页
+  	ODP_FUNC_CODE_BID_DIFF_INTEREST_FULL_RATE_STAT_IMP            = 700049;              // 不同利率借款标的满标速度分析
+  	ODP_FUNC_CODE_BID_DIFF_INTEREST_FULL_RATE_DETAIL_IMP          = 700050;              // 不同利率借款标的满标速度详情页
+  	ODP_FUNC_CODE_BID_AREA_DISTRIBUTION_STAT_IMP                  = 700051;              // 借款标地区分布
+
+    ODP_FUNC_CODE_USER_BUSINESS_TRACE_IMP                         = 700052;              // 用户业务轨迹
+
+    ODP_FUNC_CODE_BID_AREA_DISTRIBUTION_DETAIL_IMP                = 700053;              // 借款标地区分布详情页
+    
+    ODP_FUNC_CODE_BID_STATISTIC_IMP                               = 700054;              // 借款标统计功能号   
+	
+	ODP_FUNC_CODE_CLIENT_VERSIONS_DROPLIST_IMP                    = 700055;              // 终端版本分布下拉框
+	
+	ODP_FUNC_CODE_PROVINCE_CITY_INQUIRE_IMP                   	  = 700056;              // 借款标省市级联查询
+	 
+	ODP_FUNC_CODE_BID_DETAIL_IMP                                  = 700057;              // 借款标详情功能号
+	ODP_FUNC_CODE_USER_CERTIFICATION_IMP						  = 700058;				 // 用户认证分析
+	
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // 800000 智能推荐系统功能号分段
+    IRS_FUNC_CODE_BEGIN                                  = 800000;
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // 900000 综合管理平台功能号分段
+    IMP_FUNC_CODE_BEGIN                                  = 900000;
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // 1000000 智能运维监控系统功能号分段
+    IOMS_FUNC_CODE_BEGIN                                 = 1000000;
+    
+    IOMS_FUNC_CODE_CONFIG_AMENDMENT											 = 1000001;
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // 1100000 数据仓库
+    DW_FUNC_CODE_BEGIN                                   = 1100000;             // 数据仓库起始功能号
+	DW_FUNC_CODE_USER_CERTIFICATION_FROM_ODP             = 1100001;             // 用户认证分析
+	
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ // 1200000 数据仓库
+//风控平台对应DW功能号
+ DW_FUNC_CODE_WDB_BEGIN                                   	  = 1200000;
+ 
+ DW_FUNC_CODE_WDB_GET_COMPANY_BASIC_INFO				  = 1200001;				//微担保公司基本信息
+ DW_FUNC_CODE_WDB_MONTH_SUC_JINDIAO_COUNTS_RANK			  = 1200002;				//月均成功尽调笔数排名占比得分
+ DW_FUNC_CODE_WDB_MONTH_SUC_DANBAO_COUNTS_RANK			  = 1200003;				//月均成功担保笔数排名占比得分
+ DW_FUNC_CODE_WDB_AVG_JINDIAO_DANBAO_RATE_SCORE			  = 1200004;				//平均尽调担保比例得分
+ DW_FUNC_CODE_WDB_DANBAO_AMOUNT_USE_SCORE			  	  = 1200005;				//担保额度使用率得分
+ DW_FUNC_CODE_WDB_CUR_YUQI_RATE_SCORE		  			  = 1200006;				//当前逾期率得分
+ DW_FUNC_CODE_WDB_CUR_HUAIZHANG_RATE_SCORE		  		  = 1200007;				//当前坏账率得分
+ DW_FUNC_CODE_WDB_ACCUMULATE_YUQI_RATE_SCORE		  	  = 1200008;				//累计逾期率得分
+ DW_FUNC_CODE_WDB_ACCUMULATE_HUAIZHANG_RATE_SCORE		  = 1200009;				//累计坏账率得分
+ DW_FUNC_CODE_WDB_DIANFU_TIME_SCORE		  				  = 1200010;				//垫付时间得分 
+ DW_FUNC_CODE_WDB_GENBAO_GENTOU_NUMBER_RANK		  		  = 1200011;				//跟保跟投人数排名占比得分
+ DW_FUNC_CODE_WDB_BORROWER_EVALUCATE_SCORE		  		  =	1200012;				//借款人评价得分
+ DW_FUNC_CODE_WDB_JIDIAO_REPORT_PASS_RATE_SCORE		      = 1200013;				//尽调报告合格率得分
+	
+ DW_FUNC_CODE_WDB_MONTH_SUC_COUNTS_SCORE_COMM		      = 1200014;				//月均成功尽调(担保)笔数排名占比得分 共用功能号
+ DW_FUNC_CODE_WDB_RATE_SCORE_COMM		      			  = 1200015;				//当前(累计)逾期(坏账)率得分, 共用功能号	 
+	 
+}

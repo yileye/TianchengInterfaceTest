@@ -1,0 +1,143 @@
+syntax = "proto2";
+package QDP_basic_info;
+
+//学历
+enum degree
+{
+	low          = 1;     //专科以下
+	major        = 2;     //专科
+	college      = 3;     //本科
+	master       = 4;     //硕士
+	doctor       = 5;     //博士及以上
+}
+
+enum control_code
+{
+    start = 0;
+    stop  = 1;
+}
+
+//控制服务开启与停止
+message control_service
+{
+	optional control_code control = 1 [default = start];
+}
+
+//与量化数据平台公共信息
+message user_basic_info
+{
+	optional bytes 	user_id                  = 1; //用户ID
+	optional bytes 	identity_card            = 2; //用户身份证
+	optional bytes 	real_name                = 3; //账号名字
+	optional bytes 	user_nickname            = 4; //用户别名
+	optional bytes 	mobile_phone             = 5; //用户手机号
+	optional bytes 	email                    = 6; //邮箱
+	optional bytes 	address                  = 7; //个人地址
+	optional bytes 	bank_cart                = 8; //银行卡
+	optional bytes 	ip                       = 9; //手机ip
+	optional bytes 	mac                      = 10;
+	optional bytes 	imei                     = 11;
+	optional bytes 	collegeName              = 12; //学院
+	optional degree eductionDegree           = 13; //学历
+	optional bytes 	educationCategory        = 14; //学位
+	optional bytes 	graduateYear             = 15; //毕业时间
+	optional bytes 	enrollmentYear           = 16; //入学时间
+	optional bytes 	blackBox                 = 17; //设备指纹
+	optional bytes 	password                 = 18; //邮箱密码
+	optional bool  	is_prove                 = 19; //是否实名认证
+
+	//鹏元特殊字段
+	optional bytes 	transDate                = 20; //交易日期 格式 YYYY-MM-DD 
+	optional bytes 	currency                 = 21; //货币单位,人民币156,其他参照文档
+	optional bytes 	transAmount              = 22; //交易金额 单位元
+	
+	
+	//前海征信
+	optional bytes 	idNo                     = 23; //证件号码
+	optional bytes 	idType                   = 24; //证件类型 0:身份证 1:户口簿 2:护照 3:军官证 4:士兵证 5:港澳居民来往内地通行证 6:台湾同胞来往内地通行证 7:临时身份证 8:外国人居留证 9:警官证 X:其他证件
+	optional bytes 	name                     = 25; //主体名称
+	optional bytes 	reasonNo                 = 26; //查询原因 01--贷款审批 02--贷中管理 03--贷后管理 04--本人查询 05--异议查询 99--其他
+	optional bytes 	weiboNo                  = 27; //微博号
+	optional bytes 	weixinNo                 = 28; //微信号
+	optional bytes 	qqNo                     = 29; //qq号
+	optional bytes 	taobaoNo                 = 30; //淘宝帐号
+	optional bytes 	jdNo                     = 31; //京东帐号
+	optional bytes 	amazonNo                 = 32; //亚马逊帐号
+	optional bytes 	yhdNo                    = 33; //1号店	
+	
+	//百融
+	optional bytes 	home_addr                = 34; //家庭住址
+	optional bytes 	biz_addr                 = 35; //公司地址
+	optional bytes 	per_addr                 = 36; //户籍地址
+	optional bytes 	apply_addr               = 37; //申请地址(移动应用为GPS地址)
+	optional bytes 	tel_biz                  = 38; //公司座机号，区号和分机号用“-”间隔
+	optional bytes 	tel_home                 = 39; //家庭座机号，区号和分机号用“-”间隔
+	optional bytes 	educationallevel         = 40; //学历,a.博士 b.硕士 c.本科 d.大专 e.中专 f.高中 g.初中 h.其他
+	optional bytes 	marriage                 = 41; //婚姻状况,a.未婚 b.已婚 c.离异 d.丧偶
+	optional bytes 	income                   = 42; //年收入
+	optional bytes 	biz_workfor              = 43; //公司名称
+	optional bytes 	apply_source             = 44; //申请渠道,a.网络申请 b.柜台申请 c.销售人员办理 d.其他
+	optional bytes 	apply_product            = 45; //申请产品,a.信用卡 b.信用贷款 c.担保贷款 d.其他
+	optional bytes 	refund_type              = 46; //还款类型
+	optional bytes 	applyQuota               = 47; //申请额度,元
+	optional bytes 	apply_time               = 48; //申请时间,YYYY-MM-DD
+	optional bytes 	loanPeriod               = 49; //贷款期数
+	optional bytes 	bank_id                  = 50; //银行卡号(信用卡可不提供)
+	optional bytes 	linkman_name             = 51; //联系人1姓名
+	optional bytes 	linkman_cell             = 52; //联系人1手机号
+	optional bytes 	linkman_rela             = 53; //联系人1关系,a.父母 b.子女 c.配偶 d.亲戚 e.朋友 f.师生 g.同学 h.其他
+	
+	//同盾
+	optional bytes  token_id                 = 54; //设备指纹服务的会话标示，与部署设备脚本时生成的Token一致
+	optional bytes  user_agent_cust          = 55; //浏览器UA
+	optional bytes  refer_cust               = 56; //浏览器请求来源
+	optional bytes  state                    = 57; //事件结果: 0为成功, 1为失败
+	optional bytes  card_number              = 58; //付款人卡号
+	optional bytes  cc_bin                   = 59; //付款人卡BIN(前六位)
+	optional bytes  pay_amount               = 60; //支付金额
+	optional bytes  pay_method               = 61; //支付方式 仅为连连支付
+	optional bytes  account_login            = 62; //同盾注册账号或者登陆账号
+	
+	//安融
+	optional bytes    customerName           = 63; //借款人姓名
+	optional bytes    paperNumber            = 64; //身份证号码
+	optional bytes    applyId                = 65; //申请编号（唯一）
+	optional bytes    loanType               = 66; //申请贷款类型
+	optional double   loanMoney              = 67; //申请贷款金额
+	optional bytes    currencyAnRong         = 68; //币种
+	optional int32    loanTimeLimit          = 69; //贷款期限（以月为单位）
+	optional bytes    assureType             = 70; //担保方式
+	optional bytes    applyDate              = 71; //申请日期
+	optional bytes    creditAddress          = 72; //借款地点中文描述，如：北京市
+	optional bytes    applyResult            = 73; //审批结果
+	optional bytes    applyResultTime        = 74; //审批日期
+	optional bytes    loanAccount            = 75; //合同编号（唯一）
+	optional bytes    creditStartDate        = 76; //借款日期（可对应放款日期）
+	optional bytes    creditEndDate          = 77; //借款到期日起
+	optional int32    loanPeriods            = 78; //还款期数
+	optional double   backMoney              = 79; //应还款总额
+	optional bytes    isClear                = 80; //是否已经结清
+	optional double   nbsMoney               = 81; //未偿还本金
+	optional double   nbMoney                = 82; //未偿还总金额
+	optional bytes    cleanDate              = 83; //结清日期
+	optional bytes    overdueStartDate       = 84; //逾期开始日期
+	optional bytes    overdueEndDate         = 85; //逾期截止日期（如果没有值，可代表至今还在逾期）
+	optional bytes    overdueReason          = 86; //逾期原因
+	optional bytes    overdueState           = 87; //逾期贷款状态
+	
+	optional bytes    relation_name           = 88; //关系人姓名信息  人名之间用“|”隔开,例如:"张三|李四|"
+	optional bytes    relation_phone          = 89; //关系人电话信息  电话之间用“|”隔开,例如:"18632658956|18632658956|"
+	
+	//爰金
+	optional bytes trading_address		= 90;	        //交易地点
+	optional bytes business	          = 91;	        //业务描述
+	
+	//鹏元使用
+	optional bytes 	levelNo           = 92; //被查询者学历证编号，2002年及以前(包含2002年)取得的学历，学历证编号不能为空
+	
+	//人脸识别使用
+	optional bytes requestFileList    = 93; //文件请求列表，用空格隔开
+}
+
+
+

@@ -1,0 +1,134 @@
+syntax = "proto2";
+package AFP_reptile_control;
+import "common.proto";
+
+//操作类型
+enum operation_status 
+{
+	starting     = 0; //启动
+	closeing     = 1; //关闭
+}
+
+
+//爬虫基本信息
+message reptile_basic_info
+{
+    optional int32 reptile_id             =1; //爬虫id 
+    optional bytes reptile_name           =2; //爬虫名字
+    optional bytes Crawl_site             =3; //爬取的网址
+    optional bytes ip                     =4; //所在的服务器IP地址
+    optional operation_status status      =5; //爬虫的运行状态
+}
+
+//爬虫的配置信息
+message reptile_config_info
+{
+    optional int32 reptile_id             =1; //爬虫id 
+    optional bytes reptile_name           =2; //爬虫名字
+    optional bytes mongodb_address        =3; //mongodb地址 
+    optional int32 mongodb_port           =4; //mongodb端口 
+    optional bytes mongodb_name           =5; //mongodb名字
+    optional int32 interval               =6; //每次捕获数据的间隔 单位毫秒
+    optional int32 trigger_interval       =7; //爬虫的运行规则 单位秒
+}
+
+//进度 网页数，无效页面数
+message schedule_info
+{
+    optional reptile_basic_info  info = 1;
+    optional int32 webpage_sum              = 2; //网页总数
+    optional int32 invalid_webpage_count    = 3; //无效页面数
+    optional int32 valid_webpage_count      = 4; //有效页面数
+}
+
+message set_reptile_config
+{
+    optional reptile_basic_info basic_info   = 1;
+    optional reptile_config_info config_info = 2;
+}
+
+message reptile_history
+{
+    optional reptile_basic_info  info = 1;
+    optional int32 new_data = 2; //新增数据量
+    optional int32 update_data = 3; //更新数据量
+    optional int32 webpage_count    = 4; //访问的页面数量
+    optional bytes time = 5;        //爬取的时间
+}
+
+
+
+////  client<------>server
+//把自身所带爬虫的信息（爬虫ID，爬虫名称,所在的服务器IP地址，所爬网站的中文名）推送给server，同时获取server的爬虫相关的配置信息
+message reptile_info_ask
+{
+    repeated reptile_basic_info info           =1;  //爬虫信息
+}
+
+message reptile_info_ans
+{
+	optional common.errorinfo   error          = 1; //错误代码
+    repeated reptile_config_info info          = 2;  //爬虫配置信息
+   
+}
+
+
+//爬虫的进度
+message reptile_schedule_ask
+{
+    repeated schedule_info  schedule = 1;
+}
+
+//爬虫的基本配置设置
+message set_reptile_config_ask
+{
+    repeated set_reptile_config config  = 1;
+}
+message set_reptile_config_ans
+{
+    repeated reptile_basic_info          info               = 1;  //配置失败的爬虫信息
+    optional common.errorinfo            error              = 2; //错误代码
+}
+
+//爬虫启动关闭设置
+message reptile_operation_status_ask
+{
+    repeated reptile_basic_info info           =1;  //爬虫信息
+}
+message reptile_operation_status_ans
+{
+    repeated reptile_basic_info info                        =1;  //失败的爬虫信息
+    optional common.errorinfo            error              = 2; //错误代码
+}
+
+//爬虫异常
+message reptile_abnormal_ask
+{
+    repeated reptile_basic_info info           =1;  //爬虫信息
+    optional bytes abnormal_info             = 2;   //异常信息
+}
+
+
+//爬虫历史爬的记录
+ message reptile_history_record_ask
+ {
+    optional bytes reptile_name           =1; //爬虫名字
+    optional bytes time                   =2; //时间
+ }
+ message reptile_history_record_ans
+ {
+    repeated reptile_history record       =1; //返回的历史记录
+    optional common.errorinfo            error              = 2; //错误代码
+ }
+ 
+ //心跳监控
+ message reptile_heartbeat_monitoring_ask
+ {
+ 
+ }
+ 
+message reptile_heartbeat_monitoring_ans
+ {
+     repeated reptile_basic_info info           =1;  //爬虫信息
+     optional common.errorinfo            error              = 2; //错误代码
+ }

@@ -1,9 +1,9 @@
 #coding=utf8
 #######################################################
-#filename:ModCCS.py
-#author:defias
-#date:2015-12
-#function: CCS相关 test
+#filename: ModCCS.py
+#author: defias
+#date: 2015-12
+#function: CCS相关
 #######################################################
 from Global import *
 from public import EncryptLib

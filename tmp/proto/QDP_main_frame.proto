@@ -1,0 +1,59 @@
+syntax = "proto2";
+package QDP_main_frame;
+import "QDP_basic_info.proto";
+import "common.proto";
+
+//第三方平台的宏定义
+enum other_platform
+{
+    unknown_platform    = 0; //未知平台
+    Credit_sesame       = 1; //芝麻信用
+    fraud_metrix        = 2; //同盾
+    AnRong_Platform     = 3; //安融
+    
+}
+
+//用户验证
+message user_verification_ask
+{
+    optional QDP_basic_info.user_basic_info info = 1;
+    optional other_platform  platform_type       = 2;  //所属平台
+    optional common.common_ask_header ask_header = 3;  //指定发送的主题
+    optional QDP_basic_info.control_service service_manager = 4; //服务管理
+    optional int32    query_type          = 5 [default = 0]; //访问量化数据平台查询类型 0：量化平台访问第三方获取数据。 1：量化平台从数据库获取最新一条记录返回。 2：县访问数据库，如果查不到记录则访问第三方
+}
+
+message user_verification_ans
+{
+    optional other_platform  platform_type  = 1; //所属平台
+    optional bytes json_ans                 = 2;
+    optional common.errorinfo     error     = 3; //错误代码
+}
+
+
+
+//用户验证,接口不使用
+//message user_verification_list_ask
+//{
+//    repeated QDP_basic_info.user_basic_info info  = 1;
+//    optional other_platform  platform_type        = 2;  //所属平台
+//}
+
+//message user_verification_list_ans
+//{
+//    optional other_platform  platform_type  = 1; //所属平台
+//    repeated bytes json_ans                 = 2;
+//    optional common.errorinfo     error     = 3; //错误代码
+//}
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,189 @@
+syntax = "proto2";
+package ODP_bid_analysis;
+import "common.proto";
+
+// ----------------------------------------- 公用数据结构定义 --------------------------------------------- //
+//页面请求接口类型
+enum ask_type
+{
+	page_bid_interest_rate             = 1;  // 投资利率统计    借款利率包括：8%、9%、10%、11%、12%、13%、14%、15%、16%、17%、18%、19%、20%、21%、22%、23%、24%
+	page_repayment_type                = 2;  // 还款方式统计    还款方式包括：等额本息、到期还本息、先息后本
+	page_limit_time                    = 3;  // 还款期限统计    还款期限包括：1个月、2个月、3个月、6个月、12个月、18个月、24个月
+	page_borrow_mount                  = 4;  // 借款金额统计    区间描述: 3000-5000、5000-8000、8000-10000、1W-1.5W、1.5W-2W、2W-3W、3W-4W、4W-5w、5W以上
+	page_bid_speed                     = 5;  // 满标速度统计    区间为1、2、3、4、5、6、7
+	page_bid_status                    = 6;  // 借款标状态统计  状态包含：等待尽调、尽调中、担保中、投资中、流标结标、还款中、完结标、逾期、严重逾期（逾期30天以上）
+	page_bid_runoff                    = 7;  // 流标原因统计    流标原因包含：审核不通过、担保未满、无人尽调、尽调不通过、尽调不担保、投标未满、用户手动流标、后台手动流标
+    page_bid_interest_rate_tick_no     = 8;  // 投资利率统计枚举与名称对应列表
+	page_repayment_type_tick_no        = 9;  // 还款方式统计枚举与名称对应列表
+	page_limit_time_tick_no            = 10; // 还款期限统计枚举与名称对应列表
+	page_borrow_mount_tick_no          = 11; // 借款金额统计枚举与名称对应列表
+	page_bid_speed_tick_no             = 12; // 满标速度统计枚举与名称对应列表
+	page_bid_status_tick_no            = 13; // 借款标状态统计枚举与名称对应列表 
+	page_bid_runoff_tick_no            = 14; // 流标原因统计枚举与名称对应列表
+}
+
+//不同利率满标请求接口类型
+enum full_bid_ask_type
+{
+    full_bid_statics                = 1;   // 不同利率借款标的满标速度请求
+	full_bid_tick_no                = 2;   // 不同利率借款标的满标速度枚举与名称对应列表
+}
+
+// 统计信息结构体
+message statistics_info
+{
+    optional  int32 tick_no          = 1;   // 编号
+    optional  bytes tick_name        = 2;   // 刻度
+    optional  int32 bid_count        = 3;   // 借款标数量
+}
+
+//维度 标统计
+message bid_count_info
+{
+    optional int32            tick_no         =   1; // 编号  
+    optional bytes            tick_name       =   2; // 维度   时间维度：1天、2天、3天、4天、5天、6天、7天   
+    repeated statistics_info  info            =   3; // 列表   
+}
+
+//地区名字
+message area_name
+{
+    optional int32 area_id   = 1;    // 地区id
+    optional bytes name      = 2;    // 地区name
+}
+
+// 借款标地区分布信息结构体
+message bid_area_info
+{
+    optional  area_name province     = 1;   // 省
+    optional  area_name city         = 2;   // 市
+    optional  int32 bid_count        = 3;   // 借款标数
+	optional  float bid_count_rate   = 4;   // 借款标数量占比  所占比重为该地区在全国的借款标总所占的比重
+}
+
+// 借款标详情信息
+message bid_detail_info
+{
+    optional  bytes                 username                    = 1;   // 借款人姓名
+	optional  bytes                 NickName                    = 2;   // 用户昵称
+    optional  bytes                 mobile_no                   = 3;   // 手机号
+    optional  bytes                 id_card_no                  = 4;   // 身份证号
+    optional  float                 amount                      = 5;   // 借款金额
+    optional  bytes                 datetime                    = 6;   // 发标时间 (yyyymmddHHMMSSmmmuuu)
+    optional  bytes                 rate                        = 7;   // 借款利率
+    optional  bytes                 guarantee_rate              = 8;   // 担保费率
+    optional  bytes                 repayment_type              = 9;   // 还款方式
+    optional  bytes                 fullbiddate                 = 10;  // 满标日期 (yyyymmddHHMMSSmmmuuu)
+	optional  int32                 fullbidtime                 = 11;  // 满标时长 (单位小时)
+    optional  bytes                 borrowing_month             = 12;  // 还款期限
+    optional  bytes                 state                       = 13;  // 借款标状态
+	optional  bytes                 bid_runoff_reason           = 14;  // 流标原因
+	optional  bytes                 province                    = 15;  // 发标省份
+	optional  bytes                 city                        = 16;  // 发标城市
+}
+
+// ----------------------------------------- 1. 借款标分析-概览统计信息 ------------------------------------------- //
+
+// 统计信息请求   下拉框列表也从这个接口查
+message statistics_info_ask
+{
+    optional ask_type type                       = 1;    // 页面请求接口类型
+    optional common.common_ask_header ask_header = 2;    // 通用的公共请求字段(比如回复的主题)
+}
+
+// 统计信息应答
+message statistics_info_ans
+{
+    repeated statistics_info    info    = 1; // 统计信息结构体
+    optional common.result_info   result   = 2; // 错误代码
+}
+
+
+// ----------------------------------------- 2. 借款标分析-概览明细信息 ------------------------------------------- //
+
+// 明细信息请求
+message detail_info_ask
+{
+    optional ask_type type                          = 1;    // 页面请求接口类型
+	optional int32 tick_no                          = 2;    // 编号
+    optional int32 num_of_record                    = 3;    // 每页的记录数
+    optional int32 curpage                          = 4;    // 当前页号
+    optional common.common_ask_header   ask_header  = 5;    // 通用的公共请求字段(比如回复的主题)
+}
+
+// 明细信息应答 和根据时间和利率维度 查不同利率借款标的满标速度详情页响应
+message detail_info_ans
+{
+    optional int32                      total_number   = 1;  // 总条数
+    repeated bid_detail_info            info           = 2;  // 详情信息
+    optional common.result_info           result          = 3;  // 错误代码
+}
+
+
+// ----------------------------------------- 3. 不同速度的满标速度分析 --------------------------- //
+
+//  不同利率借款标的满标速度请求
+message different_rate_fullbid_time_ask
+{
+    optional full_bid_ask_type         type       = 1;  // 页面请求接口类型
+    optional common.common_ask_header  ask_header = 2;  // 通用的公共请求字段(比如回复的主题)
+}
+
+//  不同利率借款标的满标速度响应
+message different_rate_fullbid_time_ans
+{
+    repeated bid_count_info             info        = 1;  // 标统计
+    optional common.result_info           result       = 2;  // 错误代码
+}
+
+// 	根据时间和利率维度 查不同利率借款标的满标速度详情页请求
+message different_rate_fullbid_details_ask
+{
+	optional int32 bid_time                         = 1;  // 时间维度
+	optional int32 bid_rate                         = 2;  // 利率维度
+    optional int32 num_of_record                    = 3;  // 每页的记录数
+    optional int32 curpage                          = 4;  // 当前页号
+    optional common.common_ask_header   ask_header  = 5;  // 通用的公共请求字段(比如回复的主题)
+}
+
+
+// ----------------------------------------- 4. 借款标地区分布 ------------------------------------------- //
+
+//省市级联查询请求
+message province_city_inquire_ask
+{
+    optional area_name province                         = 1;   // 当这个字段为空时，返回所有的省，当这个字段为省id时，返回这个省的，所有市
+	optional common.common_ask_header    ask_header     = 2;   // 通用的公共请求字段(比如回复的主题)
+}
+//省市级联查询应答
+message province_city_inquire_ans
+{
+    repeated area_name province_or_city   = 1;  // 省或者市
+    optional common.result_info result       = 2;  // 返回结果
+}
+
+// 借款标地区分布请求
+message bid_area_distribution_ask
+{
+    optional area_name province                         = 1;   // 省     没选择省份默认查全国
+    optional area_name city                             = 2;   // 市     没选择城市默认查全省
+    optional common.common_ask_header ask_header        = 3;    // 通用的公共请求字段(比如回复的主题)
+}
+
+// 借款标地区分布应答
+message bid_area_distribution_ans
+{
+    repeated bid_area_info          info        = 1; // 借款标地区信息
+    optional common.result_info       result       = 2; // 错误代码
+}
+
+// 借款标地区详情请求   点击所在城市按钮进入
+message bid_area_distribution_detail_ask
+{
+    optional area_name province                     = 1;   // 省     没选择省份默认查全国
+    optional area_name city                         = 2;   // 市     没选择城市默认查全省
+    optional int32 num_of_record                    = 3;   // 每页的记录数
+    optional int32 curpage                          = 4;   // 当前页号
+    optional common.common_ask_header   ask_header  = 5;   // 通用的公共请求字段(比如回复的主题)
+}
+

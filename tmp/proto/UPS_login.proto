@@ -1,0 +1,26 @@
+syntax = "proto2";
+package UPS_login;
+import "common.proto";
+
+//
+message login_info
+{
+	optional bytes user_image_url            = 1; 	//用户图像URL
+	optional bytes user_label1               = 2; 	//用户标签1
+	optional bytes user_label2               = 3; 	//用户标签2
+	optional bytes user_label3               = 4; 	//用户标签3
+}
+
+//登录页面用户标签查询
+message login_info_ask
+{
+	optional int32 user_number				 = 1;	//用户个数
+}
+
+//登录页面用户标签List结果
+message login_info_ans
+{
+	repeated login_info info                 = 1;   //登录用户标签
+	optional common.errorinfo error     	 = 2;   //错误代码
+}
+
