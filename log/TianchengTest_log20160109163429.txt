@@ -1,0 +1,55 @@
+2016-01-09 16:34:29,805 - DEBUG - TianchengTest.py[179] - 测试开始时间: 2016-01-09 16:34:29
+2016-01-09 16:34:29,806 - DEBUG - TianchengTest.py[26] - 运行模式：部分执行
+2016-01-09 16:34:29,806 - DEBUG - TianchengTest.py[183] - 待执行用例: {'AFP': [1]}
+2016-01-09 16:34:29,808 - DEBUG - TianchengTest.py[186] - Starting thread: TestRunThread
+2016-01-09 16:34:29,809 - DEBUG - TianchengTest.py[145] - [TestRunThread] 开始执行用例: (AFP, 1)
+---
+2016-01-09 16:34:29,809 - DEBUG - Interface_DriverEngine.py[174] - [TestRunThread] 驱动执行:headers:{'TOKEN': 'abcdefghijk', 'APPID': '10'} TestData:{"FunctionCode":"100122","CurrentTime":"20150723203212000000","MsgBody":{"user_id":"abc123456","ProjectId":"123","identity_card":"003001195901160031","idtype":"0","name":"陈刚","bank_cart":"12345","reasonno":"04","blackBox":"123","ip":"192.168.1.122","account_login":"test123","mobile_phone":"18675559750","loanType":"99","currency":"23232","loanMoney":10000,"loanTimeLimit":12,"applyDate":"2015-08-01","assureType":"D","creditAddress":"北京","is_student":1,"is_first_time":0,"degree":"本科","RELATION_VERIFICATION":[{"relation_name":"陈刚","relation_phone":"18675559750"},{"relation_name":"","relation_phone":""}]}}
+2016-01-09 16:34:29,821 - DEBUG - Interface_DriverEngine.py[177] - [TestRunThread] 执行结果:DriverResult:<Response [200]>
+2016-01-09 16:34:30,808 - DEBUG - TianchengTest.py[193] - Starting thread: TestAssertThread
+2016-01-09 16:34:30,809 - DEBUG - TianchengTest.py[200] - 等待子线程TestRunThread结束...
+2016-01-09 16:34:30,809 - DEBUG - TianchengTest.py[75] - [TestAssertThread] 从队列taskassert_queue中取出一条任务: ('AFP', 1, u'30', 0, <Response [200]>)
+2016-01-09 16:34:30,811 - DEBUG - TianchengTest.py[99] - [TestAssertThread] 状态处理后timestate: {('AFP', 1): {'timeoutdelay': 0.0, 'timeouttask': 30.0}}
+2016-01-09 16:34:30,811 - DEBUG - TianchengTest.py[107] - [TestAssertThread] 调用断言模块进行处理: AFP 1 <Response [200]>
+2016-01-09 16:34:30,812 - DEBUG - Interface_AssertEngine.py[96] - [TestAssertThread] 驱动断言:response:<Response [200]> ExpectationDict:{u'usermodelhistory': {u'status': u'0', u'modelName': u'\u989d\u5ea6\u8d44\u683c', u'BASE64_resultJson': {u'Status': u'0', u'model_Result': u'1'}, u'mobilePhone': u'18675559750', u'modelType': 3, u'modelResult': u'1', u'identityCard': u'003001195901160031', u'AppID': u'abc123456', u'errorInfo': u'\u7528\u6237\u5e74\u9f84\u4e0d\u7b26\u5408\u8981\u6c42', u'realName': u'\u9648\u521a'}, u'HTTPEXP': {u'Status': u'0', u'Messge': u'success'}}
+2016-01-09 16:34:30,819 - DEBUG - Interface_Assert.py[41] - [TestAssertThread] init connecting mysql db: fraudcheck_77testteam 192.168.18.85:3306 write/tc12345
+2016-01-09 16:34:30,822 - DEBUG - TianchengTest.py[202] - 子线程：TestRunThread结束
+2016-01-09 16:34:30,825 - DEBUG - ModAFP.py[243] - [TestAssertThread] 提取加密字段和响应数据from: ExpectationDict: {u'usermodelhistory': {u'status': u'0', u'modelName': u'\u989d\u5ea6\u8d44\u683c', u'BASE64_resultJson': {u'Status': u'0', u'model_Result': u'1'}, u'mobilePhone': u'18675559750', u'modelType': 3, u'modelResult': u'1', u'identityCard': u'003001195901160031', u'AppID': u'abc123456', u'errorInfo': u'\u7528\u6237\u5e74\u9f84\u4e0d\u7b26\u5408\u8981\u6c42', u'realName': u'\u9648\u521a'}, u'HTTPEXP': {u'Status': u'0', u'Messge': u'success'}}
+2016-01-09 16:34:30,825 - DEBUG - TianchengTest.py[204] - 等待子线程TestAssertThread结束...
+2016-01-09 16:34:30,825 - DEBUG - ModAFP.py[275] - [TestAssertThread] 提取加密字段数据: HTTPEXP: {u'Status': u'0', u'Messge': u'success'}
+ExpDict: {u'usermodelhistory': {u'status': u'0', u'modelName': u'\u989d\u5ea6\u8d44\u683c', u'mobilePhone': u'18675559750', u'modelType': 3, u'modelResult': u'1', u'identityCard': u'003001195901160031', u'AppID': u'abc123456', u'errorInfo': u'\u7528\u6237\u5e74\u9f84\u4e0d\u7b26\u5408\u8981\u6c42', u'realName': u'\u9648\u521a'}}
+BASE64_ExpDict: {u'usermodelhistory': {u'resultJson': {u'Status': u'0', u'model_Result': u'1'}}}
+2016-01-09 16:34:30,835 - DEBUG - ModAFP.py[140] - [TestAssertThread] 检查响应: unique_id: abc123456311144825540999578
+HTTPEXP: {u'Status': u'0', u'Messge': u'success'}
+responseContentDict: {u'Status': u'0', u'Messge': u'success', u'unique': u'abc123456311144825540999578'}
+2016-01-09 16:34:30,836 - DEBUG - ModAFP.py[157] - [TestAssertThread] 检查明文字段数据: 用例中读取的fields: [u'status', u'modelName', u'mobilePhone', u'modelType', u'modelResult', u'identityCard', u'AppID', u'errorInfo', u'realName']
+values: [u'0', u'\u989d\u5ea6\u8d44\u683c', u'18675559750', 3, u'1', u'003001195901160031', u'abc123456', u'\u7528\u6237\u5e74\u9f84\u4e0d\u7b26\u5408\u8981\u6c42', u'\u9648\u521a']
+2016-01-09 16:34:30,838 - DEBUG - ModAFP.py[164] - [TestAssertThread] 执行SQL查询: query_str: SELECT status, modelName, mobilePhone, modelType, modelResult, identityCard, AppID, errorInfo, realName FROM usermodelhistory WHERE UniqueID = %s (u'abc123456311144825540999578',)
+2016-01-09 16:34:30,844 - DEBUG - ModAFP.py[172] - [TestAssertThread] 检查明文字段数据: result: (u'0', u'\u989d\u5ea6\u8d44\u683c', u'18675559750', 3, u'1', u'003001195901160031', u'abc123456', u'\u7528\u6237\u5e74\u9f84\u4e0d\u7b26\u5408\u8981\u6c42', u'\u9648\u521a')
+expvalues: (u'0', u'\u989d\u5ea6\u8d44\u683c', u'18675559750', 3, u'1', u'003001195901160031', u'abc123456', u'\u7528\u6237\u5e74\u9f84\u4e0d\u7b26\u5408\u8981\u6c42', u'\u9648\u521a')
+2016-01-09 16:34:30,845 - DEBUG - ModAFP.py[190] - [TestAssertThread] 检查明文字段数据: iresult: 0  expvalue: 0
+2016-01-09 16:34:30,845 - DEBUG - ModAFP.py[190] - [TestAssertThread] 检查明文字段数据: iresult: 额度资格  expvalue: 额度资格
+2016-01-09 16:34:30,846 - DEBUG - ModAFP.py[190] - [TestAssertThread] 检查明文字段数据: iresult: 18675559750  expvalue: 18675559750
+2016-01-09 16:34:30,848 - DEBUG - ModAFP.py[190] - [TestAssertThread] 检查明文字段数据: iresult: 3  expvalue: 3
+2016-01-09 16:34:30,848 - DEBUG - ModAFP.py[190] - [TestAssertThread] 检查明文字段数据: iresult: 1  expvalue: 1
+2016-01-09 16:34:30,849 - DEBUG - ModAFP.py[190] - [TestAssertThread] 检查明文字段数据: iresult: 003001195901160031  expvalue: 003001195901160031
+2016-01-09 16:34:30,851 - DEBUG - ModAFP.py[190] - [TestAssertThread] 检查明文字段数据: iresult: abc123456  expvalue: abc123456
+2016-01-09 16:34:30,851 - DEBUG - ModAFP.py[190] - [TestAssertThread] 检查明文字段数据: iresult: 用户年龄不符合要求  expvalue: 用户年龄不符合要求
+2016-01-09 16:34:30,852 - DEBUG - ModAFP.py[190] - [TestAssertThread] 检查明文字段数据: iresult: 陈刚  expvalue: 陈刚
+2016-01-09 16:34:30,854 - DEBUG - ModAFP.py[201] - [TestAssertThread] 检查BASE64加密字段数据: 用例中读取的fields: [u'resultJson']
+values: [{u'Status': u'0', u'model_Result': u'1'}]
+2016-01-09 16:34:30,855 - DEBUG - ModAFP.py[208] - [TestAssertThread] 执行SQL查询: query_str: SELECT resultJson FROM usermodelhistory WHERE UniqueID = %s (u'abc123456311144825540999578',)
+2016-01-09 16:34:30,864 - DEBUG - ModAFP.py[219] - [TestAssertThread] 检查BASE64加密字段数据: de_result: {"Messge":"用户年龄不符合要求","MsgBody":{"BAI_RONG":"","BLACKLIST_ARRAY":"","LAO_NAI":"","QHPF":"","QHZX":"","TONG_DUN_JK":"","ZHI_MA":"","platforms":[{"platformName":"ZHI_MA","platformNameExplain":" 芝麻信用"},{"platformName":"BLACKLIST_ARRAY","platformNameExplain":" 网贷黑名单"},{"platformName":"QHZX","platformNameExplain":" 前海黑名单"},{"platformName":"TONG_DUN_JK","platformNameExplain":" 同盾"}]},"Status":"0","model_Result":"1"}
+
+expvalue: {u'Status': u'0', u'model_Result': u'1'}
+2016-01-09 16:34:30,865 - DEBUG - ModAFP.py[223] - [TestAssertThread] 检查BASE64加密字段数据: de_resultDict: {u'Status': u'0', u'model_Result': u'1', u'Messge': u'\u7528\u6237\u5e74\u9f84\u4e0d\u7b26\u5408\u8981\u6c42', u'MsgBody': {u'QHPF': u'', u'LAO_NAI': u'', u'TONG_DUN_JK': u'', u'BAI_RONG': u'', u'platforms': [{u'platformName': u'ZHI_MA', u'platformNameExplain': u' \u829d\u9ebb\u4fe1\u7528'}, {u'platformName': u'BLACKLIST_ARRAY', u'platformNameExplain': u' \u7f51\u8d37\u9ed1\u540d\u5355'}, {u'platformName': u'QHZX', u'platformNameExplain': u' \u524d\u6d77\u9ed1\u540d\u5355'}, {u'platformName': u'TONG_DUN_JK', u'platformNameExplain': u' \u540c\u76fe'}], u'ZHI_MA': u'', u'BLACKLIST_ARRAY': u'', u'QHZX': u''}}
+2016-01-09 16:34:30,865 - DEBUG - ModAFP.py[233] - [TestAssertThread] 检查BASE64加密字段数据: de_resultDict[Status]: 0  expvalue[Status]: 0
+2016-01-09 16:34:30,867 - DEBUG - ModAFP.py[233] - [TestAssertThread] 检查BASE64加密字段数据: de_resultDict[model_Result]: 1  expvalue[model_Result]: 1
+2016-01-09 16:34:30,868 - DEBUG - Interface_Assert.py[55] - [TestAssertThread] Release  public resources
+2016-01-09 16:34:30,868 - DEBUG - TianchengTest.py[113] - [TestAssertThread] 结果放入测试结果中: AFP 1 ('PASS',)
+...
+2016-01-09 16:34:45,871 - DEBUG - TianchengTest.py[124] - [TestAssertThread] 从队列taskassert_queue中取任务超时
+2016-01-09 16:34:45,874 - DEBUG - TianchengTest.py[206] - 子线程：TestAssertThread结束
+2016-01-09 16:34:45,875 - DEBUG - TianchengTest.py[214] - 测试结束时间: 2016-01-09 16:34:45
+2016-01-09 16:34:45,877 - DEBUG - TianchengTest.py[217] - testcase_result: {('AFP', 1): ('PASS',)}
+2016-01-09 16:34:45,882 - DEBUG - GenerateReport.py[126] - 生成测试结果报告: .\result\Test_Report_Filename20160109163445.html

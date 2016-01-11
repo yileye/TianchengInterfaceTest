@@ -83,7 +83,6 @@ class Interface_AssertEngine():
         '''
         断言反欺诈接口用例执行结果
         '''
-        TestData = self.TestCaseO.get_TestData(sheet, testid)
         ModAFPO = ModAFP.ModAFP()
         dbinfo = ModAFPO.getRuncaseEnvironment_db(TestEnvironment)
 
@@ -91,14 +90,13 @@ class Interface_AssertEngine():
         response = taskargs
 
         #获取断言数据
-        ExpectationDict = ModAFPO.parseExpForAssert(Expectation, TestData)[0]
-        TestDataDict = ModAFPO.parseExpForAssert(Expectation, TestData)[1]
+        ExpectationDict = ModAFPO.parseExpForAssert(Expectation)
 
         #断言执行
-        PrintLog('debug', '[%s] 驱动断言:response:%s ExpectationDict:%s TestDataDict: %s', threading.currentThread().getName(), response, ExpectationDict, TestDataDict)
+        PrintLog('debug', '[%s] 驱动断言:response:%s ExpectationDict:%s', threading.currentThread().getName(), response, ExpectationDict)
         AssertO = Interface_Assert.Interface_Assert()
         AssertO.SetPublic_Mysql(dbinfo)
-        AssertResult = AssertO.Assert_AFP(response, ExpectationDict, TestDataDict)
+        AssertResult = AssertO.Assert_AFP(response, ExpectationDict)
         return AssertResult
 
     def AssertCCSCase(self, sheet, testid, taskargs, Expectation, TestEnvironment):

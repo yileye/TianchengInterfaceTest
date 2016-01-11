@@ -110,6 +110,17 @@ class TestCaseXls(object):
         return cls.xlseng.readcell(sheet, Expectation_row, Expectation_col)
 
     @classmethod
+    def get_MockData(cls, sheet, testid):
+        '''
+        获取MockData
+        '''
+        MockData_col = cls.testcase_col['MockData']
+        MockData_row = cls.Testid2rown(sheet, testid)
+        if MockData_row is False:
+            return False
+        return cls.xlseng.readcell(sheet, MockData_row, MockData_col)
+
+    @classmethod
     def get_Alltestid(cls, *sheet):
         '''
         获取所有testid, 或指定sheet页中的所有testid

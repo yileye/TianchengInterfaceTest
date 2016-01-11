@@ -6,6 +6,7 @@
 #function: 配置类
 #######################################################
 import configparser
+import codecs
 
 class ConfigIni(object):
     '''
@@ -13,7 +14,7 @@ class ConfigIni(object):
     '''
     conf_path = '.\\Config.ini'
     confO = configparser.ConfigParser()
-    confO.read(conf_path)
+    confO.readfp(codecs.open(conf_path, "r", "utf-8"))
 
     @classmethod
     def get_runmode(cls):
@@ -36,7 +37,6 @@ class ConfigIni(object):
         '''
         return cls.confO.get('DEFAULT', 'isrelease')
 
-
     @classmethod
     def get_index(cls):
         '''
@@ -57,6 +57,13 @@ class ConfigIni(object):
         获取用例文件列定义
         '''
         return cls.confO.get('DEFAULT', 'testcase_col')
+
+    @classmethod
+    def get_QueueName(cls):
+        '''
+        获取队列名
+        '''
+        return cls.confO.get('DEFAULT', 'Key_FunCodeQueueName')
 
     @classmethod
     def get_TestEnvironment_Info(cls, section, field):
