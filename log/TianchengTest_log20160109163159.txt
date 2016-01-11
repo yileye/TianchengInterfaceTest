@@ -1,0 +1,33 @@
+2016-01-09 16:31:59,510 - DEBUG - TianchengTest.py[179] - 测试开始时间: 2016-01-09 16:31:59
+2016-01-09 16:31:59,512 - DEBUG - TianchengTest.py[26] - 运行模式：部分执行
+2016-01-09 16:31:59,512 - DEBUG - TianchengTest.py[183] - 待执行用例: {'AFP': [1]}
+2016-01-09 16:31:59,512 - DEBUG - TianchengTest.py[186] - Starting thread: TestRunThread
+2016-01-09 16:31:59,513 - DEBUG - TianchengTest.py[145] - [TestRunThread] 开始执行用例: (AFP, 1)
+---
+2016-01-09 16:31:59,515 - DEBUG - Interface_DriverEngine.py[174] - [TestRunThread] 驱动执行:headers:{'TOKEN': 'abcdefghijk', 'APPID': '10'} TestData:{"FunctionCode":"100122","CurrentTime":"20150723203212000000","MsgBody":{"user_id":"abc123456","ProjectId":"123","identity_card":"003001195901160031","idtype":"0","name":"陈刚","bank_cart":"12345","reasonno":"04","blackBox":"123","ip":"192.168.1.122","account_login":"test123","mobile_phone":"18675559750","loanType":"99","currency":"23232","loanMoney":10000,"loanTimeLimit":12,"applyDate":"2015-08-01","assureType":"D","creditAddress":"北京","is_student":1,"is_first_time":0,"degree":"本科","RELATION_VERIFICATION":[{"relation_name":"陈刚","relation_phone":"18675559750"},{"relation_name":"","relation_phone":""}]}}
+2016-01-09 16:31:59,526 - DEBUG - Interface_DriverEngine.py[177] - [TestRunThread] 执行结果:DriverResult:<Response [200]>
+2016-01-09 16:32:00,513 - DEBUG - TianchengTest.py[193] - Starting thread: TestAssertThread
+2016-01-09 16:32:00,523 - DEBUG - TianchengTest.py[200] - 等待子线程TestRunThread结束...
+2016-01-09 16:32:00,523 - DEBUG - TianchengTest.py[75] - [TestAssertThread] 从队列taskassert_queue中取出一条任务: ('AFP', 1, u'30', 0, <Response [200]>)
+2016-01-09 16:32:00,528 - DEBUG - TianchengTest.py[99] - [TestAssertThread] 状态处理后timestate: {('AFP', 1): {'timeoutdelay': 0.0, 'timeouttask': 30.0}}
+2016-01-09 16:32:00,532 - DEBUG - TianchengTest.py[202] - 子线程：TestRunThread结束
+2016-01-09 16:32:00,536 - DEBUG - TianchengTest.py[107] - [TestAssertThread] 调用断言模块进行处理: AFP 1 <Response [200]>
+2016-01-09 16:32:00,538 - DEBUG - TianchengTest.py[204] - 等待子线程TestAssertThread结束...
+2016-01-09 16:32:00,542 - DEBUG - Interface_AssertEngine.py[96] - [TestAssertThread] 驱动断言:response:<Response [200]> ExpectationDict:{u'usermodelhistory': {u'status': u'0', u'modelName': u'\u989d\u5ea6\u8d44\u683c', u'BASE64_resultJson': {u'Status': u'0', u'model_Result': u'1'}, u'mobilePhone': u'18675559750', u'modelType': 3, u'modelResult': u'1', u'identityCard': u'003001195901160031', u'AppID': u'abc123456', u'errorInfo': u'\u7528\u6237\u5e74\u9f84\u4e0d\u7b26\u5408\u8981\u6c42', u'realName': u'\u9648\u521a'}, u'HTTPEXP': {u'Status': u'0', u'Messge': u'success'}}
+2016-01-09 16:32:00,561 - DEBUG - Interface_Assert.py[41] - [TestAssertThread] init connecting mysql db: fraudcheck_77testteam 192.168.18.85:3306 write/tc12345
+2016-01-09 16:32:00,563 - DEBUG - ModAFP.py[242] - [TestAssertThread] 提取加密字段和响应数据from: ExpectationDict: {u'usermodelhistory': {u'status': u'0', u'modelName': u'\u989d\u5ea6\u8d44\u683c', u'BASE64_resultJson': {u'Status': u'0', u'model_Result': u'1'}, u'mobilePhone': u'18675559750', u'modelType': 3, u'modelResult': u'1', u'identityCard': u'003001195901160031', u'AppID': u'abc123456', u'errorInfo': u'\u7528\u6237\u5e74\u9f84\u4e0d\u7b26\u5408\u8981\u6c42', u'realName': u'\u9648\u521a'}, u'HTTPEXP': {u'Status': u'0', u'Messge': u'success'}}
+2016-01-09 16:32:00,563 - ERROR - global name 're' is not defined
+Traceback (most recent call last):
+  File "D:\AutoTest\Code\TianchengInterface_Testing\src\ModAFP.py", line 273, in AFPAssert
+    HTTPEXP, ExpDict, BASE64_ExpDict = self.parseExpectationDict(ExpectationDict)
+  File "D:\AutoTest\Code\TianchengInterface_Testing\src\ModAFP.py", line 251, in parseExpectationDict
+    pattern = re.compile(prefix)
+NameError: global name 're' is not defined
+2016-01-09 16:32:00,565 - DEBUG - Interface_Assert.py[55] - [TestAssertThread] Release  public resources
+2016-01-09 16:32:00,565 - DEBUG - TianchengTest.py[113] - [TestAssertThread] 结果放入测试结果中: AFP 1 ('ERROR', u"global name 're' is not defined")
+...
+2016-01-09 16:32:15,566 - DEBUG - TianchengTest.py[124] - [TestAssertThread] 从队列taskassert_queue中取任务超时
+2016-01-09 16:32:15,569 - DEBUG - TianchengTest.py[206] - 子线程：TestAssertThread结束
+2016-01-09 16:32:15,571 - DEBUG - TianchengTest.py[214] - 测试结束时间: 2016-01-09 16:32:15
+2016-01-09 16:32:15,572 - DEBUG - TianchengTest.py[217] - testcase_result: {('AFP', 1): ('ERROR', u"global name 're' is not defined")}
+2016-01-09 16:32:15,578 - DEBUG - GenerateReport.py[126] - 生成测试结果报告: .\result\Test_Report_Filename20160109163215.html

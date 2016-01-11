@@ -301,7 +301,6 @@ class ModUPSLabel_Assert(object):
 
             return 'PASS',
         except Exception as e:
-            #logger.exception(e)
             PrintLog('exception',e)
             return 'ERROR',unicode(e)
 

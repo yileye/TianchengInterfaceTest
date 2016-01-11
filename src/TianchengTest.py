@@ -17,14 +17,17 @@ import threading
 import Queue
 import time
 
-
 def getModTestid(Mode):
     '''
     根据执行模式获取待执行用例testid
     '''
+    Allsheets = TestCase.TestCaseXls.get_CaseSheets()
     if Mode == 1:
         PrintLog('debug', '运行模式：部分执行')
         index = eval(Config.ConfigIni.get_index())
+        for sheet in index:
+            if sheet not in Allsheets:
+                raise ValueError, u'index配置错误:Errorindex: %s' % str(index)
         if index != {}:
             nullsheets = [x for x in index.keys() if index[x] == []]
             for i in nullsheets:
@@ -36,6 +39,10 @@ def getModTestid(Mode):
     elif Mode == 2:
         PrintLog('debug', '运行模式：部分不执行')
         unindex = eval(Config.ConfigIni.get_unindex())
+        for sheet in unindex:
+            if sheet not in Allsheets:
+                raise ValueError, u'unindex配置错误:Errorunindex: %s' % str(unindex)
+
         TestIds = TestCase.TestCaseXls.get_Alltestid()
         if unindex != {}:
             nullsheets = [x for x in unindex.keys() if unindex[x] == []]
@@ -50,7 +57,7 @@ def getModTestid(Mode):
         PrintLog('debug', '运行模式：全部分执行')
         TestIds = TestCase.TestCaseXls.get_Alltestid()
     else:
-        raise ValueError
+        raise ValueError, u'Mode配置错误:ErrorMode: %d' % Mode
     return TestIds
 
 
@@ -65,7 +72,7 @@ class TestAssertThread(threading.Thread):
         global testcase_result
         self.tresult_qlock = tresult_qlock
         self.AssertEngineO = Interface_AssertEngine()
-        self.timestate =  {}
+        self.timestate = {}
         self.timeevery = 5
 
     def run(self):
@@ -157,63 +164,69 @@ def TianchengTest():
     '''
     测试主流程
     '''
-    #启动日志
-    GenerateTxtLog.GenTxtLog()
+    try:
+        #启动日志
+        GenerateTxtLog.GenTxtLog()
 
-    #获取运行模式
-    runmode = int(Config.ConfigIni.get_runmode())
-    iscontrol = str(Config.ConfigIni.get_iscontrol())
-    isrelease = str(Config.ConfigIni.get_isrelease())
-    memdata.write(ch2unicode(iscontrol + '\n' + isrelease))  #写入内存
+        #获取运行模式
+        runmode = int(Config.ConfigIni.get_runmode())
+        iscontrol = str(Config.ConfigIni.get_iscontrol())
+        isrelease = str(Config.ConfigIni.get_isrelease())
+        memdata.write(ch2unicode(iscontrol + '\n' + isrelease))  #写入内存
 
-    #锁
-    tresult_qlock = threading.Lock()
+        #锁
+        tresult_qlock = threading.Lock()
 
-    #全局变量
-    global testcase_result
-    global taskassert_queue
+        #全局变量
+        global testcase_result
+        global taskassert_queue
 
-    #记录测试开始时间
-    start_time = getnowstamp()
-    start_now = getnowtime()
-    PrintLog('debug', '测试开始时间: %s', start_now)
+        #记录测试开始时间
+        start_time = getnowstamp()
+        start_now = getnowtime()
+        PrintLog('debug', '测试开始时间: %s', start_now)
 
-    #获取待执行用例
-    TestIds = getModTestid(runmode)
-    PrintLog('debug', '待执行用例: %s', TestIds)
+        #获取待执行用例
+        TestIds = getModTestid(runmode)
+        PrintLog('debug', '待执行用例: %s', TestIds)
 
-    #启动执行子线程
-    PrintLog('debug', 'Starting thread: TestRunThread')
-    Thread_runO = TestRunThread('TestRunThread', tresult_qlock, TestIds)
-    Thread_runO.setDaemon(True)
-    Thread_runO.start()
-    time.sleep(1)
+        #启动执行子线程
+        PrintLog('debug', 'Starting thread: TestRunThread')
+        Thread_runO = TestRunThread('TestRunThread', tresult_qlock, TestIds)
+        Thread_runO.setDaemon(True)
+        Thread_runO.start()
+        time.sleep(1)
 
-    #启动断言子线程
-    PrintLog('debug', 'Starting thread: TestAssertThread')
-    Thread_assertO = TestAssertThread('TestAssertThread', tresult_qlock)
-    Thread_assertO.setDaemon(True)
-    Thread_assertO.start()
+        #启动断言子线程
+        PrintLog('debug', 'Starting thread: TestAssertThread')
+        Thread_assertO = TestAssertThread('TestAssertThread', tresult_qlock)
+        Thread_assertO.setDaemon(True)
+        Thread_assertO.start()
 
 
-    #等待断言子线程结束
-    PrintLog('debug', '等待子线程TestRunThread结束...')
-    Thread_runO.join()
-    PrintLog('debug', '子线程：TestRunThread结束')
+        #等待断言子线程结束
+        PrintLog('debug', '等待子线程TestRunThread结束...')
+        Thread_runO.join()
+        PrintLog('debug', '子线程：TestRunThread结束')
 
-    PrintLog('debug', '等待子线程TestAssertThread结束...')
-    Thread_assertO.join()
-    PrintLog('debug', '子线程：TestAssertThread结束')
+        PrintLog('debug', '等待子线程TestAssertThread结束...')
+        Thread_assertO.join()
+        PrintLog('debug', '子线程：TestAssertThread结束')
 
-    #等待任务队列为空
-    #taskassert_queue.join()
+        #等待任务队列为空
+        #taskassert_queue.join()
 
-    #测试结束时间
-    end_time = getnowstamp()
-    end_now = getnowtime()
-    PrintLog('debug', '测试结束时间: %s', end_now)
+        #测试结束时间
+        end_time = getnowstamp()
+        end_now = getnowtime()
+        PrintLog('debug', '测试结束时间: %s', end_now)
 
-    #生成测试报告
-    PrintLog('debug', 'testcase_result: %s', testcase_result)
-    HtmlReportO = HtmlReport(testcase_result, end_time-start_time)
-    HtmlReportO.generate_html()
+        #生成测试报告
+        PrintLog('debug', 'testcase_result: %s', testcase_result)
+        HtmlReportO = HtmlReport(testcase_result, end_time-start_time)
+        HtmlReportO.generate_html()
+
+    except ValueError as e:
+        print unicode(e.args[0])
+    except Exception as e:
+        print unicode(e)

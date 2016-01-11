@@ -92,6 +92,7 @@ def getnowstamp():
     '''
     return time.time()
 
+
 def ch2unicode(data):
     '''
     转换为unicode
@@ -105,6 +106,7 @@ def ch2unicode(data):
     except UnicodeDecodeError:
         data = unicode(data, 'gbk')
     return data
+
 
 def PrintLog(loglevel, fixd, *data):
     '''
@@ -141,6 +143,20 @@ def PrintLog(loglevel, fixd, *data):
         getattr(loggerfile, loglevel)(fixdf % tuple(valuesf))
         if iscontrol != 0:
             getattr(loggercontrol, loglevel)(fixdc % tuple(valuesc))
+
+
+class MyError(Exception):
+    '''
+    自定义异常类
+    '''
+    def __init__(self, value):
+        self.value = value
+
+    def __str__(self):
+        return repr(self.value)
+
+
+
 
 if __name__ == '__main__':
     pass

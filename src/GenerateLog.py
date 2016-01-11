@@ -45,4 +45,3 @@ class GenerateTxtLog(object):
         # bound
         loggercontrol.addHandler(control)    #日志输出到控制台
         loggerfile.addHandler(logfile)    #日志输出到文件
-

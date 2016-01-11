@@ -1,9 +1,9 @@
 #coding=utf8
 #######################################################
-#filename:ModCCS.py
-#author:defias
-#date:2015-12
-#function: CCS相关 test
+#filename: ModCCS.py
+#author: defias
+#date: 2015-12
+#function: CCS相关
 #######################################################
 from Global import *
 from public import EncryptLib
@@ -12,6 +12,7 @@ import Config
 import uuid
 import json
 import json_tools
+import re
 
 class ModCCS(object):
     def __init__(self):
@@ -49,6 +50,27 @@ class ModCCS(object):
         except:
             return 0
         return timeoutdelay
+
+    def getRuncaseEnvironment_MQ(self, TestEnvironment):
+        '''
+        获取环境信息:MQ信息
+        '''
+        MQhost = Config.ConfigIni.get_TestEnvironment_Info(TestEnvironment, 'MQhost')
+        MQport = Config.ConfigIni.get_TestEnvironment_Info(TestEnvironment, 'MQport')
+        MQusername = Config.ConfigIni.get_TestEnvironment_Info(TestEnvironment, 'MQusername')
+        MQpasswd = Config.ConfigIni.get_TestEnvironment_Info(TestEnvironment, 'MQpasswd')
+        MQvhost = Config.ConfigIni.get_TestEnvironment_Info(TestEnvironment, 'MQvhost')
+        MQinfo =  (MQhost, int(MQport), MQusername, MQpasswd, MQvhost)
+        return MQinfo
+
+    def getRuncaseEnvironment_HTTP(self, TestEnvironment):
+        '''
+        获取环境信息:HTTP信息
+        '''
+        HTTPhost = Config.ConfigIni.get_TestEnvironment_Info(TestEnvironment, 'HTTPhost')
+        HTTPport = Config.ConfigIni.get_TestEnvironment_Info(TestEnvironment, 'HTTPport')
+        HTTPinfo = (HTTPhost, int(HTTPport))
+        return HTTPinfo
 
     def parseParamsForDriver(self, params):
         '''
@@ -103,57 +125,133 @@ class ModCCS_Assert(object):
     def __init__(self):
         pass
 
+    def parseExpectationDict(self, ExpectationDict):
+        '''
+        提取加密字段数据
+        '''
+        prefix = r'^BASE64_'  #加密字段以BASE64_开头
+        prelen = len(prefix)-1
+        pattern = re.compile(prefix)
+        ExpDict = dict()
+        BASE64_ExpDict = dict()
+        PrintLog('debug', '[%s] 提取加密字段数据from: ExpectationDict: %s', threading.currentThread().getName(), ExpectationDict)
+        for table in ExpectationDict:
+            TableValue = ExpectationDict[table]
+            BASE64_ExpDict_Value = {key:TableValue[key] for key in TableValue if pattern.match(key)}
+            BASE64_ExpDict_Value_outpre = {key[prelen:]:BASE64_ExpDict_Value[key] for key in BASE64_ExpDict_Value}
+            BASE64_ExpDict[table] = BASE64_ExpDict_Value_outpre
+
+            ExpDict_Value = {key:TableValue[key] for key in TableValue if key not in BASE64_ExpDict_Value}
+            ExpDict[table] = ExpDict_Value
+        return ExpDict, BASE64_ExpDict
+
+    def checkExpDict(self, ExpDict, unique_id):
+        '''
+        检查明文字段
+        '''
+        for table in ExpDict:
+            fields = ExpDict[table].keys()
+            values = ExpDict[table].values()
+            if not fields: continue
+            PrintLog('debug', '[%s] 检查明文字段数据: 用例中读取的: fields: %s\nvalues: %s', threading.currentThread().getName(), fields, values)
+
+            query_where = (unique_id,)
+            query_fields = ''
+            for field in fields:
+                query_fields = query_fields + field + ', '
+            query_str = 'SELECT ' + query_fields[:-2] + ' FROM ' + table + ' WHERE uid = %s'
+            PrintLog('debug', '[%s] 执行SQL查询: query_str: %s %s', threading.currentThread().getName(), query_str, query_where)
+            self.curMy.execute(query_str, query_where)
+            self.obj.connMy.commit()
+            result = self.curMy.fetchone()  #取查询结果第一条记录
+            if result is None:
+                raise AssertionError, u'%s表中查询结果为空' % table
+
+            expvalues = tuple(values)
+            PrintLog('debug', '[%s] 检查明文字段数据: result: %s\nexpvalues: %s', threading.currentThread().getName(), result, expvalues)
+            for i in range(len(fields)):
+                expvalue = expvalues[i]
+                iresult = result[i]
+                if type(expvalue) is dict:
+                    try:
+                        j_iresult = json_tools.loads(iresult)
+                    except:
+                        raise AssertionError, u'_检查明文字段: %s字段数据与期望数据不一致' % fields[i]
+                    for key in expvalue:
+                        assert key in j_iresult, u'检查明文字段: %s字段中无:%s字段' % (fields[i], key)
+                        if type(expvalue[key]) is dict:
+                            PrintLog('debug', '[%s] _检查明文字段数据: j_iresult[%s]: %s  expvalue[%s]: %s', threading.currentThread().getName(), key, j_iresult[key], key, expvalue[key])
+                            assert json_tools.diff(json.dumps(j_iresult[key]), json.dumps(expvalue[key])) == [], u'_检查明文字段: %s字段中:%s字段数据与期望数据不一致' % (fields[i], key)
+                        else:
+                            PrintLog('debug', '[%s] 检查明文字段数据: j_iresult[%s]: %s  expvalue[%s]: %s', threading.currentThread().getName(), key, j_iresult[key], key, expvalue[key])
+                            assert j_iresult[key] == expvalue[key], u'检查明文字段: %s字段中:%s字段数据与期望数据不一致' % (fields[i], key)
+                else:
+                    PrintLog('debug', '[%s] 检查明文%s字段数据: iresult: %s  expvalue: %s', threading.currentThread().getName(), fields[i], iresult, expvalue)
+                    assert iresult == expvalue, u'检查明文字段数据: %s字段数据与期望数据不一致' % fields[i]
+
+    def checkBASE64_ExpDict(self, BASE64_ExpDict, unique_id):
+        '''
+        检查BASE64加密字段
+        '''
+        for table in BASE64_ExpDict:
+            fields = BASE64_ExpDict[table].keys()
+            values = BASE64_ExpDict[table].values()
+            if not fields: continue
+            PrintLog('debug', '[%s] 检查BASE64加密字段数据: 用例中读取的fields: %s\nvalues: %s', threading.currentThread().getName(), fields, values)
+
+            query_where = (unique_id,)
+            query_fields = ''
+            for field in fields:
+                query_fields = query_fields + field + ', '
+            query_str = 'SELECT ' + query_fields[:-2] + ' FROM ' + table + ' WHERE uid = %s'
+            PrintLog('debug', '[%s] 执行SQL查询: query_str: %s %s', threading.currentThread().getName(), query_str, query_where)
+            self.curMy.execute(query_str, query_where)
+            self.obj.connMy.commit()
+            result = self.curMy.fetchone()  #取查询结果第一条记录
+            if result is None:
+                raise AssertionError, u'%s表中查询结果为空' % table
+
+            expvalues = tuple(values)
+            for i in range(len(fields)):
+                expvalue = expvalues[i]
+                de_result = EncryptLib.getde_base64(result[i])
+                PrintLog('debug', '[%s] 检查BASE64加密字段数据: de_result: %s\nexpvalue: %s', threading.currentThread().getName(), de_result, expvalue)
+                if type(expvalue) is dict:
+                    try:
+                        de_resultDict = json_tools.loads(de_result)
+                        PrintLog('debug', '[%s] 检查BASE64加密字段数据: de_resultDict: %s', threading.currentThread().getName(), de_resultDict)
+                    except:
+                        raise AssertionError, u'_检查BASE64加密字段: %s字段数据与期望数据不一致' % fields[i]
+
+                    for key in expvalue:
+                        assert key in de_resultDict, u'检查BASE64加密字段: %s字段中无:%s字段' % (fields[i], key)
+                        if type(expvalue[key]) is dict:
+                            PrintLog('debug', '[%s] _检查BASE64加密字段数据: de_resultDict[%s]: %s  expvalue[%s]: %s', threading.currentThread().getName(), key, de_resultDict[key], key, expvalue[key])
+                            assert json_tools.diff(json.dumps(de_resultDict[key]), json.dumps(expvalue[key])) == [], u'_检查BASE64加密字段: %s字段中:%s字段数据与期望数据不一致' % (fields[i], key)
+                        else:
+                            PrintLog('debug', '[%s] 检查BASE64加密字段数据: de_resultDict[%s]: %s  expvalue[%s]: %s', threading.currentThread().getName(), key, de_resultDict[key], key, expvalue[key])
+                            assert de_resultDict[key] == expvalue[key], u'检查BASE64加密字段: %s字段中:%s字段数据与期望数据不一致' % (fields[i], key)
+                else:
+                    PrintLog('debug', '[%s] 检查BASE64加密%s字段数据: de_result: %s  expvalue: %s', threading.currentThread().getName(), fields[i], de_result, expvalue)
+                    assert de_result == expvalue, u'检查BASE64加密字段: %s字段数据与期望数据不一致' % fields[i]
+
+
     def CCSAssert(self, obj, ExpectationDict, unique_id):
         '''
         CCS断言入口
         '''
         try:
-            obj.connMy.select_db(obj.dbnameMy)   #选择数据库
-            curMy = obj.connMy.cursor()
+            self.obj = obj
+            self.obj.connMy.select_db(self.obj.dbnameMy)   #选择数据库
+            self.curMy = self.obj.connMy.cursor()
+            ExpDict, BASE64_ExpDict = self.parseExpectationDict(ExpectationDict)
+            PrintLog('debug', '[%s] 提取加密字段数据: ExpDict: %s\nBASE64_ExpDict: %s', threading.currentThread().getName(), ExpDict, BASE64_ExpDict)
 
-            sum_infoExpDict = ExpectationDict.pop('sum_info')
-            for table in ExpectationDict.keys():
-                fields = ExpectationDict[table].keys()
-                values = ExpectationDict[table].values()
+            #检查明文数据
+            self.checkExpDict(ExpDict, unique_id)
 
-                query_where = (unique_id,)
-                query_fields = 'sum_info, request, result,'
-                for field in fields:
-                    query_fields = query_fields + field + ','
-                query_str = 'SELECT ' + query_fields[:-1] + ' FROM ' + table + ' WHERE uid = %s'
-                PrintLog('debug', '[%s] 执行SQL查询: query_str: %s %s', threading.currentThread().getName(), query_str, query_where)
-                curMy.execute(query_str, query_where)
-                obj.connMy.commit()
-                result = curMy.fetchone()  #取查询结果第一条记录
-                PrintLog('debug', '[%s] 数据库查询结果result: %s', threading.currentThread().getName(), result)
-
-                #特殊加密字段
-                if result == None:
-                    return 'FAIL',u'数据库：%s 查询结果为空' % table
-
-                result = list(result)
-                sum_info = EncryptLib.getde_base64(result.pop(0))
-                request = EncryptLib.getde_base64(result.pop(0))
-                resultresult = EncryptLib.getde_base64(result.pop(0))
-                PrintLog('debug', '[%s] 数据库表中sum_info字段值: %s', threading.currentThread().getName(), str(sum_info).rstrip())
-                PrintLog('debug', '[%s] 数据库表中request字段值: %s', threading.currentThread().getName(), str(request).rstrip())
-                PrintLog('debug', '[%s] 数据库表中result字段值: %s', threading.currentThread().getName(), str(resultresult).rstrip())
-
-                result = tuple(result)
-                expvalues = tuple(values)
-                PrintLog('debug', '[%s] 比较数据库表中数据与期望数据: result: %s\nexpvalues: %s', threading.currentThread().getName(), result, expvalues)
-                assert result == expvalues, u'检查入库数据不正确'
-
-                #检查sum_info中的各字段
-                sum_infoDict = json_tools.loads(sum_info)
-                for key in sum_infoExpDict:
-                    assert key in sum_infoDict, u'sum_info中无期望的字段: {}'.format(key)
-
-                sum_infoDict = {key:sum_infoDict[key] for key in sum_infoExpDict}
-
-                PrintLog('debug', '[%s] 比较数据库表中sum_info字段部分数据: sum_infoExpDict: %s\nsum_infoDict: %s', threading.currentThread().getName(), sum_infoExpDict, sum_infoDict)
-                assert json_tools.diff(sum_infoExpDict, sum_infoDict) == [], u'检查sum_info中数据有误'
-
+            #检查base64加密数据
+            self.checkBASE64_ExpDict(BASE64_ExpDict, unique_id)
             return 'PASS',
 
         except AssertionError as e:

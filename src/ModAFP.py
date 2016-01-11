@@ -11,6 +11,7 @@ import threading
 import Config
 import MySQLdb
 import json_tools
+import re
 
 class ModAFP(object):
     def __init__(self):
@@ -62,21 +63,57 @@ class ModAFP(object):
             return 0
         return timeoutdelay
 
-    def parseExpForAssert(self, Expectation, TestData):
+    def getRuncaseEnvironment_MQ(self, TestEnvironment):
+        '''
+        获取环境信息:MQ信息
+        '''
+        MQhost = Config.ConfigIni.get_TestEnvironment_Info(TestEnvironment, 'MQhost')
+        MQport = Config.ConfigIni.get_TestEnvironment_Info(TestEnvironment, 'MQport')
+        MQusername = Config.ConfigIni.get_TestEnvironment_Info(TestEnvironment, 'MQusername')
+        MQpasswd = Config.ConfigIni.get_TestEnvironment_Info(TestEnvironment, 'MQpasswd')
+        MQvhost = Config.ConfigIni.get_TestEnvironment_Info(TestEnvironment, 'MQvhost')
+        MQinfo =  (MQhost, int(MQport), MQusername, MQpasswd, MQvhost)
+        return MQinfo
+
+    def getRuncaseEnvironment_TABLE(self, TestEnvironment):
+        '''
+        获取环境信息:TABLE信息
+        '''
+        TABLEhost = Config.ConfigIni.get_TestEnvironment_Info(TestEnvironment, 'TABLEhost')
+        TABLEport = Config.ConfigIni.get_TestEnvironment_Info(TestEnvironment, 'TABLEport')
+        TABLEusername = Config.ConfigIni.get_TestEnvironment_Info(TestEnvironment, 'TABLEusername')
+        TABLEpassword = Config.ConfigIni.get_TestEnvironment_Info(TestEnvironment, 'TABLEpassword')
+        TABLEdbname = Config.ConfigIni.get_TestEnvironment_Info(TestEnvironment, 'TABLEdbname')
+        TABLEinfo =  (TABLEhost, int(TABLEport), TABLEusername, TABLEpassword, TABLEdbname)
+        return TABLEinfo
+
+    def parseExpForAssert(self, Expectation):
         '''
         解析期望结果数据
         '''
         try:
-            if Expectation == '' or TestData == '':
+            if Expectation == '':
                 raise ValueError
             else:
                 ExpectationDict = json.loads(Expectation)
-                TestDataDict = json.loads(TestData)
-            return ExpectationDict,TestDataDict
+            return ExpectationDict
         except Exception as e:
             PrintLog('exception',e)
             return False
 
+    def parseMockDataForDriver(self, MockData):
+        '''
+        解析MockData
+        '''
+        try:
+            if MockData == '':
+                raise ValueError
+            else:
+                MockDataDict = json.loads(MockData)
+            return MockDataDict
+        except Exception as e:
+            PrintLog('exception',e)
+            return False
 
 
 class ModAFP_Assert(object):
@@ -86,96 +123,169 @@ class ModAFP_Assert(object):
     def __init__(self):
         pass
 
-    def _checkdbdata(self, obj, unique, ExpectationDict, TestDataDict):
+    def checkresponse(self, response, HTTPEXP):
         '''
-        检查数据库表中数据
+        检查响应
         '''
-        try:
-            obj.connMy.select_db(obj.dbnameMy)   #选择数据库
-            curMy = obj.connMy.cursor()
+        response.encoding = response.apparent_encoding
+        assert response.status_code == 200, u'HTTP响应码错误: ErrorResponseCode: %s' % str(response.status_code)
 
-            ResultJsonExpDict = ExpectationDict.pop('ResultJson')
-            for table in ExpectationDict.keys():
-                fields = ExpectationDict[table].keys()
-                values = ExpectationDict[table].values()
+        responseContent =  unicode(response.content, "utf-8")
+        responseContentDict = json.loads(responseContent)
 
-                query_where = (unique,)
-                query_fields = 'resultJson,ReqJson,'
-                for field in fields:
-                    query_fields = query_fields + field + ','
-                query_str = 'SELECT ' + query_fields[:-1] + ' FROM ' + table + ' WHERE UniqueID = %s'
-                PrintLog('debug', '[%s] 执行SQL查询: query_str: %s %s', threading.currentThread().getName(), query_str, query_where)
-                curMy.execute(query_str, query_where)
-                obj.connMy.commit()
-                result = curMy.fetchone()  #取查询结果第一条记录
-                PrintLog('debug', '[%s] 数据库查询结果result: %s', threading.currentThread().getName(), result)
+        #获取唯一标示号
+        if 'unique' not in responseContentDict:
+            raise AssertionError, u'检查响应: 响应responseContentDict中无唯一标示号unique'
+        unique_id = responseContentDict['unique']
+        PrintLog('debug','[%s] 检查响应: unique_id: %s\nHTTPEXP: %s\nresponseContentDict: %s', threading.currentThread().getName(), unique_id, HTTPEXP, responseContentDict)
 
-                #特殊加密字段
-                if result == None:
-                    return 'FAIL',u'数据库：%s 查询结果为空' % table
+        if HTTPEXP is not None:
+            assert type(HTTPEXP) is dict , u'HTTPEXP数据格式错误：type of HTTPEXP is %s' % type(HTTPEXP)
+            for key in HTTPEXP:
+                assert key in responseContentDict, u'检查响应: 响应responseContentDict中无%s字段' % key
+                assert responseContentDict[key] == HTTPEXP[key], u'检查响应: 响应responseContentDict中%s字段值与期望数据不一致' % key
+        return unique_id
 
-                result = list(result)
-                resultJson = EncryptLib.getde_base64(result.pop(0))
-                ReqJson = EncryptLib.getde_base64(result.pop(0))
-                PrintLog('debug', '[%s] 数据库表中ReqJson字段值: %s', threading.currentThread().getName(), str(ReqJson).rstrip())
-                PrintLog('debug', '[%s] 数据库表中resultJson字段值: %s', threading.currentThread().getName(), str(resultJson).rstrip())
+    def checkExpDict(self, ExpDict, unique_id):
+        '''
+        检查明文字段
+        '''
+        for table in ExpDict:
+            fields = ExpDict[table].keys()
+            values = ExpDict[table].values()
+            if not fields: continue
+            PrintLog('debug', '[%s] 检查明文字段数据: 用例中读取的fields: %s\nvalues: %s', threading.currentThread().getName(), fields, values)
 
-                result = tuple(result)
-                expvalues = tuple(values)
-                PrintLog('debug', '[%s] 比较数据库表中数据与期望数据: result: %s\nexpvalues: %s', threading.currentThread().getName(), result, expvalues)
-                assert result == expvalues, u'检查入库数据不正确'
+            query_where = (unique_id,)
+            query_fields = ''
+            for field in fields:
+                query_fields = query_fields + field + ', '
+            query_str = 'SELECT ' + query_fields[:-2] + ' FROM ' + table + ' WHERE UniqueID = %s'
+            PrintLog('debug', '[%s] 执行SQL查询: query_str: %s %s', threading.currentThread().getName(), query_str, query_where)
+            self.curMy.execute(query_str, query_where)
+            self.obj.connMy.commit()
+            result = self.curMy.fetchone()  #取查询结果第一条记录
+            if result is None:
+                raise AssertionError, u'%s表中查询结果为空' % table
 
-                #检查请求数据
-                ReqJsonDict = json_tools.loads(ReqJson)
-                del ReqJsonDict['MsgBody']['UniqueID']   #去除UniqueID字段后进行比较
-                PrintLog('debug', '[%s] 比较数据库表中ReqJson字段数据: TestDataDict: %s\nReqJsonDict: %s', threading.currentThread().getName(), TestDataDict, ReqJsonDict)
-                assert json_tools.diff(TestDataDict, ReqJsonDict) == [], u'数据库表中ReqJson字段数据有误'
+            expvalues = tuple(values)
+            PrintLog('debug', '[%s] 检查明文字段数据: result: %s\nexpvalues: %s', threading.currentThread().getName(), result, expvalues)
+            for i in range(len(fields)):
+                expvalue = expvalues[i]
+                iresult = result[i]
+                if type(expvalue) is dict:
+                    try:
+                        j_iresult = json_tools.loads(iresult)
+                    except:
+                        raise AssertionError, u'_检查明文字段: %s字段数据与期望数据不一致' % fields[i]
+                    for key in expvalue:
+                        assert key in j_iresult, u'检查明文字段: %s字段中无:%s字段' % (fields[i], key)
+                        if type(expvalue[key]) is dict:
+                            PrintLog('debug', '[%s] _检查明文字段数据: j_iresult[%s]: %s  expvalue[%s]: %s', threading.currentThread().getName(), key, j_iresult[key], key, expvalue[key])
+                            assert json_tools.diff(json.dumps(j_iresult[key]), json.dumps(expvalue[key])) == [], u'_检查明文字段: %s字段中:%s字段数据与期望数据不一致' % (fields[i], key)
+                        else:
+                            PrintLog('debug', '[%s] 检查明文字段数据: j_iresult[%s]: %s  expvalue[%s]: %s', threading.currentThread().getName(), key, j_iresult[key], key, expvalue[key])
+                            assert j_iresult[key] == expvalue[key], u'检查明文字段: %s字段中:%s字段数据与期望数据不一致' % (fields[i], key)
+                else:
+                    PrintLog('debug', '[%s] 检查明文字段%s数据: iresult: %s  expvalue: %s', threading.currentThread().getName(), fields[i], iresult, expvalue)
+                    assert iresult == expvalue, u'检查明文字段数据: %s字段数据与期望数据不一致' % fields[i]
 
-                #检查ResultJson
-                resultJsonDict = json_tools.loads(resultJson)
-                del resultJsonDict['Messge']
-                del resultJsonDict['MsgBody']
-                PrintLog('debug', '[%s] 比较数据库表中resultJson字段部分数据: ResultJsonExpDict: %s\nresultJsonDict: %s', threading.currentThread().getName(), ResultJsonExpDict, resultJsonDict)
-                assert json_tools.diff(ResultJsonExpDict, resultJsonDict) == [], u'数据库表中ReqJson字段数据有误'
-                return 'PASS',
+    def checkBASE64_ExpDict(self, BASE64_ExpDict, unique_id):
+        '''
+        检查BASE64加密字段
+        '''
+        for table in BASE64_ExpDict:
+            fields = BASE64_ExpDict[table].keys()
+            values = BASE64_ExpDict[table].values()
+            if not fields: continue
+            PrintLog('debug', '[%s] 检查BASE64加密字段数据: 用例中读取的fields: %s\nvalues: %s', threading.currentThread().getName(), fields, values)
 
-        except AssertionError as e:
-            return 'FAIL',unicode(e.args[0])
-        except Exception as e:
-            PrintLog('exception',e)
-            return 'ERROR',unicode(e)
+            query_where = (unique_id,)
+            query_fields = ''
+            for field in fields:
+                query_fields = query_fields + field + ', '
+            query_str = 'SELECT ' + query_fields[:-2] + ' FROM ' + table + ' WHERE UniqueID = %s'
+            PrintLog('debug', '[%s] 执行SQL查询: query_str: %s %s', threading.currentThread().getName(), query_str, query_where)
+            self.curMy.execute(query_str, query_where)
+            self.obj.connMy.commit()
+            result = self.curMy.fetchone()  #取查询结果第一条记录
+            if result is None:
+                raise AssertionError, u'%s表中查询结果为空' % table
 
+            expvalues = tuple(values)
+            for i in range(len(fields)):
+                expvalue = expvalues[i]
+                de_result = EncryptLib.getde_base64(result[i])
+                PrintLog('debug', '[%s] 检查BASE64加密字段数据: de_result: %s\nexpvalue: %s', threading.currentThread().getName(), de_result, expvalue)
+                if type(expvalue) is dict:
+                    try:
+                        de_resultDict = json_tools.loads(de_result)
+                        PrintLog('debug', '[%s] 检查BASE64加密字段数据: de_resultDict: %s', threading.currentThread().getName(), de_resultDict)
+                    except:
+                        raise AssertionError, u'_检查BASE64加密字段: %s字段数据与期望数据不一致' % fields[i]
 
-    def AFPAssert(self, obj, response, ExpectationDict, TestDataDict):
+                    for key in expvalue:
+                        assert key in de_resultDict, u'检查BASE64加密字段: %s字段中无:%s字段' % (fields[i], key)
+                        if type(expvalue[key]) is dict:
+                            PrintLog('debug', '[%s] _检查BASE64加密字段数据: de_resultDict[%s]: %s  expvalue[%s]: %s', threading.currentThread().getName(), key, de_resultDict[key], key, expvalue[key])
+                            assert json_tools.diff(json.dumps(de_resultDict[key]), json.dumps(expvalue[key])) == [], u'_检查BASE64加密字段: %s字段中:%s字段数据与期望数据不一致' % (fields[i], key)
+                        else:
+                            PrintLog('debug', '[%s] 检查BASE64加密字段数据: de_resultDict[%s]: %s  expvalue[%s]: %s', threading.currentThread().getName(), key, de_resultDict[key], key, expvalue[key])
+                            assert de_resultDict[key] == expvalue[key], u'检查BASE64加密字段: %s字段中:%s字段数据与期望数据不一致' % (fields[i], key)
+                else:
+                    PrintLog('debug', '[%s] 检查BASE64加密字段%s数据: de_result: %s  expvalue: %s', threading.currentThread().getName(), fields[i], de_result, expvalue)
+                    assert de_result == expvalue, u'检查BASE64加密字段: %s字段数据与期望数据不一致' % fields[i]
+
+    def parseExpectationDict(self, ExpectationDict):
+        '''
+        提取加密字段和响应数据
+        '''
+        PrintLog('debug', '[%s] 提取加密字段和响应数据from: ExpectationDict: %s', threading.currentThread().getName(), ExpectationDict)
+        HTTPEXP = None
+        #提取响应数据
+        if 'HTTPEXP' in ExpectationDict:
+            HTTPEXP = ExpectationDict.pop('HTTPEXP')
+
+        #提取加密字段数据
+        prefix = r'^BASE64_'  #加密字段以BASE64_开头
+        prelen = len(prefix)-1
+        pattern = re.compile(prefix)
+        ExpDict = dict()
+        BASE64_ExpDict = dict()
+
+        for table in ExpectationDict:
+            TableValue = ExpectationDict[table]
+            BASE64_ExpDict_Value = {key:TableValue[key] for key in TableValue if pattern.match(key)}
+            BASE64_ExpDict_Value_outpre = {key[prelen:]:BASE64_ExpDict_Value[key] for key in BASE64_ExpDict_Value}
+            BASE64_ExpDict[table] = BASE64_ExpDict_Value_outpre
+
+            ExpDict_Value = {key:TableValue[key] for key in TableValue if key not in BASE64_ExpDict_Value}
+            ExpDict[table] = ExpDict_Value
+        return HTTPEXP, ExpDict, BASE64_ExpDict
+
+    def AFPAssert(self, obj, response, ExpectationDict):
         '''
         AFP断言入口
         '''
         try:
+            self.obj = obj
+            self.obj.connMy.select_db(self.obj.dbnameMy)   #选择数据库
+            self.curMy = self.obj.connMy.cursor()
+            HTTPEXP, ExpDict, BASE64_ExpDict = self.parseExpectationDict(ExpectationDict)
+            PrintLog('debug', '[%s] 提取加密字段数据: HTTPEXP: %s\nExpDict: %s\nBASE64_ExpDict: %s', threading.currentThread().getName(), HTTPEXP, ExpDict, BASE64_ExpDict)
+
             #检查响应
-            response.encoding = response.apparent_encoding
-            assert response.status_code == 200, u'HTTP响应码错误'
+            unique_id = self.checkresponse(response, HTTPEXP)
 
-            responseContent =  unicode(response.content, "utf-8")
-            responseContentDict = json.loads(responseContent)
+            #检查明文数据
+            self.checkExpDict(ExpDict, unique_id)
 
-            Expectation_HTTPResponse = ExpectationDict['HTTPResponse']
-            Expectation_fieltlist = Expectation_HTTPResponse.keys()
-            Expectation_valuelist = Expectation_HTTPResponse.values()
-
-            PrintLog('debug','[%s] 比较响应数据与期望数据各字段: Expectation_HTTPResponse: %s responseContentDict: %s', threading.currentThread().getName(), Expectation_HTTPResponse, responseContentDict)
-            for i in xrange(len(Expectation_fieltlist)):
-                assert Expectation_valuelist[i] == responseContentDict[Expectation_fieltlist[i]], u'响应%s字段值不正确' % Expectation_fieltlist[i]
-
-            unique = responseContentDict['unique']      #获取唯一标示号
-            PrintLog('debug', '[%s] 唯一标示号unique: %s', threading.currentThread().getName(), unique)
-            del ExpectationDict['HTTPResponse']
-            return self._checkdbdata(obj, unique, ExpectationDict, TestDataDict)
+            #检查base64加密数据
+            self.checkBASE64_ExpDict(BASE64_ExpDict, unique_id)
+            return 'PASS',
 
         except AssertionError as e:
             return 'FAIL',unicode(e.args[0])
         except Exception as e:
             PrintLog('exception',e)
             return 'ERROR',unicode(e)
-
-
-

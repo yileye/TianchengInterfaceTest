@@ -84,12 +84,12 @@ class Interface_Assert(object):
         return ModUBAS_AssertO.UBASAssert(self, response, tablemaxid, ExpectationDict)
 
 
-    def Assert_AFP(self, response, ExpectationDict, TestDataDict):
+    def Assert_AFP(self, response, ExpectationDict):
         '''
         AFP接口断言
         '''
         ModAFP_AssertO = ModAFP.ModAFP_Assert()
-        return ModAFP_AssertO.AFPAssert(self, response, ExpectationDict, TestDataDict)
+        return ModAFP_AssertO.AFPAssert(self, response, ExpectationDict)
 
     def Assert_CCS(self, ExpectationDict, unique_id):
         '''

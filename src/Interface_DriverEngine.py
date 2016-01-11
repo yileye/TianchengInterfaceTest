@@ -3,7 +3,7 @@
 #filename:Interface_DriverEngine.py
 #author:defias
 #date:2015-7
-#function:
+#function:Driver Engine
 #######################################################
 from Global import *
 import threading
@@ -14,6 +14,8 @@ import ModUPSLabel
 import ModUBAS
 import ModAFP
 import ModCCS
+import Interface_Mock
+import time
 
 
 class Interface_DriverEngine():
@@ -24,6 +26,43 @@ class Interface_DriverEngine():
         global taskassert_queue
         self.taskassert_queue = taskassert_queue
         self.TestCaseO = TestCase.TestCaseXls
+
+    def StartMock(self, MockData, ModO, TestEnvironment):
+        '''
+        开启Mock线程
+        '''
+        if MockData != '':
+            PrintLog('debug', '[%s] 启动MOCK服务子线程， MockData: %s', threading.currentThread().getName(), MockData)
+            StartResult = Interface_Mock.StartMockServer(MockData, ModO, TestEnvironment)
+            if StartResult is False:
+                return False
+
+            #确保数据插入子线程结束
+            if 'TABLE' in StartResult:
+                TABLEThreadO = StartResult['TABLE']
+                if TABLEThreadO.isAlive():
+                    PrintLog('debug', '[%s] 等待TABLEThreadO线程完成...', threading.currentThread().getName())
+                    TABLEThreadO.join()
+            return StartResult
+        return False
+
+    def EndMock(self, MockData, StartResult):
+        '''
+        结束Mock线程
+        '''
+        if MockData != '':
+            PrintLog('debug', '[%s] 结束MOCK服务子线程， StartResult: %s', threading.currentThread().getName(), StartResult)
+            if 'MQMOCK' in StartResult:
+                MQMockThreadO = StartResult['MQMOCK']
+                if MQMockThreadO.isAlive():
+                    PrintLog('debug', '[%s] 结束MQMockThreadO线程', threading.currentThread().getName())
+                    MQMockThreadO.connection.close()
+
+            if 'HTTPMOCK' in StartResult:
+                HTTPMockThreadO = StartResult['HTTPMOCK']
+                if HTTPMockThreadO.isAlive():
+                    PrintLog('debug', '[%s] 结束HTTPMockThreadO线程', threading.currentThread().getName())
+                    HTTPMockThreadO.myhttpd.socket.close()
 
     def RunUBASCase(self, sheet, testid, TestData, TestEnvironment):
         '''
@@ -51,10 +90,10 @@ class Interface_DriverEngine():
         DriverO = Interface_Driver.Interface_Http(url)
         DriverResult = DriverO.post(headers, TestData)  #执行用例
         PrintLog('debug', '[%s] 执行结果:DriverResult:%s', threading.currentThread().getName(), DriverResult)
-        if DriverResult is False:
-            return False
 
         #装载任务参数
+        if DriverResult is False:
+            return False
         taskargs = DriverResult,TableMaxid
         return timeouttask, timeoutdelay, taskargs
 
@@ -75,10 +114,10 @@ class Interface_DriverEngine():
         DriverO = Interface_Driver.Interface_Http(url)
         DriverResult = DriverO.post(headers, TestData)  #执行用例
         PrintLog('debug', '[%s] 执行结果:DriverResult:%s', threading.currentThread().getName(), DriverResult)
-        if DriverResult is False:
-            return False
 
         #装载任务参数
+        if DriverResult is False:
+            return False
         taskargs = DriverResult
         return timeouttask, timeoutdelay, taskargs
 
@@ -109,14 +148,14 @@ class Interface_DriverEngine():
         DriverO = Interface_Driver.Interface_DoData(dbinfo)
         DriverResult = DriverO.insert(TestData, function)    #执行用例
         PrintLog('debug', '[%s] 执行结果:DriverResult:%s', threading.currentThread().getName(), DriverResult)
-        if DriverResult is False:
-            return False
 
         #装载任务参数
+        if DriverResult is False:
+            return False
         taskargs = DriverResult
         return timeouttask, timeoutdelay, taskargs
 
-    def RunAFPCase(self, sheet, testid, TestData, TestEnvironment):
+    def RunAFPCase(self, sheet, testid, TestData, TestEnvironment, MockData):
         '''
         运行反欺诈接口用例
         '''
@@ -128,25 +167,30 @@ class Interface_DriverEngine():
         timeouttask = ModAFPO.getRuncaseEnvironment_Timeouttask(TestEnvironment)
         timeoutdelay = 0
 
+        #启动mock
+        StartResult = self.StartMock(MockData, ModAFPO, TestEnvironment)
+
         #驱动执行获得response
         PrintLog('debug', '[%s] 驱动执行:headers:%s TestData:%s', threading.currentThread().getName(), headers, TestData)
         DriverO = Interface_Driver.Interface_Http(url)
         DriverResult = DriverO.post(headers, TestData)     #执行用例
         PrintLog('debug', '[%s] 执行结果:DriverResult:%s', threading.currentThread().getName(), DriverResult)
-        if DriverResult is False:
-            return False
+
+        #结束mock
+        self.EndMock(MockData, StartResult)
 
         #装载任务参数
+        if DriverResult is False:
+            return False
         taskargs = DriverResult
         return timeouttask, timeoutdelay, taskargs
 
-    def RunCCSCase(self, sheet, testid, TestData, TestEnvironment):
+    def RunCCSCase(self, sheet, testid, TestData, TestEnvironment, MockData):
         '''
         运行授信接口用例
         '''
         ModCCSO = ModCCS.ModCCS()
         dbinfo = ModCCSO.getRuncaseEnvironment_db(TestEnvironment)
-        #function = ModCCSO.DriverCbFunction
 
         #读取超时时间
         timeouttask = ModCCSO.getRuncaseEnvironment_Timeouttask(TestEnvironment)
@@ -155,18 +199,23 @@ class Interface_DriverEngine():
         #测试数据解析
         TestData, unique_id = ModCCSO.parseParamsForDriver(TestData)
 
+        #启动mock
+        StartResult = self.StartMock(MockData, ModCCSO, TestEnvironment)
+
         #驱动执行获得返回的唯一userid
-        PrintLog('debug', '[%s] 驱动执行:TestData:%s', threading.currentThread().getName(), TestData)
+        PrintLog('debug', '[%s] 驱动执行:TestData:%s\nunique_id: %s', threading.currentThread().getName(), TestData, unique_id)
         DriverO = Interface_Driver.Interface_DoData(dbinfo)
         DriverResult = DriverO.insert(TestData)    #执行用例
         PrintLog('debug', '[%s] 执行结果:DriverResult:%s', threading.currentThread().getName(), DriverResult)
-        if DriverResult is False:
-            return False
+
+        #结束mock
+        self.EndMock(MockData, StartResult)
 
         #装载任务参数
+        if DriverResult is False:
+            return False
         taskargs = unique_id
         return timeouttask, timeoutdelay, taskargs
-
 
     def RunTestCase(self, sheet, testid):
         '''
@@ -177,6 +226,7 @@ class Interface_DriverEngine():
             TestType = self.TestCaseO.get_TestType(sheet, testid)
             TestData = self.TestCaseO.get_TestData(sheet, testid)
             TestEnvironment = self.TestCaseO.get_TestEnvironment(sheet, testid)
+            MockData = self.TestCaseO.get_MockData(sheet, testid)
 
             #执行用例
             if u'数据回流接口' == TestType:
@@ -189,10 +239,10 @@ class Interface_DriverEngine():
                 RunResult = self.RunUPSCase(sheet, testid, TestData, TestEnvironment)
 
             elif u'反欺诈接口' == TestType:
-                RunResult = self.RunAFPCase(sheet, testid, TestData, TestEnvironment)
+                RunResult = self.RunAFPCase(sheet, testid, TestData, TestEnvironment, MockData)
 
             elif u'授信接口' == TestType:
-                RunResult = self.RunCCSCase(sheet, testid, TestData, TestEnvironment)
+                RunResult = self.RunCCSCase(sheet, testid, TestData, TestEnvironment, MockData)
 
             else:
                 PrintLog('debug', 'TestType Value is Error')
