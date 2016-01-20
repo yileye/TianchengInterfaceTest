@@ -6,6 +6,7 @@
 #function: Mock Thread
 #######################################################
 from Global import *
+import Global
 import Interface_Driver
 import Interface_MQServer
 import Interface_HttpServer
@@ -17,45 +18,47 @@ def StartMockServer(MockData, ModO, TestEnvironment):
     '''
     try:
         StartResult = {}
-        MockDataDict = ModAFPO.parseMockDataForDriver(MockData)
+        MockDataDict = ModO.parseMockDataForDriver(MockData)
+        PrintLog('debug', '[%s] MockData解析结果MockDataDict: %s', threading.currentThread().getName(), MockDataDict)
 
         #启动MQ MOCK服务
         if 'MQMOCK' in MockDataDict:
             #获取数据
             MQMockData = MockDataDict['MQMOCK']
-            MQinfo = ModO.getRuncaseEnvironment_MQ(TestEnvironment)
+            if MQMockData != {}:
+                MQinfo = ModO.getRuncaseEnvironment_MQ(TestEnvironment)
 
-            #开启线程
-            PrintLog('debug', '[%s] 开启MQMockThread线程', threading.currentThread().getName())
-            MQMockThreadO = MQMockThread('MQMockThread', MQMockData, MQinfo)
-            MQMockThreadO.setDaemon(True)
-            MQMockThreadO.start()
-            StartResult['MQMOCK'] = MQMockThreadO
+                #开启线程
+                PrintLog('debug', '[%s] 开启MQMockThread线程: MQMockData:%s\nMQinfo:%s', threading.currentThread().getName(), MQMockData, MQinfo)
+                MQMockThreadO = MQMockThread('MQMockThread', MQMockData, MQinfo)
+                MQMockThreadO.setDaemon(True)
+                MQMockThreadO.start()
+                StartResult['MQMOCK'] = MQMockThreadO
 
         #启动HTTP MOCK服务
         if 'HTTPMOCK' in MockDataDict:
             HTTPMockData = MockDataDict['HTTPMOCK']
-            HTTPinfo = ModO.getRuncaseEnvironment_HTTP(TestEnvironment)
-
-            #开启线程
-            PrintLog('debug', '[%s] 开启HTTPMockThread线程', threading.currentThread().getName())
-            HTTPMockThreadO = HTTPMockThread('HTTPMockThread', HTTPMockData, HTTPinfo)
-            HTTPMockThreadO.setDaemon(True)
-            HTTPMockThreadO.start()
-            StartResult['MQMOCK'] = HTTPMockThreadO
+            if HTTPMockData != {}:
+                HTTPinfo = ModO.getRuncaseEnvironment_HTTP(TestEnvironment)
+                #开启线程
+                PrintLog('debug', '[%s] 开启HTTPMockThread线程: HTTPMockData: %s\nHTTPinfo:%s', threading.currentThread().getName(), HTTPMockData, HTTPinfo)
+                HTTPMockThreadO = HTTPMockThread('HTTPMockThread', HTTPMockData, HTTPinfo)
+                HTTPMockThreadO.setDaemon(True)
+                HTTPMockThreadO.start()
+                StartResult['HTTPMOCK'] = HTTPMockThreadO
 
         #数据插入INSERT TABLE服务
         if 'TABLE' in MockDataDict:
-            TABLEData = MockDataDict['TABLE']
-            TABLEinfo = ModO.getRuncaseEnvironment_TABLE(TestEnvironment)
+            TABLEData = MockDataDict ['TABLE']
+            if TABLEData != {}:
+                TABLEinfo = ModO.getRuncaseEnvironment_TABLE(TestEnvironment)
 
-            #开启线程
-            PrintLog('debug', '[%s] 开启TABLEThread线程', threading.currentThread().getName())
-            TABLEThreadO = TABLEThread('TABLEThread', TABLEData, TABLEinfo)
-            TABLEThreadO.setDaemon(True)
-            TABLEThreadO.start()
-            StartResult['TABLE'] = TABLEThreadO
-        time.sleep(1)
+                #开启线程
+                PrintLog('debug', '[%s] 开启TABLEThread线程:TABLEData:%s\nTABLEinfo:%s', threading.currentThread().getName(), TABLEData, TABLEinfo)
+                TABLEThreadO = TABLEThread('TABLEThread', TABLEData, TABLEinfo)
+                TABLEThreadO.setDaemon(True)
+                TABLEThreadO.start()
+                StartResult['TABLE'] = TABLEThreadO
         return StartResult
     except Exception as e:
         PrintLog('exception', e)
@@ -68,7 +71,7 @@ class MQMockThread(threading.Thread):
     '''
     def __init__(self, tdname, MQMockData, MQinfo):
         threading.Thread.__init__(self, name=tdname)
-        self.MQServerO = Interface_MQServer(MQMockData, MQinfo)
+        self.MQServerO = Interface_MQServer.MQServer(MQMockData, MQinfo)
         self.connection = self.MQServerO.connection
 
     def run(self):
@@ -76,6 +79,7 @@ class MQMockThread(threading.Thread):
             PrintLog('debug', '[%s] Start MQServer', threading.currentThread().getName())
             self.MQServerO.Start()
         except Exception as e:
+            Global.isMQMock = 'except'
             PrintLog('exception',e)
 
 
@@ -85,7 +89,7 @@ class HTTPMockThread(threading.Thread):
     '''
     def __init__(self, tdname, HTTPMockData, HTTPinfo):
         threading.Thread.__init__(self, name=tdname)
-        self.HTTPServerO = Interface_HttpServer(HTTPMockData, HTTPinfo)
+        self.HTTPServerO = Interface_HttpServer.HttpServer(HTTPMockData, HTTPinfo)
         self.myhttpd = self.HTTPServerO.myhttpd
 
     def run(self):
@@ -93,8 +97,8 @@ class HTTPMockThread(threading.Thread):
             PrintLog('debug', '[%s] Start HTTPServer', threading.currentThread().getName())
             self.HTTPServerO.Start()
         except Exception as e:
+            Global.isHTTPMock = 'except'
             PrintLog('exception',e)
-
 
 class TABLEThread(threading.Thread):
     '''
@@ -125,6 +129,7 @@ class TABLEThread(threading.Thread):
             DriverResult = DriverO.insert(parseTABLEData)    #插数据
             if DriverResult is not True:
                 raise MyError('TABLE: Insert TABLEData Error')
+            Global.isTABLE = True
         except Exception as e:
+            Global.isTABLE = 'except'
             PrintLog('exception',e)
-

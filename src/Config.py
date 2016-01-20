@@ -7,14 +7,24 @@
 #######################################################
 import configparser
 import codecs
+import os
 
 class ConfigIni(object):
     '''
     配置类
     '''
+    if not os.path.isfile('.\\Config.ini'):
+        raise Exception, u'Don\'t find config file: Config.ini'
     conf_path = '.\\Config.ini'
     confO = configparser.ConfigParser()
     confO.readfp(codecs.open(conf_path, "r", "utf-8"))
+
+    @classmethod
+    def get_TestcaseName(cls):
+        '''
+        获取测试用例名
+        '''
+        return cls.confO.get('DEFAULT', 'TestcaseName')
 
     @classmethod
     def get_runmode(cls):

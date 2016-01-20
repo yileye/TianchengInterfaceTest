@@ -6,12 +6,14 @@
 #function: http server
 #######################################################
 from Global import *
+import Global
 from BaseHTTPServer import HTTPServer, BaseHTTPRequestHandler
-from SocketServer import ThreadingTCPServer
+#from SocketServer import ThreadingTCPServer
 import urllib
 import json
 import re
 import threading
+import httplib
 
 class HttpServer(object):
     '''
@@ -19,17 +21,47 @@ class HttpServer(object):
     '''
     def __init__(self,HTTPMockData, HTTPinfo):
         self.HTTPMockData = HTTPMockData
-        self.HTTPinfo = HTTPinfo
-        HTTPhost, HTTPport = self.HTTPinfo
-        httpd_address = (HTTPhost, HTTPport)
-        self.myhttpd = ThreadingTCPServer(httpd_address, self.BuilderHandle())
+        self.httpd_address = HTTPinfo
+        self.myhttpd = self.BuilderHTTPServer()(self.httpd_address, self.BuilderHandle())
 
     def Start(self):
         '''
         启动
         '''
         PrintLog('debug', '[%s] http server is running....', threading.currentThread().getName())
+        print '11111 Global.isHTTPMock: ', Global.isHTTPMock
+        Global.isHTTPMock = True
+        print '22222 Global.isHTTPMock: ', Global.isHTTPMock
         self.myhttpd.serve_forever()
+
+    def BuilderHTTPServer(self):
+        '''
+        构建自定义HTTPServer
+        '''
+        host, port = self.httpd_address
+        str_address = str(host)+':'+str(port)
+
+        class myHTTPServer(HTTPServer):
+            '''
+            自定义HTTPServer
+            '''
+            def serve_forever(self):
+                '''
+                Handle one request at a time until doomsday
+                '''
+                self.stopped = False
+                while not self.stopped:
+                    self.handle_request()
+
+            def stop_server(self):
+                '''
+                stop server
+                '''
+                self.stopped = True
+                conn = httplib.HTTPConnection(str_address)
+                conn.request("QUIT", "/")
+        return myHTTPServer
+
 
     def BuilderHandle(self):
         '''
@@ -89,6 +121,8 @@ class HttpServer(object):
                     response_list = {}
                     userMobile = jsonStringlist['userMobile']
                     userid = 'testing'     #testing
+                    PrintLog('debug', '[%s] response data: %s', threading.currentThread().getName(), userid)
+
                     response_list['userId'] = userid
                     response_jsonstr =  json.dumps(response_list)
 
@@ -98,6 +132,7 @@ class HttpServer(object):
                     response_dic = json.loads(response_jsonstr)
                     #userid = jsonStringlist['UserId']
                     #assert userid == 'testing'
+                    PrintLog('debug', '[%s] response data: %s, %s', threading.currentThread().getName(), tuandai_loan_times, tuandai_loan_menoy)
 
                     response_dic['RecentOneYearTotalLoanCount'] = tuandai_loan_times
                     response_dic['RecentOneYearTotalLoanMoney'] = tuandai_loan_menoy
@@ -109,6 +144,7 @@ class HttpServer(object):
                     response_dic = json.loads(response_jsonstr)
                     #userid = jsonStringlist['UserId']
                     #assert userid == 'testing'
+                    PrintLog('debug', '[%s] response data: %s', threading.currentThread().getName(), tuandai_amount)
 
                     response_dic['AvgDayDueInMoneyOneYear'] = tuandai_amount
                     response_jsonstr = json.dumps(response_dic)
@@ -129,3 +165,4 @@ class HttpServer(object):
                     self.send_header('Content-Type','text/plain;charset=utf-8')
                     self.end_headers()
                     self.wfile.write(data)
+        return Custom_HTTPRequestHandler

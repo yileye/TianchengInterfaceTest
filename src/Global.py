@@ -13,22 +13,30 @@ import platform
 from io import StringIO
 import inspect
 import os
+import threading
 
 #日志
-global logger
+#global loggerfile, loggercontrol
 loggerfile = logging.getLogger('logfile')
 loggercontrol = logging.getLogger('control')
 
 #断言异步任务队列
-global taskassert_queue
+#global taskassert_queue
 taskassert_queue = Queue.Queue()  #断言任务队列
 
 #保存测试结果
-global testcase_result
+#global testcase_result
 testcase_result = {}
 
 #内存数据
+#global memdata
 memdata = StringIO()
+
+#线程状态同步共享变量
+#global isMQMock, isHTTPMock, isTABLE
+isMQMock = False
+isHTTPMock = False
+isTABLE = False
 
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -144,7 +152,6 @@ def PrintLog(loglevel, fixd, *data):
         if iscontrol != 0:
             getattr(loggercontrol, loglevel)(fixdc % tuple(valuesc))
 
-
 class MyError(Exception):
     '''
     自定义异常类
@@ -155,8 +162,11 @@ class MyError(Exception):
     def __str__(self):
         return repr(self.value)
 
-
-
+class TableNoneError(MyError):
+    '''
+    自定义TableNone异常类
+    '''
+    pass
 
 if __name__ == '__main__':
     pass

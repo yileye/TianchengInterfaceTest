@@ -14,6 +14,8 @@ class GenerateTxtLog(object):
     '''
     生成txt日志
     '''
+    if not os.path.isdir('.\\log'):
+        os.mkdir(".\\log")
     logf_path = '.\\log\\TianchengTest_log.txt'
 
     @classmethod
@@ -21,6 +23,7 @@ class GenerateTxtLog(object):
         '''
         生成日志文件同时输出到控制台
         '''
+        global loggerfile, loggercontrol
         loggerfile.setLevel(logging.DEBUG)   #设置日志等级
         loggercontrol.setLevel(logging.DEBUG)
 

@@ -206,103 +206,81 @@ class ModUPSLabel_Assert(object):
         '''
         检查标签
         '''
-        try:
-            where = {'userId': userid}
+        where = {'userId': userid}
 
-            #userlabelquery表
-            value = values[0]
-            db = obj.conn[obj.dbname]      #选择数据库
-            account = db['userlabelquery']
-            field =  value.keys()[0]
-            explabels = value[field]
+        #userlabelquery表
+        value = values[0]
+        db = obj.conn[obj.dbname]      #选择数据库
+        account = db['userlabelquery']
+        field =  value.keys()[0]
+        explabels = value[field]
 
-            findrt = account.find_one(where)
-            PrintLog('debug', '[%s] userlabelquery表检查结果: %s', threading.currentThread().getName(), findrt)
-            if findrt is None:
-                return 'FAIL', u'userlabelquery表查询结果为空'
-            resultset = set(findrt[field])
-            try:
-                assert set(explabels).issubset(resultset), u'userlabelquery表中数据与期望不一致'
-            except AssertionError as e:
-                return 'FAIL',unicode(e)
+        findrt = account.find_one(where)
+        PrintLog('debug', '[%s] userlabelquery表检查结果: %s', threading.currentThread().getName(), findrt)
+        if findrt is None:
+            raise  TableNoneError(u"userlabelquery")
+        resultset = set(findrt[field])
+        assert set(explabels).issubset(resultset), u'userlabelquery表中数据与期望不一致'
 
-            #userlabel表
-            value = values[1]
-            account = db['userlabel']
-            field =  value.keys()[0]
-            explabels = value[field]
 
-            resultlist = []
-            result = account.find(where)
-            if result is None:
-                PrintLog('debug', '[%s] userlabel表检查结果: %s', threading.currentThread().getName(), result)
-                return 'FAIL', u'userlabel表查询结果为空'
-            for item in result:
-                for i in item[field]:
-                    resultlist.append(i)
-            PrintLog('debug', '[%s] userlabel表检查结果: %s', threading.currentThread().getName(), resultlist)
-            resultset = set(resultlist)
-            try:
-                assert set(explabels).issubset(resultset), u'userlabel表中数据与期望不一致'
-            except AssertionError as e:
-                return 'FAIL',unicode(e)
+        #userlabel表
+        value = values[1]
+        account = db['userlabel']
+        field =  value.keys()[0]
+        explabels = value[field]
 
-            return 'PASS',
-        except Exception as e:
-            #logger.exception(e)
-            PrintLog('exception',e)
-            return 'ERROR',unicode(e)
+        resultlist = []
+        result = account.find(where)
+        if result is None:
+            raise  TableNoneError(u"userlabel")
+        for item in result:
+            for i in item[field]:
+                resultlist.append(i)
+        PrintLog('debug', '[%s] userlabel表检查结果: %s', threading.currentThread().getName(), resultlist)
+        resultset = set(resultlist)
+        assert set(explabels).issubset(resultset), u'userlabel表中数据与期望不一致'
+
 
 
     def _checkNotLabel(self, obj, values, userid):
         '''
         检查无标签
         '''
-        try:
-            where = {'userId': userid}
+        where = {'userId': userid}
 
-            #userlabelquery表
-            value = values[0]
-            db = obj.conn[obj.dbname]      #选择数据库
-            account = db['userlabelquery']  #选择表
-            field =  value.keys()[0]
-            explabels = value[field]
+        #userlabelquery表
+        value = values[0]
+        db = obj.conn[obj.dbname]      #选择数据库
+        account = db['userlabelquery']  #选择表
+        field =  value.keys()[0]
+        explabels = value[field]
 
-            findrt = account.find_one(where)
-            PrintLog('debug', '[%s] userlabelquery表检查结果: %s', threading.currentThread().getName(), findrt)
-            if findrt is not None:
-                resultset = set(findrt[field])
-                try:
-                    for i in explabels:
-                        assert not set([i]).issubset(resultset), u'userlabelquery表中数据与期望不一致'
-                except AssertionError as e:
-                        return 'FAIL',unicode(e)
+        findrt = account.find_one(where)
+        PrintLog('debug', '[%s] userlabelquery表检查结果: %s', threading.currentThread().getName(), findrt)
+        if findrt is not None:
+            resultset = set(findrt[field])
+            for i in explabels:
+                assert not set([i]).issubset(resultset), u'userlabelquery表中数据与期望不一致'
 
-            #userlabel表
-            value = values[1]
-            account = db['userlabel']
-            field =  value.keys()[0]
-            explabels = value[field]
 
-            resultlist = []
-            result = account.find(where)
-            PrintLog('debug', '[%s] userlabel表查询结果result: %s', threading.currentThread().getName(), result)
-            if result is not None:
-                for item in result:
-                    if item.has_key(field):
-                        for i in item[field]:
-                            resultlist.append(i)
-                resultset = set(resultlist)
-                try:
-                    for i in explabels:
-                        assert not set([i]).issubset(resultset), u'userlabel表中数据与期望不一致'
-                except AssertionError as e:
-                    return 'FAIL',unicode(e)
+        #userlabel表
+        value = values[1]
+        account = db['userlabel']
+        field =  value.keys()[0]
+        explabels = value[field]
 
-            return 'PASS',
-        except Exception as e:
-            PrintLog('exception',e)
-            return 'ERROR',unicode(e)
+        resultlist = []
+        result = account.find(where)
+        PrintLog('debug', '[%s] userlabel表查询结果result: %s', threading.currentThread().getName(), result)
+        if result is not None:
+            for item in result:
+                if item.has_key(field):
+                    for i in item[field]:
+                        resultlist.append(i)
+            resultset = set(resultlist)
+
+            for i in explabels:
+                assert not set([i]).issubset(resultset), u'userlabel表中数据与期望不一致'
 
 
     def UPSLabelAssert(self, obj, expectation, userid):
@@ -319,11 +297,18 @@ class ModUPSLabel_Assert(object):
 
             if set(tables) == set(["userlabelquery", "userlabel"]):
                 PrintLog('debug', '[%s] 调用标签检查函数: _checkLabel  参数:%s', threading.currentThread().getName(), (obj, values, userid))
-                checkRt = self._checkLabel(obj, values, userid)
+                self._checkLabel(obj, values, userid)
             if set(tables) == set(["!userlabelquery", "!userlabel"]):
                 PrintLog('debug', '[%s] 调用标签检查函数: _checkNotLabel  参数: %s', threading.currentThread().getName(), (obj, values, userid))
-                checkRt = self._checkNotLabel(obj, values, userid)
-            return checkRt
+                self._checkNotLabel(obj, values, userid)
+            return 'PASS',
+
+        except TableNoneError as e:
+            PrintLog('debug', '[%s] TableNoneError: TableName: %s', threading.currentThread().getName(), unicode(e))
+            return 'NONE',unicode(e)
+        except AssertionError as e:
+            PrintLog('debug', '[%s] AssertionError: %s', threading.currentThread().getName(),unicode(e.args[0]))
+            return 'FAIL',unicode(e.args[0])
         except Exception as e:
             PrintLog('exception',e)
             return 'ERROR',unicode(e)

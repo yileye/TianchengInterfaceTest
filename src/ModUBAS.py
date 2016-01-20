@@ -115,35 +115,29 @@ class ModUBAS_Assert(object):
         '''
         检查数据库表中数据
         '''
-        try:
-            obj.connMy.select_db(obj.dbnameMy)   #选择数据库
-            curMy = obj.connMy.cursor()
+        obj.connMy.select_db(obj.dbnameMy)   #选择数据库
+        curMy = obj.connMy.cursor()
 
-            for table in ExpectationDict.keys():
-                fields = ExpectationDict[table].keys()
-                values = ExpectationDict[table].values()
+        for table in ExpectationDict.keys():
+            fields = ExpectationDict[table].keys()
+            values = ExpectationDict[table].values()
 
-                query_id = str(tablemaxid[table] + 1)
-                query_fields = ''
-                for field in fields:
-                    query_fields = query_fields + field + ','
-                query_fields = query_fields[:-1]
-                query_str = 'SELECT ' + query_fields + ' FROM ' + table + ' WHERE id = ' + query_id
-                PrintLog('debug', '[%s] 执行SQL查询: query_str: %s', threading.currentThread().getName(), query_str)
-                curMy.execute(query_str)
-                obj.connMy.commit()
-                result = curMy.fetchone()
+            query_id = str(tablemaxid[table] + 1)
+            query_fields = ''
+            for field in fields:
+                query_fields = query_fields + field + ','
+            query_fields = query_fields[:-1]
+            query_str = 'SELECT ' + query_fields + ' FROM ' + table + ' WHERE id = ' + query_id
+            PrintLog('debug', '[%s] 执行SQL查询: query_str: %s', threading.currentThread().getName(), query_str)
+            curMy.execute(query_str)
+            obj.connMy.commit()
+            result = curMy.fetchone()
+            if result is None:
+                raise  TableNoneError(u"%s" % table)
 
-                expvalues = tuple(values)
-                PrintLog('debug', '[%s] 比较数据库表中数据与期望数据: result: %s expvalues: %s', threading.currentThread().getName(), result, expvalues)
-                assert result == expvalues, u'检查入库数据不正确'
-                return 'PASS',
-
-        except AssertionError as e:
-            return 'FAIL',unicode(e.args[0])
-        except Exception as e:
-            PrintLog('exception',e)
-            return 'ERROR',unicode(e)
+            expvalues = tuple(values)
+            PrintLog('debug', '[%s] 比较数据库表中数据与期望数据: result: %s expvalues: %s', threading.currentThread().getName(), result, expvalues)
+            assert result == expvalues, u'检查入库数据不正确'
 
 
     def UBASAssert(self, obj, response, tablemaxid, ExpectationDict):
@@ -167,9 +161,14 @@ class ModUBAS_Assert(object):
                 assert Expectation_valuelist[i] == responseContentDict[Expectation_fieltlist[i]], u'响应%s字段值不正确' % Expectation_fieltlist[i]
 
             del ExpectationDict['HTTPResponse']
-            return self._checkdbdata(obj, tablemaxid, ExpectationDict)
+            self._checkdbdata(obj, tablemaxid, ExpectationDict)
+            return 'PASS',
 
+        except TableNoneError as e:
+            PrintLog('debug', '[%s] TableNoneError: TableName: %s', threading.currentThread().getName(), unicode(e))
+            return 'NONE',unicode(e)
         except AssertionError as e:
+            PrintLog('debug', '[%s] AssertionError: %s', threading.currentThread().getName(),unicode(e.args[0]))
             return 'FAIL',unicode(e.args[0])
         except Exception as e:
             PrintLog('exception',e)

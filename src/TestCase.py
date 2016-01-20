@@ -7,14 +7,18 @@
 #######################################################
 from public import ExcelRW
 import Config
-
+import os
+import re
 
 class TestCaseXls(object):
     '''
     测试用例类
     '''
-    case_path = '.\\TestCase.xlsx'
-    xlseng = ExcelRW.XlsEngine(case_path)
+    TestcaseName = Config.ConfigIni.get_TestcaseName()
+    if not os.path.isfile(TestcaseName):
+        raise Exception, u'Don\'t find testcase file: %s' % TestcaseName
+
+    xlseng = ExcelRW.XlsEngine(TestcaseName)
     testcase_col = eval(Config.ConfigIni.get_testcase_col())
 
     @classmethod

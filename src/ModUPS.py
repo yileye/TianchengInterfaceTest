@@ -222,67 +222,71 @@ class ModUPS_Assert(object):
                 assert cmp(responseContentDict, ExpectationDict) == 0, u'响应数据与期望不一致'
                 return 'PASS',
 
-            function_code = int(paramsDict['function_code'])
-            if function_code == 600021:                     #查询用户标签
-                assert responseContentDict['result']['result_code'] == 'SUCCESS', u"响应result_code字段检查失败"
-                responseLabels_name = responseContentDict['labels']
-                PrintLog('debug', '[%s] 响应数据标签名: responseLabels_name: %s', threading.currentThread().getName(), responseLabels_name)
-                if responseLabels_name != []:
-                    responseLabels = self._labels2id(obj, responseLabels_name)
-                else:
-                    responseLabels = []
+            # function_code = int(paramsDict['function_code'])
+            # if function_code == 600021:                     #查询用户标签
+            #     assert responseContentDict['result']['result_code'] == 'SUCCESS', u"响应result_code字段检查失败"
+            #     responseLabels_name = responseContentDict['labels']
+            #     PrintLog('debug', '[%s] 响应数据标签名: responseLabels_name: %s', threading.currentThread().getName(), responseLabels_name)
+            #     if responseLabels_name != []:
+            #         responseLabels = self._labels2id(obj, responseLabels_name)
+            #     else:
+            #         responseLabels = []
 
-                try:
-                    id_card = paramsDict['id_card']
-                except KeyError:
-                    id_card = False
-                try:
-                    mobile_phone = paramsDict['mobile_phone']
-                except KeyError:
-                    mobile_phone = False
+            #     try:
+            #         id_card = paramsDict['id_card']
+            #     except KeyError:
+            #         id_card = False
+            #     try:
+            #         mobile_phone = paramsDict['mobile_phone']
+            #     except KeyError:
+            #         mobile_phone = False
 
-                if id_card is not False:
-                    expectationLabels = self._getlabels_id_card(obj, id_card)
-                    if expectationLabels !=[]:
-                        PrintLog('debug', '[%s] 比较响应数据标签与期望标签: responseLabels: %s expectationLabels: %s', threading.currentThread().getName(), responseLabels, expectationLabels)
-                        assert len(set(expectationLabels)^set(responseLabels)) == 0, u'响应数据与期望不一致'
-                        return 'PASS',
+            #     if id_card is not False:
+            #         expectationLabels = self._getlabels_id_card(obj, id_card)
+            #         if expectationLabels !=[]:
+            #             PrintLog('debug', '[%s] 比较响应数据标签与期望标签: responseLabels: %s expectationLabels: %s', threading.currentThread().getName(), responseLabels, expectationLabels)
+            #             assert len(set(expectationLabels)^set(responseLabels)) == 0, u'响应数据与期望不一致'
+            #             return 'PASS',
 
-                if mobile_phone is not False:
-                    expectationLabels = self._getlabels_mobile_phone(obj, mobile_phone)
-                    PrintLog('debug','[%s] 比较响应数据标签与期望标签: responseLabels: %s expectationLabels: %s', threading.currentThread().getName(), responseLabels, expectationLabels)
-                    assert len(set(expectationLabels)^set(responseLabels)) == 0, u'响应数据与期望不一致'
-                    return 'PASS',
-                raise ValueError('Test Data Error')
+            #     if mobile_phone is not False:
+            #         expectationLabels = self._getlabels_mobile_phone(obj, mobile_phone)
+            #         PrintLog('debug','[%s] 比较响应数据标签与期望标签: responseLabels: %s expectationLabels: %s', threading.currentThread().getName(), responseLabels, expectationLabels)
+            #         assert len(set(expectationLabels)^set(responseLabels)) == 0, u'响应数据与期望不一致'
+            #         return 'PASS',
+            #     raise ValueError('Test Data Error')
 
-            if function_code == 600022:  #查询标签对应用户
-                assert responseContentDict['result']['result_code'] == 'SUCCESS', u"响应result_code字段检查失败"
-                response_total_number = responseContentDict['total_number']
-                response_users = responseContentDict['users']
-                response_usersN = len(response_users)
+            # if function_code == 600022:  #查询标签对应用户
+            #     assert responseContentDict['result']['result_code'] == 'SUCCESS', u"响应result_code字段检查失败"
+            #     response_total_number = responseContentDict['total_number']
+            #     response_users = responseContentDict['users']
+            #     response_usersN = len(response_users)
 
-                label_ids = paramsDict['label_ids']
-                all_in = int(paramsDict['all_in'])
-                cur_page = int(paramsDict['cur_page'])
-                page_num = int(paramsDict['page_num'])
+            #     label_ids = paramsDict['label_ids']
+            #     all_in = int(paramsDict['all_in'])
+            #     cur_page = int(paramsDict['cur_page'])
+            #     page_num = int(paramsDict['page_num'])
 
-                if all_in != 1:
-                    expectation_total_number = self._gettotalnum_intersect(obj, label_ids)
-                else:
-                    expectation_total_number = self._gettotalnum_union(obj, label_ids)
+            #     if all_in != 1:
+            #         expectation_total_number = self._gettotalnum_intersect(obj, label_ids)
+            #     else:
+            #         expectation_total_number = self._gettotalnum_union(obj, label_ids)
 
-                PrintLog('debug', '[%s] 比较响应数据total_number与期望total_number: response_total_number: %s expectation_total_number: %s', threading.currentThread().getName(), response_total_number, expectation_total_number)
-                assert expectation_total_number == response_total_number, u'响应total_number字段值不正确'
+            #     PrintLog('debug', '[%s] 比较响应数据total_number与期望total_number: response_total_number: %s expectation_total_number: %s', threading.currentThread().getName(), response_total_number, expectation_total_number)
+            #     assert expectation_total_number == response_total_number, u'响应total_number字段值不正确'
 
-                PrintLog('debug', '[%s] 检查响应数据users字段数据条数是否正确: response_usersN: %s page_num: %s', threading.currentThread().getName(), response_usersN, page_num)
-                if expectation_total_number >= page_num:
-                    assert page_num == response_usersN, u'响应users字段数据条数不正确'
-                else:
-                    assert expectation_total_number == response_usersN, u'响应users字段数据条数不正确'
-                return 'PASS',
+            #     PrintLog('debug', '[%s] 检查响应数据users字段数据条数是否正确: response_usersN: %s page_num: %s', threading.currentThread().getName(), response_usersN, page_num)
+            #     if expectation_total_number >= page_num:
+            #         assert page_num == response_usersN, u'响应users字段数据条数不正确'
+            #     else:
+            #         assert expectation_total_number == response_usersN, u'响应users字段数据条数不正确'
+            #     return 'PASS',
             raise ValueError('Test Data function_code Error')
 
+        except TableNoneError as e:
+            PrintLog('debug', '[%s] TableNoneError: TableName: %s', threading.currentThread().getName(), unicode(e))
+            return 'NONE',unicode(e)
         except AssertionError as e:
+            PrintLog('debug', '[%s] AssertionError: %s', threading.currentThread().getName(),unicode(e.args[0]))
             return 'FAIL',unicode(e.args[0])
         except Exception as e:
             PrintLog('exception',e)

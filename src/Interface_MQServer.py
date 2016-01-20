@@ -6,9 +6,11 @@
 #function: MQ Server
 #######################################################
 from Global import *
+import Global
 import pika
 import Config
 import Interface_ProtoBuffer
+import threading
 
 class MQServer(object):
     '''
@@ -32,7 +34,7 @@ class MQServer(object):
         根据MQmock数据key获取MQ队列名
         '''
         if item in self.Key_FunCodeQueueNameDict:
-            return self.Key_FunCodeQueueNameDict[item][1]
+            return self.Key_FunCodeQueueNameDict[item][2]
         else:
             return False
 
@@ -41,6 +43,7 @@ class MQServer(object):
         消息接收回调函数
         '''
         #解析body
+        print 'CallbackFunc.........'
         FunCode, Response_Topic = self.ProtoBufferO.parsebody(body)
         PrintLog('debug', '[%s] 解析body结果: FunCode: %s Response_Topic: %s', threading.currentThread().getName(), FunCode, Response_Topic)
 
@@ -62,6 +65,6 @@ class MQServer(object):
                 raise MyError('MQMOCK: Get QueueName False')
             PrintLog('debug', '[%s] 消息订阅: QueueName: %s', threading.currentThread().getName(), QueueName)
             self.channel.basic_consume(self.CallbackFunc, queue=QueueName, no_ack=True)  #消息订阅
+        PrintLog('debug', '[%s] MQ cusume is running....', threading.currentThread().getName())
+        Global.isMQMock = True
         self.channel.start_consuming()
-
-

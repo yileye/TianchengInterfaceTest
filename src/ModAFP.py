@@ -166,7 +166,7 @@ class ModAFP_Assert(object):
             self.obj.connMy.commit()
             result = self.curMy.fetchone()  #取查询结果第一条记录
             if result is None:
-                raise AssertionError, u'%s表中查询结果为空' % table
+                raise  TableNoneError(u"%s" % table)
 
             expvalues = tuple(values)
             PrintLog('debug', '[%s] 检查明文字段数据: result: %s\nexpvalues: %s', threading.currentThread().getName(), result, expvalues)
@@ -210,7 +210,7 @@ class ModAFP_Assert(object):
             self.obj.connMy.commit()
             result = self.curMy.fetchone()  #取查询结果第一条记录
             if result is None:
-                raise AssertionError, u'%s表中查询结果为空' % table
+                raise  TableNoneError(u"%s" % table)
 
             expvalues = tuple(values)
             for i in range(len(fields)):
@@ -284,7 +284,11 @@ class ModAFP_Assert(object):
             self.checkBASE64_ExpDict(BASE64_ExpDict, unique_id)
             return 'PASS',
 
+        except TableNoneError as e:
+            PrintLog('debug', '[%s] TableNoneError: TableName: %s', threading.currentThread().getName(), unicode(e))
+            return 'NONE',unicode(e)
         except AssertionError as e:
+            PrintLog('debug', '[%s] AssertionError: %s', threading.currentThread().getName(),unicode(e.args[0]))
             return 'FAIL',unicode(e.args[0])
         except Exception as e:
             PrintLog('exception',e)

@@ -5,9 +5,12 @@
 #date:2016-1
 #function: google proto buffer
 #######################################################
-from ProtoBuffer import *
+from Global import *
+import GoogleProtoBuf
 import struct
 import json
+import threading
+
 
 class ProtoBuffer(object):
     '''
@@ -27,7 +30,7 @@ class ProtoBuffer(object):
         PrintLog('debug', '[%s] body解包结果: FunCode: %s PData: %s', threading.currentThread().getName(), FunCode, PData)
 
         #反序列化
-        user_verification_ask = QDP_main_frame_pb2.user_verification_ask()
+        user_verification_ask = GoogleProtoBuf.QDP_main_frame_pb2.user_verification_ask()
         user_verification_ask.ParseFromString(PData)
         Response_Topic = user_verification_ask.ask_header.response_topic
         PrintLog('debug', '[%s] 反序列化结果: Response_Topic: %s', threading.currentThread().getName(), Response_Topic)
@@ -46,10 +49,10 @@ class ProtoBuffer(object):
 
         #序列化
         PrintLog('debug', '[%s] --------开始序列化-----------', threading.currentThread().getName())
-        user_verification_ans = QDP_main_frame_pb2.user_verification_ans()
-        user_verification_ans.platform_type = QDP_main_frame_pb2.other_platform.unknown_platform
+        user_verification_ans = GoogleProtoBuf.QDP_main_frame_pb2.user_verification_ans()
+        user_verification_ans.platform_type = GoogleProtoBuf.QDP_main_frame_pb2.other_platform.unknown_platform
         errorinfo = user_verification_ans.error.add()
-        errorinfo.error_code = common_pb2.ASK_SUCCEED
+        errorinfo.error_code = GoogleProtoBuf.common_pb2.ASK_SUCCEED
         user_verification_ans.json_ans = bytes(json.dumps(Data))
         errorinfo.SerializeToString()
         user_verification_ans_str = user_verification_ans.SerializeToString()

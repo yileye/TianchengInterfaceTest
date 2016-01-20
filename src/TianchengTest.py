@@ -78,7 +78,7 @@ class TestAssertThread(threading.Thread):
     def run(self):
         while True:
             try:
-                task = taskassert_queue.get(block=True, timeout=10)
+                task = taskassert_queue.get(block=True, timeout=40)
                 PrintLog('debug', '[%s] 从队列taskassert_queue中取出一条任务: %s', self.getName(), task)
                 taskassert_queue.task_done()
 
@@ -114,19 +114,20 @@ class TestAssertThread(threading.Thread):
                     PrintLog('debug', '[%s] 调用断言模块进行处理: %s %s %s', self.getName(), sheet, testid, taskargs)
                     AssertResult = self.AssertEngineO.AssertTestCase(sheet, testid, taskargs)
 
-                    if AssertResult[0] != 'FAIL' or self.timestate[(sheet,testid)]['timeouttask'] <= 0.0:   #断言结果为PASS或ERROR或超时时间到
+                    if AssertResult[0] != 'NONE' or self.timestate[(sheet,testid)]['timeouttask'] <= 0.0:   #断言结果为PASS或FAIL或ERROR或超时时间到
                         self.tresult_qlock.acquire()
                         try:
                             PrintLog('debug', '[%s] 结果放入测试结果中: %s %s %s\n...', self.getName(), sheet, testid, AssertResult)
                             testcase_result[(sheet, testid)] = AssertResult    #结果放入测试结果中
                         finally:
                             self.tresult_qlock.release()
-                    else:                                      #断言结果为FAIL且超时时间未到继续处理
+                    else:                                      #断言结果为NONE且超时时间未到继续处理
                         nowtimestamp = getnowstamp()
                         task = sheet,testid,nowtimestamp,nowtimestamp,taskargs
                         PrintLog('debug', '[%s] 放回队列继续处理: %s\n...', self.getName(), task)
                         taskassert_queue.put(task)  #放回队列继续处理
                 time.sleep(self.timeevery)
+
             except Queue.Empty:
                 PrintLog('debug', '[%s] 从队列taskassert_queue中取任务超时', self.getName())
                 break
@@ -158,7 +159,6 @@ class TestRunThread(threading.Thread):
                     finally:
                         self.tresult_qlock.release()
                 time.sleep(self.timeevery)
-
 
 def TianchengTest():
     '''
