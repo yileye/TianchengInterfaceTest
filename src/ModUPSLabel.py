@@ -218,7 +218,7 @@ class ModUPSLabel_Assert(object):
         findrt = account.find_one(where)
         PrintLog('debug', '[%s] userlabelquery表检查结果: %s', threading.currentThread().getName(), findrt)
         if findrt is None:
-            raise  TableNoneError(u"userlabelquery")
+            raise  TableNoneError(u"userlabelquery is None")
         resultset = set(findrt[field])
         assert set(explabels).issubset(resultset), u'userlabelquery表中数据与期望不一致'
 
@@ -232,7 +232,7 @@ class ModUPSLabel_Assert(object):
         resultlist = []
         result = account.find(where)
         if result is None:
-            raise  TableNoneError(u"userlabel")
+            raise  TableNoneError(u"userlabel is None")
         for item in result:
             for i in item[field]:
                 resultlist.append(i)

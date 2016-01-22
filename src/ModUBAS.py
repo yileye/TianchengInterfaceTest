@@ -133,7 +133,7 @@ class ModUBAS_Assert(object):
             obj.connMy.commit()
             result = curMy.fetchone()
             if result is None:
-                raise  TableNoneError(u"%s" % table)
+                raise  TableNoneError(u"%s is NONE" % table)
 
             expvalues = tuple(values)
             PrintLog('debug', '[%s] 比较数据库表中数据与期望数据: result: %s expvalues: %s', threading.currentThread().getName(), result, expvalues)

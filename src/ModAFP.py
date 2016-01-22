@@ -166,7 +166,7 @@ class ModAFP_Assert(object):
             self.obj.connMy.commit()
             result = self.curMy.fetchone()  #取查询结果第一条记录
             if result is None:
-                raise  TableNoneError(u"%s" % table)
+                raise  TableNoneError(u"%s is NONE" % table)
 
             expvalues = tuple(values)
             PrintLog('debug', '[%s] 检查明文字段数据: result: %s\nexpvalues: %s', threading.currentThread().getName(), result, expvalues)
@@ -210,7 +210,7 @@ class ModAFP_Assert(object):
             self.obj.connMy.commit()
             result = self.curMy.fetchone()  #取查询结果第一条记录
             if result is None:
-                raise  TableNoneError(u"%s" % table)
+                raise  TableNoneError(u"%s is NONE" % table)
 
             expvalues = tuple(values)
             for i in range(len(fields)):

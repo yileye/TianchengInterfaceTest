@@ -115,6 +115,10 @@ class TestAssertThread(threading.Thread):
                     AssertResult = self.AssertEngineO.AssertTestCase(sheet, testid, taskargs)
 
                     if AssertResult[0] != 'NONE' or self.timestate[(sheet,testid)]['timeouttask'] <= 0.0:   #断言结果为PASS或FAIL或ERROR或超时时间到
+                        if AssertResult[0] == 'NONE':
+                            AssertResult = list(AssertResult)
+                            AssertResult[0] = 'FAIL'
+                            AssertResult = tuple(AssertResult)
                         self.tresult_qlock.acquire()
                         try:
                             PrintLog('debug', '[%s] 结果放入测试结果中: %s %s %s\n...', self.getName(), sheet, testid, AssertResult)
