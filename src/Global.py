@@ -32,14 +32,8 @@ testcase_result = {}
 #global memdata
 memdata = StringIO()
 
-#线程状态同步共享变量
-#global isMQMock, isHTTPMock, isTABLE
-isMQMock = False
-isHTTPMock = False
-isTABLE = False
 
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 def package_taskdelay(task, delaytime, callback):
     '''
     封装延时任务队列(队列项)
@@ -121,14 +115,14 @@ def PrintLog(loglevel, fixd, *data):
     打印日志
     '''
     iscontrol = int(memdata.getvalue().split()[0])
-    isrelease = int(memdata.getvalue().split()[1])       #是否发布
+    isstdebug = int(memdata.getvalue().split()[1])       #是否发布
     if loglevel == 'exception':
         getattr(loggerfile, loglevel)(fixd)
         if iscontrol != 0:
             getattr(loggercontrol, loglevel)(fixd)
     else:
         systype = platform.system()
-        if systype == 'Windows' and isrelease == 1:
+        if systype == 'Windows' and isstdebug == 0:
             enty = 'gbk'
         else:
             enty = 'utf-8'

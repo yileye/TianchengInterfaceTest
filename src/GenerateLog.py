@@ -31,7 +31,8 @@ class GenerateTxtLog(object):
         filepath = os.path.dirname(cls.logf_path)
         parent_path, ext = os.path.splitext(filename)
         tm = time.strftime('%Y%m%d%H%M%S', time.localtime())
-        filename = parent_path + tm + ext   #日志文件名中添加当前时间
+        #filename = parent_path + tm + ext   #日志文件名中添加当前时间
+        filename = parent_path + tm   #日志文件名中添加当前时间
 
         # handler
         logfile = logging.FileHandler(os.path.join(filepath, filename))

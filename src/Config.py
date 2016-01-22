@@ -41,11 +41,11 @@ class ConfigIni(object):
         return cls.confO.get('DEFAULT', 'iscontrol')
 
     @classmethod
-    def get_isrelease(cls):
+    def get_isstdebug(cls):
         '''
         获取发布控制开关
         '''
-        return cls.confO.get('DEFAULT', 'isrelease')
+        return cls.confO.get('DEFAULT', 'isstdebug')
 
     @classmethod
     def get_index(cls):

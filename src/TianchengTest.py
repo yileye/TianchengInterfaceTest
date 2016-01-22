@@ -171,8 +171,8 @@ def TianchengTest():
         #获取运行模式
         runmode = int(Config.ConfigIni.get_runmode())
         iscontrol = str(Config.ConfigIni.get_iscontrol())
-        isrelease = str(Config.ConfigIni.get_isrelease())
-        memdata.write(ch2unicode(iscontrol + '\n' + isrelease))  #写入内存
+        isstdebug = str(Config.ConfigIni.get_isstdebug())
+        memdata.write(ch2unicode(iscontrol + '\n' + isstdebug))  #写入内存
 
         #锁
         tresult_qlock = threading.Lock()
