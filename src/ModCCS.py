@@ -116,20 +116,6 @@ class ModCCS(object):
             PrintLog('exception',e)
             return False
 
-    def parseMockDataForDriver(self, MockData):
-        '''
-        解析MockData
-        '''
-        try:
-            if MockData == '':
-                raise ValueError
-            else:
-                MockDataDict = json.loads(MockData)
-            return MockDataDict
-        except Exception as e:
-            PrintLog('exception',e)
-            return False
-
 
 
 class ModCCS_Assert(object):

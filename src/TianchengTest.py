@@ -78,7 +78,7 @@ class TestAssertThread(threading.Thread):
     def run(self):
         while True:
             try:
-                task = taskassert_queue.get(block=True, timeout=40)
+                task = taskassert_queue.get(block=True, timeout=15)
                 PrintLog('debug', '[%s] 从队列taskassert_queue中取出一条任务: %s', self.getName(), task)
                 taskassert_queue.task_done()
 
