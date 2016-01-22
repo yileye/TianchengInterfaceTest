@@ -118,7 +118,8 @@ def ch2s(s):
         us = ch2unicode(s)
         return us.encode('gbk')
     if systype == 'Linux':
-        return s
+        us = ch2unicode(s)
+        return us.encode('utf-8')
     else:
         return s
 
