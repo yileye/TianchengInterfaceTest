@@ -13,9 +13,9 @@ class ConfigIni(object):
     '''
     配置类
     '''
-    if not os.path.isfile('.\\Config.ini'):
+    if not os.path.isfile('./Config.ini'):
         raise Exception, u'Don\'t find config file: Config.ini'
-    conf_path = '.\\Config.ini'
+    conf_path = './Config.ini'
     confO = configparser.ConfigParser()
     confO.readfp(codecs.open(conf_path, "r", "utf-8"))
 

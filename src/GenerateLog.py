@@ -14,9 +14,9 @@ class GenerateTxtLog(object):
     '''
     生成txt日志
     '''
-    if not os.path.isdir('.\\log'):
-        os.mkdir(".\\log")
-    logf_path = '.\\log\\TianchengTest_log.txt'
+    if not os.path.isdir('./log'):
+        os.mkdir("./log")
+    logf_path = './log/TianchengTest_log.txt'
 
     @classmethod
     def GenTxtLog(cls):

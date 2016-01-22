@@ -33,9 +33,9 @@ class HtmlReport(object):
         '''
         设置结果文件名
         '''
-        if not os.path.isdir('.\\result'):
-            os.mkdir(".\\result")
-        filename = '.\\result\\Test_Report_Filename.html'
+        if not os.path.isdir('./result'):
+            os.mkdir("./result")
+        filename = './result/Test_Report_Filename.html'
         if os.path.isdir(filename):
             raise IOError("%s must point to a file" % path)
         elif '' == filename:
