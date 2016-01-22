@@ -109,6 +109,18 @@ def ch2unicode(data):
         data = unicode(data, 'gbk')
     return data
 
+def ch2s(s):
+    '''
+    写字符串时针对不同系统的编码转换
+    '''
+    systype = platform.system()
+    if systype == 'Windows':
+        us = ch2unicode(s)
+        return us.encode('gbk')
+    if systype == 'Linux':
+        return s
+    else:
+        return s
 
 def PrintLog(loglevel, fixd, *data):
     '''
