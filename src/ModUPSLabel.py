@@ -116,7 +116,7 @@ class ModUPSLabel(object):
         '''
         Driver回调函数
         '''
-        userid = 'test123456-' + str(uuid.uuid1())   #唯一userid
+        userid = 'AutoTest123456-' + str(uuid.uuid1())   #唯一userid
         nows = gettime_nowstamp()  #当前时间戳
         notltimetables = ['loginevent','postlianlianrechargeevent','postguaranteeevent','postpublishborrowmoneyevent','postinvestmentevent'] #无需增加LastUpdateTime字段的表
         mustbidtables = ['bidbasicinfo', 'investinfo', 'loaninfo', 'diligenceinfo']

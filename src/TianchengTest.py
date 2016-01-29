@@ -3,7 +3,7 @@
 #filename:TianchengTest.py
 #author:defias
 #date:2015-11
-#function:
+#function: main
 #######################################################
 from Global import *
 import Config
@@ -12,6 +12,9 @@ from GenerateLog import GenerateTxtLog
 from GenerateReport import HtmlReport
 from Interface_DriverEngine import Interface_DriverEngine
 from Interface_AssertEngine import Interface_AssertEngine
+import Mock_HttpServer
+import Mock_MQServer
+import ModMock
 
 import threading
 import Queue
@@ -172,18 +175,16 @@ def TianchengTest():
         #启动日志
         GenerateTxtLog.GenTxtLog()
 
-        #获取运行模式
+        #获取控制信息
         runmode = int(Config.ConfigIni.get_runmode())
         iscontrol = str(Config.ConfigIni.get_iscontrol())
         isstdebug = str(Config.ConfigIni.get_isstdebug())
-        memdata.write(ch2unicode(iscontrol + '\n' + isstdebug))  #写入内存
+        isHTTPMock = int(Config.ConfigIni.get_isHTTPMock())
+        isMQMock = int(Config.ConfigIni.get_isMQMock())
+        memdata.write(ch2unicode(iscontrol + u'+++' + isstdebug))  #写入内存
 
         #锁
         tresult_qlock = threading.Lock()
-
-        #全局变量
-        global testcase_result
-        global taskassert_queue
 
         #记录测试开始时间
         start_time = getnowstamp()
@@ -193,6 +194,33 @@ def TianchengTest():
         #获取待执行用例
         TestIds = getModTestid(runmode)
         PrintLog('debug', '待执行用例: %s', TestIds)
+
+        #获取identity_card-sheetid
+        ModMockO = ModMock.ModMock()
+        sheetid_identity_card = ModMockO.SheetId_identity_card(TestIds)
+        sheetid_UserMobile = ModMockO.SheetId_UserMobile(TestIds)
+        if sheetid_identity_card is False:
+            raise ValueError(u'identity_card存在重复数据！！！')
+        if sheetid_UserMobile is False:
+            raise ValueError(u'UserMobile存在重复数据！！！')
+        PrintLog('debug', 'sheetid_identity_card: %s\nsheetid_UserMobile: %s', sheetid_identity_card, sheetid_UserMobile)
+        memdata.write(u'+++' + ch2unicode(sheetid_identity_card) + u'+++' + ch2unicode(sheetid_UserMobile)) #写入内存
+
+        #启动HTTP服务子线程
+        if isHTTPMock:
+            HttpServerO = Mock_HttpServer.HttpServer()
+            Thread_HTTPO = threading.Thread(target=HttpServerO.Start,name='HttpServerThread')
+            Thread_HTTPO.setDaemon(True)
+            Thread_HTTPO.start()
+            time.sleep(1)
+
+        #启动MQ服务子线程
+        if isMQMock:
+            MQServerO = Mock_MQServer.MQServer()
+            Thread_MQO = threading.Thread(target=MQServerO.Start,name='MQServerThread')
+            Thread_MQO.setDaemon(True)
+            Thread_MQO.start()
+            time.sleep(1)
 
         #启动执行子线程
         PrintLog('debug', 'Starting thread: TestRunThread')
@@ -207,7 +235,6 @@ def TianchengTest():
         Thread_assertO.setDaemon(True)
         Thread_assertO.start()
 
-
         #等待断言子线程结束
         PrintLog('debug', '等待子线程TestRunThread结束...')
         Thread_runO.join()
@@ -218,6 +245,7 @@ def TianchengTest():
         PrintLog('debug', '子线程：TestAssertThread结束')
 
         #等待任务队列为空
+        #global taskassert_queue
         #taskassert_queue.join()
 
         #测试结束时间
@@ -226,6 +254,7 @@ def TianchengTest():
         PrintLog('debug', '测试结束时间: %s', end_now)
 
         #生成测试报告
+        global testcase_result
         PrintLog('debug', 'testcase_result: %s', testcase_result)
         HtmlReportO = HtmlReport(testcase_result, end_time-start_time)
         HtmlReportO.generate_html()

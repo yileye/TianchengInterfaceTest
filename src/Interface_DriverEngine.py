@@ -124,15 +124,32 @@ class Interface_DriverEngine():
         ModAFPO = ModAFP.ModAFP()
         url = ModAFPO.getRuncaseEnvironment_Url(TestEnvironment)
         headers = ModAFPO.getRuncaseEnvironment_Headers(TestEnvironment)
+        isrdbinfo = ModAFPO.getRuncaseEnvironment_insertdb(TestEnvironment)
 
         #读取超时时间
         timeouttask = ModAFPO.getRuncaseEnvironment_Timeouttask(TestEnvironment)
         timeoutdelay = 0
 
+        #PrintLog('debug', '[%s] type of TestData: %s\nTestData: %s', threading.currentThread().getName(), type(TestData), TestData)
         #驱动执行获得response
-        PrintLog('debug', '[%s] 驱动执行:headers:%s TestData:%s', threading.currentThread().getName(), headers, TestData)
+        parseResult = ModAFPO.parseTestDataForDriver(TestData)
+        if parseResult is False:
+            return False
+
+        #插数据
+        if 'tabledata' in parseResult:
+            TableData = parseResult['tabledata']
+            PrintLog('debug', '[%s] 驱动执行:TableData:%s', threading.currentThread().getName(), TableData)
+            TableO = Interface_Driver.Interface_DoData(isrdbinfo)
+            TableResult = TableO.insert(TableData)    #插数据
+            PrintLog('debug', '[%s] 插数据结果:TableResult:%s', threading.currentThread().getName(), TableResult)
+            if TableResult is False:
+                return False
+        #发请求
+        ReqDate = parseResult['reqdate']
+        PrintLog('debug', '[%s] 驱动执行:headers:%s ReqDate:%s', threading.currentThread().getName(), headers, ReqDate)
         DriverO = Interface_Driver.Interface_Http(url)
-        DriverResult = DriverO.post(headers, TestData)     #执行用例
+        DriverResult = DriverO.post(headers, ReqDate)     #执行用例
         PrintLog('debug', '[%s] 执行结果:DriverResult:%s', threading.currentThread().getName(), DriverResult)
 
         #装载任务参数
@@ -153,7 +170,10 @@ class Interface_DriverEngine():
         timeoutdelay = 0
 
         #测试数据解析
-        TestData, unique_id = ModCCSO.parseParamsForDriver(TestData)
+        parseResult = ModCCSO.parseParamsForDriver(TestData, sheet, testid)
+        if parseResult is False:
+            raise ValueError('parseParamsForDriver is Fail')
+        TestData, unique_id = parseResult
 
 
         #驱动执行获得返回的唯一userid

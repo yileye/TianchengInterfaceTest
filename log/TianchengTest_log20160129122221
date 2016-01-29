@@ -1,0 +1,44 @@
+2016-01-29 12:22:21,397 - DEBUG - TianchengTest.py[192] - 测试开始时间: 2016-01-29 12:22:21
+2016-01-29 12:22:21,398 - DEBUG - TianchengTest.py[29] - 运行模式：部分执行
+2016-01-29 12:22:21,401 - DEBUG - TianchengTest.py[196] - 待执行用例: {'AFP': [1]}
+2016-01-29 12:22:21,404 - DEBUG - TianchengTest.py[206] - sheetid_identity_card: {}
+sheetid_UserMobile: {}
+2016-01-29 12:22:21,410 - DEBUG - Mock_HttpServer.py[189] - [HttpServerThread] Http Server is Start Running 192.168.10.93:5556...
+2016-01-29 12:22:22,427 - DEBUG - Mock_MQServer.py[100] - [MQServerThread] 消息订阅: ExchangeNamelist: ['QDP_REPS', 'QDP_YUANJIN', 'QDP_JUNXIN', 'QDP_BAIRONG', 'QDP_ZIMAXINYONG', 'QDP_YANGHANGZHENGXINQUERYSERVICE', 'QDP_PENGYUAN', 'QDP_LAOLAI_CHECK', 'QDP_ANRONG', 'QDP_QIANHAIZHENGXIN', 'QDP_TONGDUN']
+2016-01-29 12:22:22,539 - DEBUG - Mock_MQServer.py[107] - [MQServerThread] MQ cusume is running....
+2016-01-29 12:22:23,408 - DEBUG - TianchengTest.py[226] - Starting thread: TestRunThread
+2016-01-29 12:22:23,414 - DEBUG - TianchengTest.py[160] - [TestRunThread] 开始执行用例: (AFP, 1)
+---
+2016-01-29 12:22:23,427 - DEBUG - Interface_DriverEngine.py[141] - [TestRunThread] 驱动执行:TableData:[(u'userbasicinfo', [u'MobilePhone', u'userid', u'UserStatus', u'UserType', u'UserRealName', u'UserIDCard'], [18675559750L, u'absdfggery-ATe523dc00-c63f-11e5-ae39-64006a053be1', 0, u'1', u'\u9648\u521a', u'003002196101160031'])]
+2016-01-29 12:22:23,431 - DEBUG - Interface_Driver.py[54] - [TestRunThread] connecting mysql db: ubas_data_20151127 192.168.18.85:3306 write/tc12345
+2016-01-29 12:22:23,447 - DEBUG - Interface_Driver.py[86] - [TestRunThread] 向表中插入数据: 参数:[(u'userbasicinfo', [u'MobilePhone', u'userid', u'UserStatus', u'UserType', u'UserRealName', u'UserIDCard'], [18675559750L, u'absdfggery-ATe523dc00-c63f-11e5-ae39-64006a053be1', 0, u'1', u'\u9648\u521a', u'003002196101160031'])]
+2016-01-29 12:22:23,450 - DEBUG - Interface_Driver.py[103] - [TestRunThread] 执行插入SQL: query_str: INSERT INTO userbasicinfo(MobilePhone,userid,UserStatus,UserType,UserRealName,UserIDCard) VALUES(%s,%s,%s,%s,%s,%s)  query_value: (18675559750L, u'absdfggery-ATe523dc00-c63f-11e5-ae39-64006a053be1', 0, u'1', u'\u9648\u521a', u'003002196101160031')
+2016-01-29 12:22:23,476 - DEBUG - Interface_DriverEngine.py[144] - [TestRunThread] 插数据结果:TableResult:True
+2016-01-29 12:22:23,480 - DEBUG - Interface_DriverEngine.py[149] - [TestRunThread] 驱动执行:headers:{'TOKEN': 'abcdefghijk', 'APPID': '10'} ReqDate:{"FunctionCode": "100122", "MsgBody": {"idtype": "0", "account_login": "test123", "is_first_time": 0, "assureType": "D", "loanType": "99", "ip": "192.168.1.122", "RELATION_VERIFICATION": [{"relation_name": "\u9648\u521a", "relation_phone": "18675559750"}, {"relation_name": "", "relation_phone": ""}], "currency": "23232", "loanTimeLimit": 12, "user_id": "abc123456", "is_student": 1, "creditAddress": "\u5317\u4eac", "bank_cart": "12345", "loanMoney": 10000, "mobile_phone": "18675559750", "degree": "\u672c\u79d1", "ProjectId": "123", "reasonno": "04", "blackBox": "123", "name": "\u9648\u521a", "identity_card": "003002196101160031", "applyDate": "2015-08-01"}, "CurrentTime": "20150723203212000000"}
+2016-01-29 12:22:24,413 - DEBUG - TianchengTest.py[233] - Starting thread: TestAssertThread
+2016-01-29 12:22:24,414 - DEBUG - TianchengTest.py[239] - 等待子线程TestRunThread结束...
+2016-01-29 12:22:26,490 - ERROR - HTTPConnectionPool(host='192.168.18.84', port=8090): Read timed out. (read timeout=3)
+Traceback (most recent call last):
+  File "D:\AutoTest\Code\TianchengInterface_Testing\src\Interface_Driver.py", line 39, in post
+    return requests.post(self.url, data=params, headers=headers, timeout=3)
+  File "C:\Python27\lib\site-packages\requests\api.py", line 109, in post
+    return request('post', url, data=data, json=json, **kwargs)
+  File "C:\Python27\lib\site-packages\requests\api.py", line 50, in request
+    response = session.request(method=method, url=url, **kwargs)
+  File "C:\Python27\lib\site-packages\requests\sessions.py", line 465, in request
+    resp = self.send(prep, **send_kwargs)
+  File "C:\Python27\lib\site-packages\requests\sessions.py", line 573, in send
+    r = adapter.send(request, **kwargs)
+  File "C:\Python27\lib\site-packages\requests\adapters.py", line 433, in send
+    raise ReadTimeout(e, request=request)
+ReadTimeout: HTTPConnectionPool(host='192.168.18.84', port=8090): Read timed out. (read timeout=3)
+2016-01-29 12:22:26,516 - DEBUG - Interface_DriverEngine.py[152] - [TestRunThread] 执行结果:DriverResult:False
+2016-01-29 12:22:26,519 - DEBUG - Interface_Driver.py[64] - [TestRunThread] closing mysql db connection
+2016-01-29 12:22:26,522 - DEBUG - TianchengTest.py[164] - [TestRunThread] 测试操作不成功: (AFP, 1)
+2016-01-29 12:22:27,526 - DEBUG - TianchengTest.py[241] - 子线程：TestRunThread结束
+2016-01-29 12:22:27,532 - DEBUG - TianchengTest.py[243] - 等待子线程TestAssertThread结束...
+2016-01-29 12:22:39,415 - DEBUG - TianchengTest.py[139] - [TestAssertThread] 从队列taskassert_queue中取任务超时
+2016-01-29 12:22:39,424 - DEBUG - TianchengTest.py[245] - 子线程：TestAssertThread结束
+2016-01-29 12:22:39,431 - DEBUG - TianchengTest.py[254] - 测试结束时间: 2016-01-29 12:22:39
+2016-01-29 12:22:39,440 - DEBUG - TianchengTest.py[258] - testcase_result: {('AFP', 1): ('ERROR', u'\u6d4b\u8bd5\u64cd\u4f5c\u4e0d\u6210\u529f')}
+2016-01-29 12:22:39,447 - DEBUG - GenerateReport.py[125] - 生成测试结果报告: ./result/Test_Report_Filename20160129122239.html

@@ -51,28 +51,7 @@ class ModCCS(object):
             return 0
         return timeoutdelay
 
-    def getRuncaseEnvironment_MQ(self, TestEnvironment):
-        '''
-        获取环境信息:MQ信息
-        '''
-        MQhost = Config.ConfigIni.get_TestEnvironment_Info(TestEnvironment, 'MQhost')
-        MQport = Config.ConfigIni.get_TestEnvironment_Info(TestEnvironment, 'MQport')
-        MQusername = Config.ConfigIni.get_TestEnvironment_Info(TestEnvironment, 'MQusername')
-        MQpasswd = Config.ConfigIni.get_TestEnvironment_Info(TestEnvironment, 'MQpasswd')
-        MQvhost = Config.ConfigIni.get_TestEnvironment_Info(TestEnvironment, 'MQvhost')
-        MQinfo =  (MQhost, int(MQport), MQusername, MQpasswd, MQvhost)
-        return MQinfo
-
-    def getRuncaseEnvironment_HTTP(self, TestEnvironment):
-        '''
-        获取环境信息:HTTP信息
-        '''
-        HTTPhost = Config.ConfigIni.get_TestEnvironment_Info(TestEnvironment, 'HTTPhost')
-        HTTPport = Config.ConfigIni.get_TestEnvironment_Info(TestEnvironment, 'HTTPport')
-        HTTPinfo = (HTTPhost, int(HTTPport))
-        return HTTPinfo
-
-    def parseParamsForDriver(self, params):
+    def parseParamsForDriver(self, params, sheet, testid):
         '''
         解析测试数据获取用例执行所需数据
         '''
@@ -80,15 +59,15 @@ class ModCCS(object):
             params_dict = json.loads(params)
             params_result = []
             tables = params_dict.keys()
-            unique_id = str(uuid.uuid1())
+            unique_id = u'AutoTest' + str(uuid.uuid1())
             for table in tables:
                 fields = params_dict[table].keys()
                 values = params_dict[table].values()
 
-                #json字段数据进行base64加密
+                #寻找json字段
                 for i in xrange(len(fields)):
                     if fields[i] == 'json':
-                        jsonvalue = json.dumps(values[i], ensure_ascii=False)
+                        jsonvalue = json.dumps(values[i], ensure_ascii=False)   #json字段数据进行base64加密
                         values[i] = EncryptLib.get_base64(jsonvalue.encode('utf8'))
 
                 #添加唯一id字段
@@ -214,32 +193,24 @@ class ModCCS_Assert(object):
             expvalues = tuple(values)
             for i in range(len(fields)):
                 expvalue = expvalues[i]
+                field = fields[i]
                 de_result = EncryptLib.getde_base64(result[i])
-                PrintLog('debug', '[%s] 检查BASE64加密字段数据: de_result: %s\nexpvalue: %s', threading.currentThread().getName(), de_result, expvalue)
+                PrintLog('debug', '[%s] 检查BASE64加密字段: %s 数据: de_result: %s\nexpvalue: %s', threading.currentThread().getName(), field, de_result, expvalue)
                 if type(expvalue) is dict:
                     try:
                         de_resultDict = json_tools.loads(de_result)
-                        PrintLog('debug', '[%s] 检查BASE64加密字段数据: de_resultDict: %s', threading.currentThread().getName(), de_resultDict)
                     except:
-                        raise AssertionError, u'_检查BASE64加密字段: %s字段数据与期望数据不一致' % fields[i]
+                        PrintLog('debug', '[%s] _检查BASE64加密字段: %s 数据与期望数据类型不一致: de_resultDict: %s', threading.currentThread().getName(), field, de_resultDict)
+                        raise AssertionError, u'_检查BASE64加密字段: %s 数据与期望数据类型不一致' % field
 
                     for key in expvalue:
-                        assert key in de_resultDict, u'检查BASE64加密字段: %s字段中无:%s字段' % (fields[i], key)
-                        if type(expvalue[key]) is dict:
-                            for kk in expvalue[key]:
-                                assert kk in de_resultDict[key], u'检查BASE64加密字段: %s字段中:%s字段中无:%s字段' % (fields[i], key, kk)
-                                if kk == 'fanyilist':
-                                    PrintLog('debug', '[%s] _检查BASE64加密字段数据: de_resultDict[%s][%s]: %s\nexpvalue[%s][%s]: %s', threading.currentThread().getName(), key, kk, de_resultDict[key][kk], key, kk, expvalue[key][kk])
-                                    self.check_fanyilist(de_resultDict[key][kk], expvalue[key][kk])
-                                elif type(expvalue[key][kk]) is dict:
-                                    PrintLog('debug', '[%s] _检查BASE64加密字段数据: de_resultDict[%s][%s]: %s\nexpvalue[%s][%s]: %s', threading.currentThread().getName(), key, kk, de_resultDict[key][kk], key, kk, expvalue[key][kk])
-                                    assert json_tools.diff(json.dumps(de_resultDict[key][kk]), json.dumps(expvalue[key][kk])) == [], u'_检查BASE64加密字段: %s字段中:%s字段中:%s字段数据与期望数据不一致' % (fields[i], key, kk)
-                                else:
-                                    PrintLog('debug', '[%s] 检查BASE64加密字段数据: de_resultDict[%s][%s]: %s\nexpvalue[%s][%s]: %s', threading.currentThread().getName(), key, kk, de_resultDict[key][kk], key, kk, expvalue[key][kk])
-                                    assert de_resultDict[key][kk] == expvalue[key][kk], u'检查BASE64加密字段: %s字段中:%s字段中:%s字段中数据与期望数据不一致' % (fields[i], key, kk)
+                        assert key in de_resultDict, u'检查BASE64加密字段: %s字段中无:%s字段' % (field, key)
+                        if key == 'fanyilist':
+                            PrintLog('debug', '[%s] 检查BASE64加密字段: %s中: %s字段', threading.currentThread().getName(), field, key)
+                            self.check_fanyilist(de_resultDict[key], expvalue[key])
                         else:
-                            PrintLog('debug', '[%s] 检查BASE64加密字段数据: de_resultDict[%s]: %s\nexpvalue[%s]: %s', threading.currentThread().getName(), key, de_resultDict[key], key, expvalue[key])
-                            assert de_resultDict[key] == expvalue[key], u'检查BASE64加密字段: %s字段中:%s字段数据与期望数据不一致' % (fields[i], key)
+                            PrintLog('debug', '[%s] 检查BASE64加密字段: %s 数据: de_resultDict[%s]: %s\nexpvalue[%s]: %s', threading.currentThread().getName(), field, key, de_resultDict[key], key, expvalue[key])
+                            assert de_resultDict[key] == expvalue[key], u'检查BASE64加密字段: %s中:%s字段数据与期望数据不一致' % (field, key)
                 else:
                     PrintLog('debug', '[%s] 检查BASE64加密%s字段数据: de_result: %s\nexpvalue: %s', threading.currentThread().getName(), fields[i], de_result, expvalue)
                     assert de_result == expvalue, u'检查BASE64加密字段: %s字段数据与期望数据不一致' % fields[i]

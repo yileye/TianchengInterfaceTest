@@ -30,7 +30,7 @@ testcase_result = {}
 
 #内存数据
 #global memdata
-memdata = StringIO()
+memdata = StringIO()  #不能跨进程
 
 
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -127,8 +127,8 @@ def PrintLog(loglevel, fixd, *data):
     '''
     打印日志
     '''
-    iscontrol = int(memdata.getvalue().split()[0])
-    isstdebug = int(memdata.getvalue().split()[1])       #是否发布
+    iscontrol = int(memdata.getvalue().split('+++')[0])
+    isstdebug = int(memdata.getvalue().split('+++')[1])       #是否发布
     if loglevel == 'exception':
         getattr(loggerfile, loglevel)(fixd)
         if iscontrol != 0:
@@ -174,6 +174,8 @@ class TableNoneError(MyError):
     自定义TableNone异常类
     '''
     pass
+
+
 
 if __name__ == '__main__':
     pass

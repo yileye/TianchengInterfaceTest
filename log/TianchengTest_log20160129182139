@@ -1,0 +1,98 @@
+2016-01-29 18:21:39,871 - DEBUG - TianchengTest.py[192] - 测试开始时间: 2016-01-29 18:21:39
+2016-01-29 18:21:39,872 - DEBUG - TianchengTest.py[29] - 运行模式：部分执行
+2016-01-29 18:21:39,875 - DEBUG - TianchengTest.py[196] - 待执行用例: {'AFP': [1]}
+2016-01-29 18:21:39,878 - DEBUG - TianchengTest.py[206] - sheetid_identity_card: {}
+sheetid_UserMobile: {}
+2016-01-29 18:21:39,880 - DEBUG - TianchengTest.py[226] - Starting thread: TestRunThread
+2016-01-29 18:21:39,881 - DEBUG - TianchengTest.py[160] - [TestRunThread] 开始执行用例: (AFP, 1)
+---
+2016-01-29 18:21:39,885 - DEBUG - Interface_DriverEngine.py[133] - [TestRunThread] type of TestData: <type 'unicode'>
+TestData: [
+    {
+        "userbasicinfo": {
+            "userid": "absdfggery",
+            "UserStatus": 0,
+            "UserType": "1",
+            "UserIDCard": "003002196101160031",
+            "UserRealName": "陈刚",
+            "MobilePhone": 18675559750
+        }
+    },
+    {
+        "FunctionCode": "100122",
+        "CurrentTime": "20150723203212000000",
+        "MsgBody": {
+            "user_id": "abc123456",
+            "ProjectId": "123",
+            "identity_card": "003002196101160031",
+            "idtype": "0",
+            "name": "陈刚",
+            "bank_cart": "12345",
+            "reasonno": "04",
+            "blackBox": "123",
+            "ip": "192.168.1.122",
+            "account_login": "test123",
+            "mobile_phone": "18675559750",
+            "loanType": "99",
+            "currency": "23232",
+            "loanMoney": 10000,
+            "loanTimeLimit": 12,
+            "applyDate": "2015-08-01",
+            "assureType": "D",
+            "creditAddress": "北京",
+            "is_student": 1,
+            "is_first_time": 0,
+            "degree": "本科",
+            "RELATION_VERIFICATION": [
+                {
+                    "relation_name": "陈刚",
+                    "relation_phone": "18675559750"
+                },
+                {
+                    "relation_name": "",
+                    "relation_phone": ""
+                }
+            ]
+        }
+    }
+]
+2016-01-29 18:21:39,915 - DEBUG - ModAFP.py[87] - [TestRunThread] type of TestDataJ: <type 'list'>
+TestDataJ: [{u'userbasicinfo': {u'MobilePhone': 18675559750L, u'userid': u'absdfggery', u'UserStatus': 0, u'UserType': u'1', u'UserRealName': u'\u9648\u521a', u'UserIDCard': u'003002196101160031'}}, {u'FunctionCode': u'100122', u'MsgBody': {u'idtype': u'0', u'account_login': u'test123', u'is_first_time': 0, u'assureType': u'D', u'loanType': u'99', u'ip': u'192.168.1.122', u'RELATION_VERIFICATION': [{u'relation_name': u'\u9648\u521a', u'relation_phone': u'18675559750'}, {u'relation_name': u'', u'relation_phone': u''}], u'currency': u'23232', u'loanTimeLimit': 12, u'user_id': u'abc123456', u'is_student': 1, u'creditAddress': u'\u5317\u4eac', u'bank_cart': u'12345', u'loanMoney': 10000, u'mobile_phone': u'18675559750', u'degree': u'\u672c\u79d1', u'ProjectId': u'123', u'reasonno': u'04', u'blackBox': u'123', u'name': u'\u9648\u521a', u'identity_card': u'003002196101160031', u'applyDate': u'2015-08-01'}, u'CurrentTime': u'20150723203212000000'}]
+2016-01-29 18:21:39,924 - DEBUG - ModAFP.py[92] - [TestRunThread] type of tabledata: <type 'dict'>
+tabledata: {u'userbasicinfo': {u'MobilePhone': 18675559750L, u'userid': u'absdfggery', u'UserStatus': 0, u'UserType': u'1', u'UserRealName': u'\u9648\u521a', u'UserIDCard': u'003002196101160031'}}
+2016-01-29 18:21:39,928 - DEBUG - ModAFP.py[94] - [TestRunThread] type of reqdate: <type 'unicode'>
+reqdate: {"FunctionCode": "100122", "MsgBody": {"idtype": "0", "account_login": "test123", "is_first_time": 0, "assureType": "D", "loanType": "99", "ip": "192.168.1.122", "RELATION_VERIFICATION": [{"relation_name": "陈刚", "relation_phone": "18675559750"}, {"relation_name": "", "relation_phone": ""}], "currency": "23232", "loanTimeLimit": 12, "user_id": "abc123456", "is_student": 1, "creditAddress": "北京", "bank_cart": "12345", "loanMoney": 10000, "mobile_phone": "18675559750", "degree": "本科", "ProjectId": "123", "reasonno": "04", "blackBox": "123", "name": "陈刚", "identity_card": "003002196101160031", "applyDate": "2015-08-01"}, "CurrentTime": "20150723203212000000"}
+2016-01-29 18:21:39,941 - DEBUG - Interface_DriverEngine.py[142] - [TestRunThread] 驱动执行:TableData:[(u'userbasicinfo', [u'MobilePhone', u'userid', u'UserStatus', u'UserType', u'UserRealName', u'UserIDCard'], [18675559750L, u'absdfggery-AT15d32a40-c672-11e5-93d7-64006a053be1', 0, u'1', u'\u9648\u521a', u'003002196101160031'])]
+2016-01-29 18:21:39,947 - DEBUG - Interface_Driver.py[56] - [TestRunThread] connecting mysql db: ubas_data_20151127 192.168.18.85:3306 write/tc12345
+2016-01-29 18:21:39,963 - DEBUG - Interface_Driver.py[88] - [TestRunThread] 向表中插入数据: 参数:[(u'userbasicinfo', [u'MobilePhone', u'userid', u'UserStatus', u'UserType', u'UserRealName', u'UserIDCard'], [18675559750L, u'absdfggery-AT15d32a40-c672-11e5-93d7-64006a053be1', 0, u'1', u'\u9648\u521a', u'003002196101160031'])]
+2016-01-29 18:21:39,969 - DEBUG - Interface_Driver.py[105] - [TestRunThread] 执行插入SQL: query_str: INSERT INTO userbasicinfo(MobilePhone,userid,UserStatus,UserType,UserRealName,UserIDCard) VALUES(%s,%s,%s,%s,%s,%s)  query_value: (18675559750L, u'absdfggery-AT15d32a40-c672-11e5-93d7-64006a053be1', 0, u'1', u'\u9648\u521a', u'003002196101160031')
+2016-01-29 18:21:39,979 - DEBUG - Interface_DriverEngine.py[145] - [TestRunThread] 插数据结果:TableResult:True
+2016-01-29 18:21:39,983 - DEBUG - Interface_DriverEngine.py[151] - [TestRunThread] 驱动执行:headers:{'TOKEN': 'abcdefghijk', 'APPID': '10'} ReqDate:{"FunctionCode": "100122", "MsgBody": {"idtype": "0", "account_login": "test123", "is_first_time": 0, "assureType": "D", "loanType": "99", "ip": "192.168.1.122", "RELATION_VERIFICATION": [{"relation_name": "陈刚", "relation_phone": "18675559750"}, {"relation_name": "", "relation_phone": ""}], "currency": "23232", "loanTimeLimit": 12, "user_id": "abc123456", "is_student": 1, "creditAddress": "北京", "bank_cart": "12345", "loanMoney": 10000, "mobile_phone": "18675559750", "degree": "本科", "ProjectId": "123", "reasonno": "04", "blackBox": "123", "name": "陈刚", "identity_card": "003002196101160031", "applyDate": "2015-08-01"}, "CurrentTime": "20150723203212000000"}
+2016-01-29 18:21:39,996 - DEBUG - Interface_Driver.py[39] - [TestRunThread] params encode to utf-8
+2016-01-29 18:21:40,881 - DEBUG - TianchengTest.py[233] - Starting thread: TestAssertThread
+2016-01-29 18:21:40,887 - DEBUG - TianchengTest.py[239] - 等待子线程TestRunThread结束...
+2016-01-29 18:21:45,003 - ERROR - HTTPConnectionPool(host='192.168.18.84', port=8090): Read timed out. (read timeout=5)
+Traceback (most recent call last):
+  File "D:\AutoTest\Code\TianchengInterface_Testing\src\Interface_Driver.py", line 41, in post
+    return requests.post(self.url, data=params, headers=headers, timeout=5)
+  File "C:\Python27\lib\site-packages\requests\api.py", line 109, in post
+    return request('post', url, data=data, json=json, **kwargs)
+  File "C:\Python27\lib\site-packages\requests\api.py", line 50, in request
+    response = session.request(method=method, url=url, **kwargs)
+  File "C:\Python27\lib\site-packages\requests\sessions.py", line 465, in request
+    resp = self.send(prep, **send_kwargs)
+  File "C:\Python27\lib\site-packages\requests\sessions.py", line 573, in send
+    r = adapter.send(request, **kwargs)
+  File "C:\Python27\lib\site-packages\requests\adapters.py", line 433, in send
+    raise ReadTimeout(e, request=request)
+ReadTimeout: HTTPConnectionPool(host='192.168.18.84', port=8090): Read timed out. (read timeout=5)
+2016-01-29 18:21:45,030 - DEBUG - Interface_DriverEngine.py[154] - [TestRunThread] 执行结果:DriverResult:False
+2016-01-29 18:21:45,035 - DEBUG - Interface_Driver.py[66] - [TestRunThread] closing mysql db connection
+2016-01-29 18:21:45,036 - DEBUG - TianchengTest.py[164] - [TestRunThread] 测试操作不成功: (AFP, 1)
+2016-01-29 18:21:46,040 - DEBUG - TianchengTest.py[241] - 子线程：TestRunThread结束
+2016-01-29 18:21:46,049 - DEBUG - TianchengTest.py[243] - 等待子线程TestAssertThread结束...
+2016-01-29 18:21:55,887 - DEBUG - TianchengTest.py[139] - [TestAssertThread] 从队列taskassert_queue中取任务超时
+2016-01-29 18:21:55,888 - DEBUG - TianchengTest.py[245] - 子线程：TestAssertThread结束
+2016-01-29 18:21:55,891 - DEBUG - TianchengTest.py[254] - 测试结束时间: 2016-01-29 18:21:55
+2016-01-29 18:21:55,892 - DEBUG - TianchengTest.py[258] - testcase_result: {('AFP', 1): ('ERROR', u'\u6d4b\u8bd5\u64cd\u4f5c\u4e0d\u6210\u529f')}
+2016-01-29 18:21:55,897 - DEBUG - GenerateReport.py[125] - 生成测试结果报告: ./result/Test_Report_Filename20160129182155.html

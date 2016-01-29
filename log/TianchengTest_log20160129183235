@@ -1,0 +1,230 @@
+2016-01-29 18:32:35,677 - DEBUG - TianchengTest.py[192] - 测试开始时间: 2016-01-29 18:32:35
+2016-01-29 18:32:35,680 - DEBUG - TianchengTest.py[29] - 运行模式：部分执行
+2016-01-29 18:32:35,681 - DEBUG - TianchengTest.py[196] - 待执行用例: {'AFP': [1]}
+2016-01-29 18:32:35,684 - DEBUG - TianchengTest.py[206] - sheetid_identity_card: {}
+sheetid_UserMobile: {}
+2016-01-29 18:32:35,691 - DEBUG - Mock_HttpServer.py[189] - [HttpServerThread] Http Server is Start Running 192.168.10.93:5556...
+2016-01-29 18:32:36,707 - DEBUG - Mock_MQServer.py[100] - [MQServerThread] 消息订阅: ExchangeNamelist: ['QDP_REPS', 'QDP_YUANJIN', 'QDP_JUNXIN', 'QDP_BAIRONG', 'QDP_ZIMAXINYONG', 'QDP_YANGHANGZHENGXINQUERYSERVICE', 'QDP_PENGYUAN', 'QDP_LAOLAI_CHECK', 'QDP_ANRONG', 'QDP_QIANHAIZHENGXIN', 'QDP_TONGDUN']
+2016-01-29 18:32:36,808 - DEBUG - Mock_MQServer.py[107] - [MQServerThread] MQ cusume is running....
+2016-01-29 18:32:37,688 - DEBUG - TianchengTest.py[226] - Starting thread: TestRunThread
+2016-01-29 18:32:37,696 - DEBUG - TianchengTest.py[160] - [TestRunThread] 开始执行用例: (AFP, 1)
+---
+2016-01-29 18:32:37,710 - DEBUG - Interface_DriverEngine.py[142] - [TestRunThread] 驱动执行:TableData:[(u'userbasicinfo', [u'MobilePhone', u'userid', u'UserStatus', u'UserType', u'UserRealName', u'UserIDCard'], [18675559750L, u'absdfggery-AT9de24aa1-c673-11e5-8fea-64006a053be1', 0, u'1', u'\u9648\u521a', u'003002196101160031'])]
+2016-01-29 18:32:37,733 - DEBUG - Interface_Driver.py[57] - [TestRunThread] connecting mysql db: ubas_data_20151127 192.168.18.85:3306 write/tc12345
+2016-01-29 18:32:37,747 - DEBUG - Interface_Driver.py[89] - [TestRunThread] 向表中插入数据: 参数:[(u'userbasicinfo', [u'MobilePhone', u'userid', u'UserStatus', u'UserType', u'UserRealName', u'UserIDCard'], [18675559750L, u'absdfggery-AT9de24aa1-c673-11e5-8fea-64006a053be1', 0, u'1', u'\u9648\u521a', u'003002196101160031'])]
+2016-01-29 18:32:37,753 - DEBUG - Interface_Driver.py[106] - [TestRunThread] 执行插入SQL: query_str: INSERT INTO userbasicinfo(MobilePhone,userid,UserStatus,UserType,UserRealName,UserIDCard) VALUES(%s,%s,%s,%s,%s,%s)  query_value: (18675559750L, u'absdfggery-AT9de24aa1-c673-11e5-8fea-64006a053be1', 0, u'1', u'\u9648\u521a', u'003002196101160031')
+2016-01-29 18:32:37,762 - DEBUG - Interface_DriverEngine.py[145] - [TestRunThread] 插数据结果:TableResult:True
+2016-01-29 18:32:37,766 - DEBUG - Interface_DriverEngine.py[150] - [TestRunThread] 驱动执行:headers:{'TOKEN': 'abcdefghijk', 'APPID': '10'} ReqDate:{"FunctionCode": "100122", "MsgBody": {"idtype": "0", "account_login": "test123", "is_first_time": 0, "assureType": "D", "loanType": "99", "ip": "192.168.1.122", "RELATION_VERIFICATION": [{"relation_name": "陈刚", "relation_phone": "18675559750"}, {"relation_name": "", "relation_phone": ""}], "currency": "23232", "loanTimeLimit": 12, "user_id": "abc123456", "is_student": 1, "creditAddress": "北京", "bank_cart": "12345", "loanMoney": 10000, "mobile_phone": "18675559750", "degree": "本科", "ProjectId": "123", "reasonno": "04", "blackBox": "123", "name": "陈刚", "identity_card": "003002196101160031", "applyDate": "2015-08-01"}, "CurrentTime": "20150723203212000000"}
+2016-01-29 18:32:37,779 - DEBUG - Interface_Driver.py[39] - [TestRunThread] params encode to utf-8
+2016-01-29 18:32:37,796 - DEBUG - Interface_DriverEngine.py[153] - [TestRunThread] 执行结果:DriverResult:<Response [200]>
+2016-01-29 18:32:37,802 - DEBUG - Interface_Driver.py[67] - [TestRunThread] closing mysql db connection
+2016-01-29 18:32:37,815 - DEBUG - Mock_MQServer.py[58] - [MQServerThread] CallbackFunc from ExchangeName: QDP_REPS
+2016-01-29 18:32:37,819 - DEBUG - Mock_MQServer.py[62] - [MQServerThread] 解包body结果: funcode: 201212
+2016-01-29 18:32:37,823 - DEBUG - Mock_MQServer.py[65] - [MQServerThread] 解析body结果: response_topic: AFP_AFPFromQDP identity_card: 003002196101160031
+2016-01-29 18:32:37,828 - ERROR - list index out of range
+Traceback (most recent call last):
+  File "D:\AutoTest\Code\TianchengInterface_Testing\src\Mock_MQServer.py", line 32, in getMQMockDatai
+    sheet, tid = self.ModMockO.getSheetId_from_identity_card(identity_card)
+  File "D:\AutoTest\Code\TianchengInterface_Testing\src\ModMock.py", line 89, in getSheetId_from_identity_card
+    return sheetids[0]
+IndexError: list index out of range
+2016-01-29 18:32:37,835 - DEBUG - Mock_MQServer.py[69] - [MQServerThread] 获取响应数据: MQMockDatai: None
+2016-01-29 18:32:38,694 - DEBUG - TianchengTest.py[233] - Starting thread: TestAssertThread
+2016-01-29 18:32:38,706 - DEBUG - TianchengTest.py[239] - 等待子线程TestRunThread结束...
+2016-01-29 18:32:38,707 - DEBUG - TianchengTest.py[85] - [TestAssertThread] 从队列taskassert_queue中取出一条任务: ('AFP', 1, u'45', 0, <Response [200]>)
+2016-01-29 18:32:38,726 - DEBUG - TianchengTest.py[109] - [TestAssertThread] 状态处理后timestate: {('AFP', 1): {'timeoutdelay': 0.0, 'timeouttask': 45.0}}
+2016-01-29 18:32:38,733 - DEBUG - TianchengTest.py[117] - [TestAssertThread] 调用断言模块进行处理: AFP 1 <Response [200]>
+2016-01-29 18:32:38,739 - DEBUG - Interface_AssertEngine.py[96] - [TestAssertThread] 驱动断言:response:<Response [200]> ExpectationDict:{u'usermodelhistory': {u'status': u'0', u'modelName': u'\u989d\u5ea6\u8d44\u683c', u'mobilePhone': u'18675559750', u'modelType': 3, u'modelResult': u'1', u'identityCard': u'003002196101160031', u'AppID': u'abc123456', u'errorInfo': u'\u81ea\u6709\u9ed1\u540d\u5355\u547d\u4e2d', u'realName': u'\u9648\u521a'}, u'HTTPResponse': {u'Status': u'0', u'Messge': u'success'}, u'ResultJson': {u'Status': u'0', u'model_Result': u'1'}}
+2016-01-29 18:32:38,753 - DEBUG - Interface_Assert.py[41] - [TestAssertThread] init connecting mysql db: fraudcheck_77testteam 192.168.18.85:3306 write/tc12345
+2016-01-29 18:32:38,757 - DEBUG - ModAFP.py[255] - [TestAssertThread] 提取加密字段和响应数据from: ExpectationDict: {u'usermodelhistory': {u'status': u'0', u'modelName': u'\u989d\u5ea6\u8d44\u683c', u'mobilePhone': u'18675559750', u'modelType': 3, u'modelResult': u'1', u'identityCard': u'003002196101160031', u'AppID': u'abc123456', u'errorInfo': u'\u81ea\u6709\u9ed1\u540d\u5355\u547d\u4e2d', u'realName': u'\u9648\u521a'}, u'HTTPResponse': {u'Status': u'0', u'Messge': u'success'}, u'ResultJson': {u'Status': u'0', u'model_Result': u'1'}}
+2016-01-29 18:32:38,766 - DEBUG - ModAFP.py[287] - [TestAssertThread] 提取加密字段数据: HTTPEXP: None
+ExpDict: {u'usermodelhistory': {u'status': u'0', u'modelName': u'\u989d\u5ea6\u8d44\u683c', u'mobilePhone': u'18675559750', u'modelType': 3, u'modelResult': u'1', u'identityCard': u'003002196101160031', u'AppID': u'abc123456', u'errorInfo': u'\u81ea\u6709\u9ed1\u540d\u5355\u547d\u4e2d', u'realName': u'\u9648\u521a'}, u'HTTPResponse': {u'Status': u'0', u'Messge': u'success'}, u'ResultJson': {u'Status': u'0', u'model_Result': u'1'}}
+BASE64_ExpDict: {u'usermodelhistory': {}, u'HTTPResponse': {}, u'ResultJson': {}}
+2016-01-29 18:32:38,780 - DEBUG - ModAFP.py[152] - [TestAssertThread] 检查响应: unique_id: abc123456380148835140449750
+HTTPEXP: None
+responseContentDict: {u'Status': u'0', u'Messge': u'success', u'unique': u'abc123456380148835140449750'}
+2016-01-29 18:32:38,786 - DEBUG - ModAFP.py[169] - [TestAssertThread] 检查明文字段数据: 用例中读取的fields: [u'status', u'modelName', u'mobilePhone', u'modelType', u'modelResult', u'identityCard', u'AppID', u'errorInfo', u'realName']
+values: [u'0', u'\u989d\u5ea6\u8d44\u683c', u'18675559750', 3, u'1', u'003002196101160031', u'abc123456', u'\u81ea\u6709\u9ed1\u540d\u5355\u547d\u4e2d', u'\u9648\u521a']
+2016-01-29 18:32:38,795 - DEBUG - ModAFP.py[176] - [TestAssertThread] 执行SQL查询: query_str: SELECT status, modelName, mobilePhone, modelType, modelResult, identityCard, AppID, errorInfo, realName FROM usermodelhistory WHERE UniqueID = %s (u'abc123456380148835140449750',)
+2016-01-29 18:32:38,803 - DEBUG - TianchengTest.py[241] - 子线程：TestRunThread结束
+2016-01-29 18:32:38,806 - DEBUG - TianchengTest.py[243] - 等待子线程TestAssertThread结束...
+2016-01-29 18:32:38,806 - DEBUG - ModAFP.py[300] - [TestAssertThread] TableNoneError: TableName: u'usermodelhistory is NONE'
+2016-01-29 18:32:38,812 - DEBUG - Interface_Assert.py[55] - [TestAssertThread] Release  public resources
+2016-01-29 18:32:38,813 - DEBUG - TianchengTest.py[134] - [TestAssertThread] 放回队列继续处理: ('AFP', 1, 1454063558.813, 1454063558.813, <Response [200]>)
+...
+2016-01-29 18:32:43,822 - DEBUG - TianchengTest.py[85] - [TestAssertThread] 从队列taskassert_queue中取出一条任务: ('AFP', 1, 1454063558.813, 1454063558.813, <Response [200]>)
+2016-01-29 18:32:43,829 - DEBUG - TianchengTest.py[109] - [TestAssertThread] 状态处理后timestate: {('AFP', 1): {'timeoutdelay': 0.0, 'timeouttask': 39.98399996757507}}
+2016-01-29 18:32:43,835 - DEBUG - TianchengTest.py[117] - [TestAssertThread] 调用断言模块进行处理: AFP 1 <Response [200]>
+2016-01-29 18:32:43,841 - DEBUG - Interface_AssertEngine.py[96] - [TestAssertThread] 驱动断言:response:<Response [200]> ExpectationDict:{u'usermodelhistory': {u'status': u'0', u'modelName': u'\u989d\u5ea6\u8d44\u683c', u'mobilePhone': u'18675559750', u'modelType': 3, u'modelResult': u'1', u'identityCard': u'003002196101160031', u'AppID': u'abc123456', u'errorInfo': u'\u81ea\u6709\u9ed1\u540d\u5355\u547d\u4e2d', u'realName': u'\u9648\u521a'}, u'HTTPResponse': {u'Status': u'0', u'Messge': u'success'}, u'ResultJson': {u'Status': u'0', u'model_Result': u'1'}}
+2016-01-29 18:32:43,854 - DEBUG - Interface_Assert.py[41] - [TestAssertThread] init connecting mysql db: fraudcheck_77testteam 192.168.18.85:3306 write/tc12345
+2016-01-29 18:32:43,858 - DEBUG - ModAFP.py[255] - [TestAssertThread] 提取加密字段和响应数据from: ExpectationDict: {u'usermodelhistory': {u'status': u'0', u'modelName': u'\u989d\u5ea6\u8d44\u683c', u'mobilePhone': u'18675559750', u'modelType': 3, u'modelResult': u'1', u'identityCard': u'003002196101160031', u'AppID': u'abc123456', u'errorInfo': u'\u81ea\u6709\u9ed1\u540d\u5355\u547d\u4e2d', u'realName': u'\u9648\u521a'}, u'HTTPResponse': {u'Status': u'0', u'Messge': u'success'}, u'ResultJson': {u'Status': u'0', u'model_Result': u'1'}}
+2016-01-29 18:32:43,867 - DEBUG - ModAFP.py[287] - [TestAssertThread] 提取加密字段数据: HTTPEXP: None
+ExpDict: {u'usermodelhistory': {u'status': u'0', u'modelName': u'\u989d\u5ea6\u8d44\u683c', u'mobilePhone': u'18675559750', u'modelType': 3, u'modelResult': u'1', u'identityCard': u'003002196101160031', u'AppID': u'abc123456', u'errorInfo': u'\u81ea\u6709\u9ed1\u540d\u5355\u547d\u4e2d', u'realName': u'\u9648\u521a'}, u'HTTPResponse': {u'Status': u'0', u'Messge': u'success'}, u'ResultJson': {u'Status': u'0', u'model_Result': u'1'}}
+BASE64_ExpDict: {u'usermodelhistory': {}, u'HTTPResponse': {}, u'ResultJson': {}}
+2016-01-29 18:32:43,872 - DEBUG - ModAFP.py[152] - [TestAssertThread] 检查响应: unique_id: abc123456380148835140449750
+HTTPEXP: None
+responseContentDict: {u'Status': u'0', u'Messge': u'success', u'unique': u'abc123456380148835140449750'}
+2016-01-29 18:32:43,880 - DEBUG - ModAFP.py[169] - [TestAssertThread] 检查明文字段数据: 用例中读取的fields: [u'status', u'modelName', u'mobilePhone', u'modelType', u'modelResult', u'identityCard', u'AppID', u'errorInfo', u'realName']
+values: [u'0', u'\u989d\u5ea6\u8d44\u683c', u'18675559750', 3, u'1', u'003002196101160031', u'abc123456', u'\u81ea\u6709\u9ed1\u540d\u5355\u547d\u4e2d', u'\u9648\u521a']
+2016-01-29 18:32:43,887 - DEBUG - ModAFP.py[176] - [TestAssertThread] 执行SQL查询: query_str: SELECT status, modelName, mobilePhone, modelType, modelResult, identityCard, AppID, errorInfo, realName FROM usermodelhistory WHERE UniqueID = %s (u'abc123456380148835140449750',)
+2016-01-29 18:32:43,898 - DEBUG - ModAFP.py[300] - [TestAssertThread] TableNoneError: TableName: u'usermodelhistory is NONE'
+2016-01-29 18:32:43,901 - DEBUG - Interface_Assert.py[55] - [TestAssertThread] Release  public resources
+2016-01-29 18:32:43,904 - DEBUG - TianchengTest.py[134] - [TestAssertThread] 放回队列继续处理: ('AFP', 1, 1454063563.903, 1454063563.903, <Response [200]>)
+...
+2016-01-29 18:32:48,908 - DEBUG - TianchengTest.py[85] - [TestAssertThread] 从队列taskassert_queue中取出一条任务: ('AFP', 1, 1454063563.903, 1454063563.903, <Response [200]>)
+2016-01-29 18:32:48,914 - DEBUG - TianchengTest.py[109] - [TestAssertThread] 状态处理后timestate: {('AFP', 1): {'timeoutdelay': 0.0, 'timeouttask': 34.973999977111816}}
+2016-01-29 18:32:48,920 - DEBUG - TianchengTest.py[117] - [TestAssertThread] 调用断言模块进行处理: AFP 1 <Response [200]>
+2016-01-29 18:32:48,924 - DEBUG - Interface_AssertEngine.py[96] - [TestAssertThread] 驱动断言:response:<Response [200]> ExpectationDict:{u'usermodelhistory': {u'status': u'0', u'modelName': u'\u989d\u5ea6\u8d44\u683c', u'mobilePhone': u'18675559750', u'modelType': 3, u'modelResult': u'1', u'identityCard': u'003002196101160031', u'AppID': u'abc123456', u'errorInfo': u'\u81ea\u6709\u9ed1\u540d\u5355\u547d\u4e2d', u'realName': u'\u9648\u521a'}, u'HTTPResponse': {u'Status': u'0', u'Messge': u'success'}, u'ResultJson': {u'Status': u'0', u'model_Result': u'1'}}
+2016-01-29 18:32:48,938 - DEBUG - Interface_Assert.py[41] - [TestAssertThread] init connecting mysql db: fraudcheck_77testteam 192.168.18.85:3306 write/tc12345
+2016-01-29 18:32:48,943 - DEBUG - ModAFP.py[255] - [TestAssertThread] 提取加密字段和响应数据from: ExpectationDict: {u'usermodelhistory': {u'status': u'0', u'modelName': u'\u989d\u5ea6\u8d44\u683c', u'mobilePhone': u'18675559750', u'modelType': 3, u'modelResult': u'1', u'identityCard': u'003002196101160031', u'AppID': u'abc123456', u'errorInfo': u'\u81ea\u6709\u9ed1\u540d\u5355\u547d\u4e2d', u'realName': u'\u9648\u521a'}, u'HTTPResponse': {u'Status': u'0', u'Messge': u'success'}, u'ResultJson': {u'Status': u'0', u'model_Result': u'1'}}
+2016-01-29 18:32:48,951 - DEBUG - ModAFP.py[287] - [TestAssertThread] 提取加密字段数据: HTTPEXP: None
+ExpDict: {u'usermodelhistory': {u'status': u'0', u'modelName': u'\u989d\u5ea6\u8d44\u683c', u'mobilePhone': u'18675559750', u'modelType': 3, u'modelResult': u'1', u'identityCard': u'003002196101160031', u'AppID': u'abc123456', u'errorInfo': u'\u81ea\u6709\u9ed1\u540d\u5355\u547d\u4e2d', u'realName': u'\u9648\u521a'}, u'HTTPResponse': {u'Status': u'0', u'Messge': u'success'}, u'ResultJson': {u'Status': u'0', u'model_Result': u'1'}}
+BASE64_ExpDict: {u'usermodelhistory': {}, u'HTTPResponse': {}, u'ResultJson': {}}
+2016-01-29 18:32:48,959 - DEBUG - ModAFP.py[152] - [TestAssertThread] 检查响应: unique_id: abc123456380148835140449750
+HTTPEXP: None
+responseContentDict: {u'Status': u'0', u'Messge': u'success', u'unique': u'abc123456380148835140449750'}
+2016-01-29 18:32:48,964 - DEBUG - ModAFP.py[169] - [TestAssertThread] 检查明文字段数据: 用例中读取的fields: [u'status', u'modelName', u'mobilePhone', u'modelType', u'modelResult', u'identityCard', u'AppID', u'errorInfo', u'realName']
+values: [u'0', u'\u989d\u5ea6\u8d44\u683c', u'18675559750', 3, u'1', u'003002196101160031', u'abc123456', u'\u81ea\u6709\u9ed1\u540d\u5355\u547d\u4e2d', u'\u9648\u521a']
+2016-01-29 18:32:48,971 - DEBUG - ModAFP.py[176] - [TestAssertThread] 执行SQL查询: query_str: SELECT status, modelName, mobilePhone, modelType, modelResult, identityCard, AppID, errorInfo, realName FROM usermodelhistory WHERE UniqueID = %s (u'abc123456380148835140449750',)
+2016-01-29 18:32:48,986 - DEBUG - ModAFP.py[300] - [TestAssertThread] TableNoneError: TableName: u'usermodelhistory is NONE'
+2016-01-29 18:32:48,989 - DEBUG - Interface_Assert.py[55] - [TestAssertThread] Release  public resources
+2016-01-29 18:32:48,990 - DEBUG - TianchengTest.py[134] - [TestAssertThread] 放回队列继续处理: ('AFP', 1, 1454063568.99, 1454063568.99, <Response [200]>)
+...
+2016-01-29 18:32:53,997 - DEBUG - TianchengTest.py[85] - [TestAssertThread] 从队列taskassert_queue中取出一条任务: ('AFP', 1, 1454063568.99, 1454063568.99, <Response [200]>)
+2016-01-29 18:32:54,016 - DEBUG - TianchengTest.py[109] - [TestAssertThread] 状态处理后timestate: {('AFP', 1): {'timeoutdelay': 0.0, 'timeouttask': 29.95199990272522}}
+2016-01-29 18:32:54,028 - DEBUG - TianchengTest.py[117] - [TestAssertThread] 调用断言模块进行处理: AFP 1 <Response [200]>
+2016-01-29 18:32:54,032 - DEBUG - Interface_AssertEngine.py[96] - [TestAssertThread] 驱动断言:response:<Response [200]> ExpectationDict:{u'usermodelhistory': {u'status': u'0', u'modelName': u'\u989d\u5ea6\u8d44\u683c', u'mobilePhone': u'18675559750', u'modelType': 3, u'modelResult': u'1', u'identityCard': u'003002196101160031', u'AppID': u'abc123456', u'errorInfo': u'\u81ea\u6709\u9ed1\u540d\u5355\u547d\u4e2d', u'realName': u'\u9648\u521a'}, u'HTTPResponse': {u'Status': u'0', u'Messge': u'success'}, u'ResultJson': {u'Status': u'0', u'model_Result': u'1'}}
+2016-01-29 18:32:54,046 - DEBUG - Interface_Assert.py[41] - [TestAssertThread] init connecting mysql db: fraudcheck_77testteam 192.168.18.85:3306 write/tc12345
+2016-01-29 18:32:54,051 - DEBUG - ModAFP.py[255] - [TestAssertThread] 提取加密字段和响应数据from: ExpectationDict: {u'usermodelhistory': {u'status': u'0', u'modelName': u'\u989d\u5ea6\u8d44\u683c', u'mobilePhone': u'18675559750', u'modelType': 3, u'modelResult': u'1', u'identityCard': u'003002196101160031', u'AppID': u'abc123456', u'errorInfo': u'\u81ea\u6709\u9ed1\u540d\u5355\u547d\u4e2d', u'realName': u'\u9648\u521a'}, u'HTTPResponse': {u'Status': u'0', u'Messge': u'success'}, u'ResultJson': {u'Status': u'0', u'model_Result': u'1'}}
+2016-01-29 18:32:54,058 - DEBUG - ModAFP.py[287] - [TestAssertThread] 提取加密字段数据: HTTPEXP: None
+ExpDict: {u'usermodelhistory': {u'status': u'0', u'modelName': u'\u989d\u5ea6\u8d44\u683c', u'mobilePhone': u'18675559750', u'modelType': 3, u'modelResult': u'1', u'identityCard': u'003002196101160031', u'AppID': u'abc123456', u'errorInfo': u'\u81ea\u6709\u9ed1\u540d\u5355\u547d\u4e2d', u'realName': u'\u9648\u521a'}, u'HTTPResponse': {u'Status': u'0', u'Messge': u'success'}, u'ResultJson': {u'Status': u'0', u'model_Result': u'1'}}
+BASE64_ExpDict: {u'usermodelhistory': {}, u'HTTPResponse': {}, u'ResultJson': {}}
+2016-01-29 18:32:54,065 - DEBUG - ModAFP.py[152] - [TestAssertThread] 检查响应: unique_id: abc123456380148835140449750
+HTTPEXP: None
+responseContentDict: {u'Status': u'0', u'Messge': u'success', u'unique': u'abc123456380148835140449750'}
+2016-01-29 18:32:54,072 - DEBUG - ModAFP.py[169] - [TestAssertThread] 检查明文字段数据: 用例中读取的fields: [u'status', u'modelName', u'mobilePhone', u'modelType', u'modelResult', u'identityCard', u'AppID', u'errorInfo', u'realName']
+values: [u'0', u'\u989d\u5ea6\u8d44\u683c', u'18675559750', 3, u'1', u'003002196101160031', u'abc123456', u'\u81ea\u6709\u9ed1\u540d\u5355\u547d\u4e2d', u'\u9648\u521a']
+2016-01-29 18:32:54,078 - DEBUG - ModAFP.py[176] - [TestAssertThread] 执行SQL查询: query_str: SELECT status, modelName, mobilePhone, modelType, modelResult, identityCard, AppID, errorInfo, realName FROM usermodelhistory WHERE UniqueID = %s (u'abc123456380148835140449750',)
+2016-01-29 18:32:54,092 - DEBUG - ModAFP.py[300] - [TestAssertThread] TableNoneError: TableName: u'usermodelhistory is NONE'
+2016-01-29 18:32:54,095 - DEBUG - Interface_Assert.py[55] - [TestAssertThread] Release  public resources
+2016-01-29 18:32:54,098 - DEBUG - TianchengTest.py[134] - [TestAssertThread] 放回队列继续处理: ('AFP', 1, 1454063574.097, 1454063574.097, <Response [200]>)
+...
+2016-01-29 18:32:59,107 - DEBUG - TianchengTest.py[85] - [TestAssertThread] 从队列taskassert_queue中取出一条任务: ('AFP', 1, 1454063574.097, 1454063574.097, <Response [200]>)
+2016-01-29 18:32:59,124 - DEBUG - TianchengTest.py[109] - [TestAssertThread] 状态处理后timestate: {('AFP', 1): {'timeoutdelay': 0.0, 'timeouttask': 24.92899990081787}}
+2016-01-29 18:32:59,141 - DEBUG - TianchengTest.py[117] - [TestAssertThread] 调用断言模块进行处理: AFP 1 <Response [200]>
+2016-01-29 18:32:59,157 - DEBUG - Interface_AssertEngine.py[96] - [TestAssertThread] 驱动断言:response:<Response [200]> ExpectationDict:{u'usermodelhistory': {u'status': u'0', u'modelName': u'\u989d\u5ea6\u8d44\u683c', u'mobilePhone': u'18675559750', u'modelType': 3, u'modelResult': u'1', u'identityCard': u'003002196101160031', u'AppID': u'abc123456', u'errorInfo': u'\u81ea\u6709\u9ed1\u540d\u5355\u547d\u4e2d', u'realName': u'\u9648\u521a'}, u'HTTPResponse': {u'Status': u'0', u'Messge': u'success'}, u'ResultJson': {u'Status': u'0', u'model_Result': u'1'}}
+2016-01-29 18:32:59,171 - DEBUG - Interface_Assert.py[41] - [TestAssertThread] init connecting mysql db: fraudcheck_77testteam 192.168.18.85:3306 write/tc12345
+2016-01-29 18:32:59,174 - DEBUG - ModAFP.py[255] - [TestAssertThread] 提取加密字段和响应数据from: ExpectationDict: {u'usermodelhistory': {u'status': u'0', u'modelName': u'\u989d\u5ea6\u8d44\u683c', u'mobilePhone': u'18675559750', u'modelType': 3, u'modelResult': u'1', u'identityCard': u'003002196101160031', u'AppID': u'abc123456', u'errorInfo': u'\u81ea\u6709\u9ed1\u540d\u5355\u547d\u4e2d', u'realName': u'\u9648\u521a'}, u'HTTPResponse': {u'Status': u'0', u'Messge': u'success'}, u'ResultJson': {u'Status': u'0', u'model_Result': u'1'}}
+2016-01-29 18:32:59,181 - DEBUG - ModAFP.py[287] - [TestAssertThread] 提取加密字段数据: HTTPEXP: None
+ExpDict: {u'usermodelhistory': {u'status': u'0', u'modelName': u'\u989d\u5ea6\u8d44\u683c', u'mobilePhone': u'18675559750', u'modelType': 3, u'modelResult': u'1', u'identityCard': u'003002196101160031', u'AppID': u'abc123456', u'errorInfo': u'\u81ea\u6709\u9ed1\u540d\u5355\u547d\u4e2d', u'realName': u'\u9648\u521a'}, u'HTTPResponse': {u'Status': u'0', u'Messge': u'success'}, u'ResultJson': {u'Status': u'0', u'model_Result': u'1'}}
+BASE64_ExpDict: {u'usermodelhistory': {}, u'HTTPResponse': {}, u'ResultJson': {}}
+2016-01-29 18:32:59,188 - DEBUG - ModAFP.py[152] - [TestAssertThread] 检查响应: unique_id: abc123456380148835140449750
+HTTPEXP: None
+responseContentDict: {u'Status': u'0', u'Messge': u'success', u'unique': u'abc123456380148835140449750'}
+2016-01-29 18:32:59,194 - DEBUG - ModAFP.py[169] - [TestAssertThread] 检查明文字段数据: 用例中读取的fields: [u'status', u'modelName', u'mobilePhone', u'modelType', u'modelResult', u'identityCard', u'AppID', u'errorInfo', u'realName']
+values: [u'0', u'\u989d\u5ea6\u8d44\u683c', u'18675559750', 3, u'1', u'003002196101160031', u'abc123456', u'\u81ea\u6709\u9ed1\u540d\u5355\u547d\u4e2d', u'\u9648\u521a']
+2016-01-29 18:32:59,200 - DEBUG - ModAFP.py[176] - [TestAssertThread] 执行SQL查询: query_str: SELECT status, modelName, mobilePhone, modelType, modelResult, identityCard, AppID, errorInfo, realName FROM usermodelhistory WHERE UniqueID = %s (u'abc123456380148835140449750',)
+2016-01-29 18:32:59,211 - DEBUG - ModAFP.py[300] - [TestAssertThread] TableNoneError: TableName: u'usermodelhistory is NONE'
+2016-01-29 18:32:59,216 - DEBUG - Interface_Assert.py[55] - [TestAssertThread] Release  public resources
+2016-01-29 18:32:59,217 - DEBUG - TianchengTest.py[134] - [TestAssertThread] 放回队列继续处理: ('AFP', 1, 1454063579.217, 1454063579.217, <Response [200]>)
+...
+2016-01-29 18:33:04,223 - DEBUG - TianchengTest.py[85] - [TestAssertThread] 从队列taskassert_queue中取出一条任务: ('AFP', 1, 1454063579.217, 1454063579.217, <Response [200]>)
+2016-01-29 18:33:04,233 - DEBUG - TianchengTest.py[109] - [TestAssertThread] 状态处理后timestate: {('AFP', 1): {'timeoutdelay': 0.0, 'timeouttask': 19.913999795913696}}
+2016-01-29 18:33:04,243 - DEBUG - TianchengTest.py[117] - [TestAssertThread] 调用断言模块进行处理: AFP 1 <Response [200]>
+2016-01-29 18:33:04,253 - DEBUG - Interface_AssertEngine.py[96] - [TestAssertThread] 驱动断言:response:<Response [200]> ExpectationDict:{u'usermodelhistory': {u'status': u'0', u'modelName': u'\u989d\u5ea6\u8d44\u683c', u'mobilePhone': u'18675559750', u'modelType': 3, u'modelResult': u'1', u'identityCard': u'003002196101160031', u'AppID': u'abc123456', u'errorInfo': u'\u81ea\u6709\u9ed1\u540d\u5355\u547d\u4e2d', u'realName': u'\u9648\u521a'}, u'HTTPResponse': {u'Status': u'0', u'Messge': u'success'}, u'ResultJson': {u'Status': u'0', u'model_Result': u'1'}}
+2016-01-29 18:33:04,269 - DEBUG - Interface_Assert.py[41] - [TestAssertThread] init connecting mysql db: fraudcheck_77testteam 192.168.18.85:3306 write/tc12345
+2016-01-29 18:33:04,275 - DEBUG - ModAFP.py[255] - [TestAssertThread] 提取加密字段和响应数据from: ExpectationDict: {u'usermodelhistory': {u'status': u'0', u'modelName': u'\u989d\u5ea6\u8d44\u683c', u'mobilePhone': u'18675559750', u'modelType': 3, u'modelResult': u'1', u'identityCard': u'003002196101160031', u'AppID': u'abc123456', u'errorInfo': u'\u81ea\u6709\u9ed1\u540d\u5355\u547d\u4e2d', u'realName': u'\u9648\u521a'}, u'HTTPResponse': {u'Status': u'0', u'Messge': u'success'}, u'ResultJson': {u'Status': u'0', u'model_Result': u'1'}}
+2016-01-29 18:33:04,283 - DEBUG - ModAFP.py[287] - [TestAssertThread] 提取加密字段数据: HTTPEXP: None
+ExpDict: {u'usermodelhistory': {u'status': u'0', u'modelName': u'\u989d\u5ea6\u8d44\u683c', u'mobilePhone': u'18675559750', u'modelType': 3, u'modelResult': u'1', u'identityCard': u'003002196101160031', u'AppID': u'abc123456', u'errorInfo': u'\u81ea\u6709\u9ed1\u540d\u5355\u547d\u4e2d', u'realName': u'\u9648\u521a'}, u'HTTPResponse': {u'Status': u'0', u'Messge': u'success'}, u'ResultJson': {u'Status': u'0', u'model_Result': u'1'}}
+BASE64_ExpDict: {u'usermodelhistory': {}, u'HTTPResponse': {}, u'ResultJson': {}}
+2016-01-29 18:33:04,290 - DEBUG - ModAFP.py[152] - [TestAssertThread] 检查响应: unique_id: abc123456380148835140449750
+HTTPEXP: None
+responseContentDict: {u'Status': u'0', u'Messge': u'success', u'unique': u'abc123456380148835140449750'}
+2016-01-29 18:33:04,298 - DEBUG - ModAFP.py[169] - [TestAssertThread] 检查明文字段数据: 用例中读取的fields: [u'status', u'modelName', u'mobilePhone', u'modelType', u'modelResult', u'identityCard', u'AppID', u'errorInfo', u'realName']
+values: [u'0', u'\u989d\u5ea6\u8d44\u683c', u'18675559750', 3, u'1', u'003002196101160031', u'abc123456', u'\u81ea\u6709\u9ed1\u540d\u5355\u547d\u4e2d', u'\u9648\u521a']
+2016-01-29 18:33:04,305 - DEBUG - ModAFP.py[176] - [TestAssertThread] 执行SQL查询: query_str: SELECT status, modelName, mobilePhone, modelType, modelResult, identityCard, AppID, errorInfo, realName FROM usermodelhistory WHERE UniqueID = %s (u'abc123456380148835140449750',)
+2016-01-29 18:33:04,318 - DEBUG - ModAFP.py[300] - [TestAssertThread] TableNoneError: TableName: u'usermodelhistory is NONE'
+2016-01-29 18:33:04,322 - DEBUG - Interface_Assert.py[55] - [TestAssertThread] Release  public resources
+2016-01-29 18:33:04,323 - DEBUG - TianchengTest.py[134] - [TestAssertThread] 放回队列继续处理: ('AFP', 1, 1454063584.323, 1454063584.323, <Response [200]>)
+...
+2016-01-29 18:33:09,329 - DEBUG - TianchengTest.py[85] - [TestAssertThread] 从队列taskassert_queue中取出一条任务: ('AFP', 1, 1454063584.323, 1454063584.323, <Response [200]>)
+2016-01-29 18:33:09,348 - DEBUG - TianchengTest.py[109] - [TestAssertThread] 状态处理后timestate: {('AFP', 1): {'timeoutdelay': 0.0, 'timeouttask': 14.892999649047852}}
+2016-01-29 18:33:09,358 - DEBUG - TianchengTest.py[117] - [TestAssertThread] 调用断言模块进行处理: AFP 1 <Response [200]>
+2016-01-29 18:33:09,364 - DEBUG - Interface_AssertEngine.py[96] - [TestAssertThread] 驱动断言:response:<Response [200]> ExpectationDict:{u'usermodelhistory': {u'status': u'0', u'modelName': u'\u989d\u5ea6\u8d44\u683c', u'mobilePhone': u'18675559750', u'modelType': 3, u'modelResult': u'1', u'identityCard': u'003002196101160031', u'AppID': u'abc123456', u'errorInfo': u'\u81ea\u6709\u9ed1\u540d\u5355\u547d\u4e2d', u'realName': u'\u9648\u521a'}, u'HTTPResponse': {u'Status': u'0', u'Messge': u'success'}, u'ResultJson': {u'Status': u'0', u'model_Result': u'1'}}
+2016-01-29 18:33:09,380 - DEBUG - Interface_Assert.py[41] - [TestAssertThread] init connecting mysql db: fraudcheck_77testteam 192.168.18.85:3306 write/tc12345
+2016-01-29 18:33:09,384 - DEBUG - ModAFP.py[255] - [TestAssertThread] 提取加密字段和响应数据from: ExpectationDict: {u'usermodelhistory': {u'status': u'0', u'modelName': u'\u989d\u5ea6\u8d44\u683c', u'mobilePhone': u'18675559750', u'modelType': 3, u'modelResult': u'1', u'identityCard': u'003002196101160031', u'AppID': u'abc123456', u'errorInfo': u'\u81ea\u6709\u9ed1\u540d\u5355\u547d\u4e2d', u'realName': u'\u9648\u521a'}, u'HTTPResponse': {u'Status': u'0', u'Messge': u'success'}, u'ResultJson': {u'Status': u'0', u'model_Result': u'1'}}
+2016-01-29 18:33:09,391 - DEBUG - ModAFP.py[287] - [TestAssertThread] 提取加密字段数据: HTTPEXP: None
+ExpDict: {u'usermodelhistory': {u'status': u'0', u'modelName': u'\u989d\u5ea6\u8d44\u683c', u'mobilePhone': u'18675559750', u'modelType': 3, u'modelResult': u'1', u'identityCard': u'003002196101160031', u'AppID': u'abc123456', u'errorInfo': u'\u81ea\u6709\u9ed1\u540d\u5355\u547d\u4e2d', u'realName': u'\u9648\u521a'}, u'HTTPResponse': {u'Status': u'0', u'Messge': u'success'}, u'ResultJson': {u'Status': u'0', u'model_Result': u'1'}}
+BASE64_ExpDict: {u'usermodelhistory': {}, u'HTTPResponse': {}, u'ResultJson': {}}
+2016-01-29 18:33:09,400 - DEBUG - ModAFP.py[152] - [TestAssertThread] 检查响应: unique_id: abc123456380148835140449750
+HTTPEXP: None
+responseContentDict: {u'Status': u'0', u'Messge': u'success', u'unique': u'abc123456380148835140449750'}
+2016-01-29 18:33:09,407 - DEBUG - ModAFP.py[169] - [TestAssertThread] 检查明文字段数据: 用例中读取的fields: [u'status', u'modelName', u'mobilePhone', u'modelType', u'modelResult', u'identityCard', u'AppID', u'errorInfo', u'realName']
+values: [u'0', u'\u989d\u5ea6\u8d44\u683c', u'18675559750', 3, u'1', u'003002196101160031', u'abc123456', u'\u81ea\u6709\u9ed1\u540d\u5355\u547d\u4e2d', u'\u9648\u521a']
+2016-01-29 18:33:09,413 - DEBUG - ModAFP.py[176] - [TestAssertThread] 执行SQL查询: query_str: SELECT status, modelName, mobilePhone, modelType, modelResult, identityCard, AppID, errorInfo, realName FROM usermodelhistory WHERE UniqueID = %s (u'abc123456380148835140449750',)
+2016-01-29 18:33:09,427 - DEBUG - ModAFP.py[300] - [TestAssertThread] TableNoneError: TableName: u'usermodelhistory is NONE'
+2016-01-29 18:33:09,430 - DEBUG - Interface_Assert.py[55] - [TestAssertThread] Release  public resources
+2016-01-29 18:33:09,431 - DEBUG - TianchengTest.py[134] - [TestAssertThread] 放回队列继续处理: ('AFP', 1, 1454063589.431, 1454063589.431, <Response [200]>)
+...
+2016-01-29 18:33:14,440 - DEBUG - TianchengTest.py[85] - [TestAssertThread] 从队列taskassert_queue中取出一条任务: ('AFP', 1, 1454063589.431, 1454063589.431, <Response [200]>)
+2016-01-29 18:33:14,457 - DEBUG - TianchengTest.py[109] - [TestAssertThread] 状态处理后timestate: {('AFP', 1): {'timeoutdelay': 0.0, 'timeouttask': 9.869999647140503}}
+2016-01-29 18:33:14,461 - DEBUG - TianchengTest.py[117] - [TestAssertThread] 调用断言模块进行处理: AFP 1 <Response [200]>
+2016-01-29 18:33:14,467 - DEBUG - Interface_AssertEngine.py[96] - [TestAssertThread] 驱动断言:response:<Response [200]> ExpectationDict:{u'usermodelhistory': {u'status': u'0', u'modelName': u'\u989d\u5ea6\u8d44\u683c', u'mobilePhone': u'18675559750', u'modelType': 3, u'modelResult': u'1', u'identityCard': u'003002196101160031', u'AppID': u'abc123456', u'errorInfo': u'\u81ea\u6709\u9ed1\u540d\u5355\u547d\u4e2d', u'realName': u'\u9648\u521a'}, u'HTTPResponse': {u'Status': u'0', u'Messge': u'success'}, u'ResultJson': {u'Status': u'0', u'model_Result': u'1'}}
+2016-01-29 18:33:14,480 - DEBUG - Interface_Assert.py[41] - [TestAssertThread] init connecting mysql db: fraudcheck_77testteam 192.168.18.85:3306 write/tc12345
+2016-01-29 18:33:14,484 - DEBUG - ModAFP.py[255] - [TestAssertThread] 提取加密字段和响应数据from: ExpectationDict: {u'usermodelhistory': {u'status': u'0', u'modelName': u'\u989d\u5ea6\u8d44\u683c', u'mobilePhone': u'18675559750', u'modelType': 3, u'modelResult': u'1', u'identityCard': u'003002196101160031', u'AppID': u'abc123456', u'errorInfo': u'\u81ea\u6709\u9ed1\u540d\u5355\u547d\u4e2d', u'realName': u'\u9648\u521a'}, u'HTTPResponse': {u'Status': u'0', u'Messge': u'success'}, u'ResultJson': {u'Status': u'0', u'model_Result': u'1'}}
+2016-01-29 18:33:14,492 - DEBUG - ModAFP.py[287] - [TestAssertThread] 提取加密字段数据: HTTPEXP: None
+ExpDict: {u'usermodelhistory': {u'status': u'0', u'modelName': u'\u989d\u5ea6\u8d44\u683c', u'mobilePhone': u'18675559750', u'modelType': 3, u'modelResult': u'1', u'identityCard': u'003002196101160031', u'AppID': u'abc123456', u'errorInfo': u'\u81ea\u6709\u9ed1\u540d\u5355\u547d\u4e2d', u'realName': u'\u9648\u521a'}, u'HTTPResponse': {u'Status': u'0', u'Messge': u'success'}, u'ResultJson': {u'Status': u'0', u'model_Result': u'1'}}
+BASE64_ExpDict: {u'usermodelhistory': {}, u'HTTPResponse': {}, u'ResultJson': {}}
+2016-01-29 18:33:14,499 - DEBUG - ModAFP.py[152] - [TestAssertThread] 检查响应: unique_id: abc123456380148835140449750
+HTTPEXP: None
+responseContentDict: {u'Status': u'0', u'Messge': u'success', u'unique': u'abc123456380148835140449750'}
+2016-01-29 18:33:14,505 - DEBUG - ModAFP.py[169] - [TestAssertThread] 检查明文字段数据: 用例中读取的fields: [u'status', u'modelName', u'mobilePhone', u'modelType', u'modelResult', u'identityCard', u'AppID', u'errorInfo', u'realName']
+values: [u'0', u'\u989d\u5ea6\u8d44\u683c', u'18675559750', 3, u'1', u'003002196101160031', u'abc123456', u'\u81ea\u6709\u9ed1\u540d\u5355\u547d\u4e2d', u'\u9648\u521a']
+2016-01-29 18:33:14,512 - DEBUG - ModAFP.py[176] - [TestAssertThread] 执行SQL查询: query_str: SELECT status, modelName, mobilePhone, modelType, modelResult, identityCard, AppID, errorInfo, realName FROM usermodelhistory WHERE UniqueID = %s (u'abc123456380148835140449750',)
+2016-01-29 18:33:14,526 - DEBUG - ModAFP.py[300] - [TestAssertThread] TableNoneError: TableName: u'usermodelhistory is NONE'
+2016-01-29 18:33:14,529 - DEBUG - Interface_Assert.py[55] - [TestAssertThread] Release  public resources
+2016-01-29 18:33:14,532 - DEBUG - TianchengTest.py[134] - [TestAssertThread] 放回队列继续处理: ('AFP', 1, 1454063594.531, 1454063594.531, <Response [200]>)
+...
+2016-01-29 18:33:19,539 - DEBUG - TianchengTest.py[85] - [TestAssertThread] 从队列taskassert_queue中取出一条任务: ('AFP', 1, 1454063594.531, 1454063594.531, <Response [200]>)
+2016-01-29 18:33:19,556 - DEBUG - TianchengTest.py[109] - [TestAssertThread] 状态处理后timestate: {('AFP', 1): {'timeoutdelay': 0.0, 'timeouttask': 4.846999645233154}}
+2016-01-29 18:33:19,573 - DEBUG - TianchengTest.py[117] - [TestAssertThread] 调用断言模块进行处理: AFP 1 <Response [200]>
+2016-01-29 18:33:19,588 - DEBUG - Interface_AssertEngine.py[96] - [TestAssertThread] 驱动断言:response:<Response [200]> ExpectationDict:{u'usermodelhistory': {u'status': u'0', u'modelName': u'\u989d\u5ea6\u8d44\u683c', u'mobilePhone': u'18675559750', u'modelType': 3, u'modelResult': u'1', u'identityCard': u'003002196101160031', u'AppID': u'abc123456', u'errorInfo': u'\u81ea\u6709\u9ed1\u540d\u5355\u547d\u4e2d', u'realName': u'\u9648\u521a'}, u'HTTPResponse': {u'Status': u'0', u'Messge': u'success'}, u'ResultJson': {u'Status': u'0', u'model_Result': u'1'}}
+2016-01-29 18:33:19,601 - DEBUG - Interface_Assert.py[41] - [TestAssertThread] init connecting mysql db: fraudcheck_77testteam 192.168.18.85:3306 write/tc12345
+2016-01-29 18:33:19,605 - DEBUG - ModAFP.py[255] - [TestAssertThread] 提取加密字段和响应数据from: ExpectationDict: {u'usermodelhistory': {u'status': u'0', u'modelName': u'\u989d\u5ea6\u8d44\u683c', u'mobilePhone': u'18675559750', u'modelType': 3, u'modelResult': u'1', u'identityCard': u'003002196101160031', u'AppID': u'abc123456', u'errorInfo': u'\u81ea\u6709\u9ed1\u540d\u5355\u547d\u4e2d', u'realName': u'\u9648\u521a'}, u'HTTPResponse': {u'Status': u'0', u'Messge': u'success'}, u'ResultJson': {u'Status': u'0', u'model_Result': u'1'}}
+2016-01-29 18:33:19,612 - DEBUG - ModAFP.py[287] - [TestAssertThread] 提取加密字段数据: HTTPEXP: None
+ExpDict: {u'usermodelhistory': {u'status': u'0', u'modelName': u'\u989d\u5ea6\u8d44\u683c', u'mobilePhone': u'18675559750', u'modelType': 3, u'modelResult': u'1', u'identityCard': u'003002196101160031', u'AppID': u'abc123456', u'errorInfo': u'\u81ea\u6709\u9ed1\u540d\u5355\u547d\u4e2d', u'realName': u'\u9648\u521a'}, u'HTTPResponse': {u'Status': u'0', u'Messge': u'success'}, u'ResultJson': {u'Status': u'0', u'model_Result': u'1'}}
+BASE64_ExpDict: {u'usermodelhistory': {}, u'HTTPResponse': {}, u'ResultJson': {}}
+2016-01-29 18:33:19,619 - DEBUG - ModAFP.py[152] - [TestAssertThread] 检查响应: unique_id: abc123456380148835140449750
+HTTPEXP: None
+responseContentDict: {u'Status': u'0', u'Messge': u'success', u'unique': u'abc123456380148835140449750'}
+2016-01-29 18:33:19,625 - DEBUG - ModAFP.py[169] - [TestAssertThread] 检查明文字段数据: 用例中读取的fields: [u'status', u'modelName', u'mobilePhone', u'modelType', u'modelResult', u'identityCard', u'AppID', u'errorInfo', u'realName']
+values: [u'0', u'\u989d\u5ea6\u8d44\u683c', u'18675559750', 3, u'1', u'003002196101160031', u'abc123456', u'\u81ea\u6709\u9ed1\u540d\u5355\u547d\u4e2d', u'\u9648\u521a']
+2016-01-29 18:33:19,632 - DEBUG - ModAFP.py[176] - [TestAssertThread] 执行SQL查询: query_str: SELECT status, modelName, mobilePhone, modelType, modelResult, identityCard, AppID, errorInfo, realName FROM usermodelhistory WHERE UniqueID = %s (u'abc123456380148835140449750',)
+2016-01-29 18:33:19,647 - DEBUG - ModAFP.py[300] - [TestAssertThread] TableNoneError: TableName: u'usermodelhistory is NONE'
+2016-01-29 18:33:19,650 - DEBUG - Interface_Assert.py[55] - [TestAssertThread] Release  public resources
+2016-01-29 18:33:19,651 - DEBUG - TianchengTest.py[134] - [TestAssertThread] 放回队列继续处理: ('AFP', 1, 1454063599.651, 1454063599.651, <Response [200]>)
+...
+2016-01-29 18:33:24,658 - DEBUG - TianchengTest.py[85] - [TestAssertThread] 从队列taskassert_queue中取出一条任务: ('AFP', 1, 1454063599.651, 1454063599.651, <Response [200]>)
+2016-01-29 18:33:24,676 - DEBUG - TianchengTest.py[109] - [TestAssertThread] 状态处理后timestate: {('AFP', 1): {'timeoutdelay': 0.0, 'timeouttask': 0.0}}
+2016-01-29 18:33:24,687 - DEBUG - TianchengTest.py[117] - [TestAssertThread] 调用断言模块进行处理: AFP 1 <Response [200]>
+2016-01-29 18:33:24,694 - DEBUG - Interface_AssertEngine.py[96] - [TestAssertThread] 驱动断言:response:<Response [200]> ExpectationDict:{u'usermodelhistory': {u'status': u'0', u'modelName': u'\u989d\u5ea6\u8d44\u683c', u'mobilePhone': u'18675559750', u'modelType': 3, u'modelResult': u'1', u'identityCard': u'003002196101160031', u'AppID': u'abc123456', u'errorInfo': u'\u81ea\u6709\u9ed1\u540d\u5355\u547d\u4e2d', u'realName': u'\u9648\u521a'}, u'HTTPResponse': {u'Status': u'0', u'Messge': u'success'}, u'ResultJson': {u'Status': u'0', u'model_Result': u'1'}}
+2016-01-29 18:33:24,707 - DEBUG - Interface_Assert.py[41] - [TestAssertThread] init connecting mysql db: fraudcheck_77testteam 192.168.18.85:3306 write/tc12345
+2016-01-29 18:33:24,710 - DEBUG - ModAFP.py[255] - [TestAssertThread] 提取加密字段和响应数据from: ExpectationDict: {u'usermodelhistory': {u'status': u'0', u'modelName': u'\u989d\u5ea6\u8d44\u683c', u'mobilePhone': u'18675559750', u'modelType': 3, u'modelResult': u'1', u'identityCard': u'003002196101160031', u'AppID': u'abc123456', u'errorInfo': u'\u81ea\u6709\u9ed1\u540d\u5355\u547d\u4e2d', u'realName': u'\u9648\u521a'}, u'HTTPResponse': {u'Status': u'0', u'Messge': u'success'}, u'ResultJson': {u'Status': u'0', u'model_Result': u'1'}}
+2016-01-29 18:33:24,719 - DEBUG - ModAFP.py[287] - [TestAssertThread] 提取加密字段数据: HTTPEXP: None
+ExpDict: {u'usermodelhistory': {u'status': u'0', u'modelName': u'\u989d\u5ea6\u8d44\u683c', u'mobilePhone': u'18675559750', u'modelType': 3, u'modelResult': u'1', u'identityCard': u'003002196101160031', u'AppID': u'abc123456', u'errorInfo': u'\u81ea\u6709\u9ed1\u540d\u5355\u547d\u4e2d', u'realName': u'\u9648\u521a'}, u'HTTPResponse': {u'Status': u'0', u'Messge': u'success'}, u'ResultJson': {u'Status': u'0', u'model_Result': u'1'}}
+BASE64_ExpDict: {u'usermodelhistory': {}, u'HTTPResponse': {}, u'ResultJson': {}}
+2016-01-29 18:33:24,726 - DEBUG - ModAFP.py[152] - [TestAssertThread] 检查响应: unique_id: abc123456380148835140449750
+HTTPEXP: None
+responseContentDict: {u'Status': u'0', u'Messge': u'success', u'unique': u'abc123456380148835140449750'}
+2016-01-29 18:33:24,733 - DEBUG - ModAFP.py[169] - [TestAssertThread] 检查明文字段数据: 用例中读取的fields: [u'status', u'modelName', u'mobilePhone', u'modelType', u'modelResult', u'identityCard', u'AppID', u'errorInfo', u'realName']
+values: [u'0', u'\u989d\u5ea6\u8d44\u683c', u'18675559750', 3, u'1', u'003002196101160031', u'abc123456', u'\u81ea\u6709\u9ed1\u540d\u5355\u547d\u4e2d', u'\u9648\u521a']
+2016-01-29 18:33:24,739 - DEBUG - ModAFP.py[176] - [TestAssertThread] 执行SQL查询: query_str: SELECT status, modelName, mobilePhone, modelType, modelResult, identityCard, AppID, errorInfo, realName FROM usermodelhistory WHERE UniqueID = %s (u'abc123456380148835140449750',)
+2016-01-29 18:33:24,752 - DEBUG - ModAFP.py[300] - [TestAssertThread] TableNoneError: TableName: u'usermodelhistory is NONE'
+2016-01-29 18:33:24,755 - DEBUG - Interface_Assert.py[55] - [TestAssertThread] Release  public resources
+2016-01-29 18:33:24,756 - DEBUG - TianchengTest.py[127] - [TestAssertThread] 结果放入测试结果中: AFP 1 ('FAIL', u"u'usermodelhistory is NONE'")
+...
+2016-01-29 18:33:44,765 - DEBUG - TianchengTest.py[139] - [TestAssertThread] 从队列taskassert_queue中取任务超时
+2016-01-29 18:33:44,778 - DEBUG - TianchengTest.py[245] - 子线程：TestAssertThread结束
+2016-01-29 18:33:44,785 - DEBUG - TianchengTest.py[254] - 测试结束时间: 2016-01-29 18:33:44
+2016-01-29 18:33:44,788 - DEBUG - TianchengTest.py[258] - testcase_result: {('AFP', 1): ('FAIL', u"u'usermodelhistory is NONE'")}
+2016-01-29 18:33:44,792 - DEBUG - GenerateReport.py[125] - 生成测试结果报告: ./result/Test_Report_Filename20160129183344.html

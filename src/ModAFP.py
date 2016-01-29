@@ -12,6 +12,7 @@ import Config
 import MySQLdb
 import json_tools
 import re
+import uuid
 
 class ModAFP(object):
     def __init__(self):
@@ -28,6 +29,18 @@ class ModAFP(object):
         dbname = Config.ConfigIni.get_TestEnvironment_Info(TestEnvironment, 'dbname')
         dbinfo =  (host, int(port), username, password, dbname)
         return dbinfo
+
+    def getRuncaseEnvironment_insertdb(self, TestEnvironment):
+        '''
+        获取环境信息:数据库信息
+        '''
+        isrhost = Config.ConfigIni.get_TestEnvironment_Info(TestEnvironment, 'isrhost')
+        isrport = Config.ConfigIni.get_TestEnvironment_Info(TestEnvironment, 'isrport')
+        isrusername = Config.ConfigIni.get_TestEnvironment_Info(TestEnvironment, 'isrusername')
+        isrpassword = Config.ConfigIni.get_TestEnvironment_Info(TestEnvironment, 'isrpassword')
+        isrdbname = Config.ConfigIni.get_TestEnvironment_Info(TestEnvironment, 'isrdbname')
+        isrdbinfo =  (isrhost, int(isrport), isrusername, isrpassword, isrdbname)
+        return isrdbinfo
 
     def getRuncaseEnvironment_Url(self, TestEnvironment):
         '''
@@ -63,54 +76,53 @@ class ModAFP(object):
             return 0
         return timeoutdelay
 
-    def getRuncaseEnvironment_MQ(self, TestEnvironment):
+    def parseTestDataForDriver(self, TestData):
         '''
-        获取环境信息:MQ信息
+        解析TestData
         '''
-        MQhost = Config.ConfigIni.get_TestEnvironment_Info(TestEnvironment, 'MQhost')
-        MQport = Config.ConfigIni.get_TestEnvironment_Info(TestEnvironment, 'MQport')
-        MQusername = Config.ConfigIni.get_TestEnvironment_Info(TestEnvironment, 'MQusername')
-        MQpasswd = Config.ConfigIni.get_TestEnvironment_Info(TestEnvironment, 'MQpasswd')
-        MQvhost = Config.ConfigIni.get_TestEnvironment_Info(TestEnvironment, 'MQvhost')
-        MQinfo =  (MQhost, int(MQport), MQusername, MQpasswd, MQvhost)
-        return MQinfo
+        try:
+            result = {}
+            if TestData != '':
+                TestDataJ = json.loads(TestData)
+            else:
+                raise ValueError("TestData is ''")
+            if type(TestDataJ) is list:
+                tabledata = TestDataJ[0]
+                reqdate = json.dumps(TestDataJ[1], ensure_ascii=False)
+                result['reqdate'] = reqdate
 
-    def getRuncaseEnvironment_TABLE(self, TestEnvironment):
-        '''
-        获取环境信息:TABLE信息
-        '''
-        TABLEhost = Config.ConfigIni.get_TestEnvironment_Info(TestEnvironment, 'TABLEhost')
-        TABLEport = Config.ConfigIni.get_TestEnvironment_Info(TestEnvironment, 'TABLEport')
-        TABLEusername = Config.ConfigIni.get_TestEnvironment_Info(TestEnvironment, 'TABLEusername')
-        TABLEpassword = Config.ConfigIni.get_TestEnvironment_Info(TestEnvironment, 'TABLEpassword')
-        TABLEdbname = Config.ConfigIni.get_TestEnvironment_Info(TestEnvironment, 'TABLEdbname')
-        TABLEinfo =  (TABLEhost, int(TABLEport), TABLEusername, TABLEpassword, TABLEdbname)
-        return TABLEinfo
+                #tabledata处理
+                tabledata_result = []
+                tables = tabledata.keys()
+                unique_id = u'-AT' + str(uuid.uuid1())
+                for table in tables:
+                    fields = tabledata[table].keys()
+                    values = tabledata[table].values()
+                    #寻找userid字段添加唯一ID保证唯一
+                    for i in xrange(len(fields)):
+                        if fields[i] == 'userid':
+                            userid_new = values[i] + unique_id
+                            values[i] = userid_new
+                    tabledata_result.append((table, fields, values))
+                result['tabledata'] = tabledata_result
+            else:
+                reqdate = json.dumps(TestDataJ)
+                result['reqdate'] = reqdate
+            return result
+        except Exception as e:
+            PrintLog('exception',e)
+            return False
 
     def parseExpForAssert(self, Expectation):
         '''
         解析期望结果数据
         '''
         try:
-            if Expectation == '':
-                raise ValueError
-            else:
+            if Expectation != '':
                 ExpectationDict = json.loads(Expectation)
-            return ExpectationDict
-        except Exception as e:
-            PrintLog('exception',e)
-            return False
-
-    def parseMockDataForDriver(self, MockData):
-        '''
-        解析MockData
-        '''
-        try:
-            if MockData == '':
-                raise ValueError
             else:
-                MockDataDict = json.loads(MockData)
-            return MockDataDict
+                raise ValueError("Expectation is ''")
+            return ExpectationDict
         except Exception as e:
             PrintLog('exception',e)
             return False

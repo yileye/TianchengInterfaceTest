@@ -48,6 +48,20 @@ class ConfigIni(object):
         return cls.confO.get('DEFAULT', 'isstdebug')
 
     @classmethod
+    def get_isHTTPMock(cls):
+        '''
+        获取是否开启HTTP mock控制开关
+        '''
+        return cls.confO.get('DEFAULT', 'isHTTPMock')
+
+    @classmethod
+    def get_isMQMock(cls):
+        '''
+        获取是否开启MQ mock控制开关
+        '''
+        return cls.confO.get('DEFAULT', 'isMQMock')
+
+    @classmethod
     def get_index(cls):
         '''
         获取待执行的用例
@@ -69,11 +83,11 @@ class ConfigIni(object):
         return cls.confO.get('DEFAULT', 'testcase_col')
 
     @classmethod
-    def get_QueueName(cls):
+    def get_FunCode_DataKeyExchangeName(cls):
         '''
         获取队列名
         '''
-        return cls.confO.get('DEFAULT', 'Key_FunCodeQueueName')
+        return cls.confO.get('MOCK', 'FunCode_DataKeyExchangeName')
 
     @classmethod
     def get_TestEnvironment_Info(cls, section, field):

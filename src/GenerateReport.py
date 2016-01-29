@@ -25,7 +25,6 @@ class HtmlReport(object):
         self.fail_num = 0                     #测试失败的用例数
         self.error_num = 0                    #运行出错的用例数
         self.case_total = 0                   #运行测试用例总数
-        #self.report_title = u'天秤自动化测试报告'.encode('gbk')  #标题
         self.report_title = ch2s(u'天秤自动化测试报告')
         self.testcase_result = testcase_result   #测试结果 {('UPS', 1):('ERROR','error')}
         self.seconds = seconds         #耗时
@@ -51,7 +50,6 @@ class HtmlReport(object):
         '''
         生成HTML报告
         '''
-
         #解析测试结果
         try:
             case_total = len(self.testcase_result)
@@ -67,11 +65,6 @@ class HtmlReport(object):
         #生成测试概况
         page = pyh.PyH(self.title)
         page << pyh.h1(self.report_title, align='middle') #标题居中
-        #page << pyh.p(u'测试总耗时：'.encode('gbk') + str(time.strftime('%H:%M:%S', time.gmtime(self.seconds))))
-        #page << pyh.p(u'测试用例总数：'.encode('gbk') + str(case_total))
-        #page << pyh.p(u'成功用例数：'.encode('gbk') + str(success_num))
-        #page << pyh.p(u'失败用例数：'.encode('gbk') + str(fail_num))
-        #page << pyh.p(u'出错用例数：'.encode('gbk') + str(error_num))
         page << pyh.p(ch2s(u'测试总耗时：') + str(time.strftime('%H:%M:%S', time.gmtime(self.seconds))))
         page << pyh.p(ch2s(u'测试用例总数：') + str(case_total))
         page << pyh.p(ch2s(u'成功用例数：') + str(success_num))
@@ -88,20 +81,14 @@ class HtmlReport(object):
         tab.attributes['width'] = '90%'
 
         #生成表格头
-        #tab << pyh.tr(pyh.th(u'用例ID'.encode('gbk'), bgcolor='#E6E6FA', align='left') + pyh.th(u'用例名称'.encode('gbk'), bgcolor='#E6E6FA', align='left') +
-        #    pyh.th(u'测试项'.encode('gbk'), bgcolor='#E6E6FA', align='left') + pyh.th(u'测试项类型'.encode('gbk'), bgcolor='#E6E6FA', align='left') +
-        #    pyh.th(u'测试结果'.encode('gbk'), bgcolor='#E6E6FA', align='left') + pyh.th(u'提示信息'.encode('gbk'), bgcolor='#E6E6FA', align='left'))
-
         tab << pyh.tr(pyh.th(ch2s(u'用例ID'), bgcolor='#E6E6FA', align='left') + pyh.th(ch2s(u'用例名称'), bgcolor='#E6E6FA', align='left') +
             pyh.th(ch2s(u'测试项'), bgcolor='#E6E6FA', align='left') + pyh.th(ch2s(u'测试项类型'), bgcolor='#E6E6FA', align='left') +
             pyh.th(ch2s(u'测试结果'), bgcolor='#E6E6FA', align='left') + pyh.th(ch2s(u'提示信息'), bgcolor='#E6E6FA', align='left'))
 
         #填表格
         testcase_result_keyslist = sorted(testcase_result.keys(), key=lambda x: (x[0],x[1])) #排序
-
         for sheetn,testcase_id in testcase_result_keyslist:
             try:
-
                 test_report_id = sheetn + '_' + str(testcase_id)
                 testcase_name = TestCase.TestCaseXls.get_TestCaseName(sheetn, testcase_id)
                 interface_type = TestCase.TestCaseXls.get_TestType(sheetn, testcase_id)
@@ -120,17 +107,11 @@ class HtmlReport(object):
                 else:
                     resultcolor = '#DA03C5'
                 try:
-                    #tab << pyh.tr(pyh.td(test_report_id, align='left') + pyh.td(testcase_name.encode('gbk'), align='left') +
-                    #    pyh.td(interface_name.encode('gbk'), align='left') + pyh.td(interface_type.encode('gbk'), align='left') +
-                    #    pyh.th(testresult.encode('gbk'), bgcolor=resultcolor, align='left') + pyh.th(testinfo.encode('gbk'), align='left'))
                     tab << pyh.tr(pyh.td(test_report_id, align='left') + pyh.td(ch2s(testcase_name), align='left') +
                         pyh.td(ch2s(interface_name), align='left') + pyh.td(ch2s(interface_type), align='left') +
                         pyh.th(ch2s(testresult), bgcolor=resultcolor, align='left') + pyh.th(ch2s(testinfo), align='left'))
 
                 except AttributeError as e:
-                    #tab << pyh.tr(pyh.td(test_report_id, align='left') + pyh.td('', align='left') +
-                    #    pyh.td('', align='left') + pyh.td('', align='left') +
-                    #    pyh.th(testresult.encode('gbk'), bgcolor=resultcolor, align='left') + pyh.th(testinfo.encode('gbk'), align='left'))
                     tab << pyh.tr(pyh.td(test_report_id, align='left') + pyh.td('', align='left') +
                         pyh.td('', align='left') + pyh.td('', align='left') +
                         pyh.th(ch2s(testresult), bgcolor=resultcolor, align='left') + pyh.th(ch2s(testinfo), align='left'))
@@ -138,7 +119,6 @@ class HtmlReport(object):
             except Exception as e:
                 PrintLog('exception',e)
                 continue
-
 
         self._setfilename()
         page.printOut(self.filename)

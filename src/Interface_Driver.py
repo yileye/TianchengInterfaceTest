@@ -25,7 +25,7 @@ class Interface_Http(object):
         HTTP GET方法
         '''
         try:
-            return requests.get(self.url, timeout=3)
+            return requests.get(self.url, timeout=5)
         except Exception as e:
             PrintLog('exception',e)
             return False
@@ -35,8 +35,11 @@ class Interface_Http(object):
         HTTP POST方法
         '''
         try:
-            params = params.encode('utf-8')   #对unicode编码为utf8后再发送，确保无中文编码问题
-            return requests.post(self.url, data=params, headers=headers, timeout=3)
+            if type(params) is unicode:
+                PrintLog('debug', '[%s] params encode to utf-8', threading.currentThread().getName())
+                params = params.encode('utf-8')   #对unicode编码为utf8后再发送，确保无中文编码问题
+            #PrintLog('debug', '[%s] url: %s data: %s headers: %s  type(data): %s', threading.currentThread().getName(), self.url, params, headers, type(params))
+            return requests.post(self.url, data=params, headers=headers, timeout=5)
         except Exception as e:
             PrintLog('exception',e)
             return False
@@ -81,7 +84,7 @@ class Interface_DoData(object):
 
     def _insert(self, insert_datalist):
         '''
-        向表中插入数据
+        向表中插入数据 [(table, fields, values), ...]
         '''
         PrintLog('debug', '[%s] 向表中插入数据: 参数:%s', threading.currentThread().getName(), insert_datalist)
         for i in xrange(len(insert_datalist)):
