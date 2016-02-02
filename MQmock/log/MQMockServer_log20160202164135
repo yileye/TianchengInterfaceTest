@@ -1,0 +1,15 @@
+2016-02-02 16:41:35,051 - DEBUG - MockServerStart.py[22] - MQData_IDs: [1, 2, 3, 4]
+2016-02-02 16:41:35,052 - DEBUG - MockServerStart.py[26] - MQD_ID_Key: {1: u'defaultCCS', 2: u'defaultAFP', 3: u'450300199001011000', 4: u'3002196101160030'}
+2016-02-02 16:41:35,068 - DEBUG - MockMQServer.py[97] - [MQServer] 消息订阅: ExchangeNamelist: ['QDP_REPS', 'QDP_YUANJIN', 'QDP_JUNXIN', 'QDP_BAIRONG', 'QDP_ZIMAXINYONG', 'QDP_YANGHANGZHENGXINQUERYSERVICE', 'QDP_PENGYUAN', 'QDP_LAOLAI_CHECK', 'QDP_ANRONG', 'QDP_QIANHAIZHENGXIN', 'QDP_TONGDUN']
+2016-02-02 16:41:35,174 - DEBUG - MockMQServer.py[104] - [MQServer] MQ cusume is running....
+2016-02-02 16:42:34,180 - DEBUG - MockMQServer.py[55] - [MQServer] CallbackFunc from ExchangeName: QDP_REPS
+2016-02-02 16:42:34,184 - DEBUG - MockMQServer.py[59] - [MQServer] 解包body结果: funcode: 201212
+2016-02-02 16:42:34,187 - DEBUG - MockMQServer.py[62] - [MQServer] 解析body结果: response_topic: AFP_AFPFromQDP identity_card: 003002196101160031
+2016-02-02 16:42:34,191 - ERROR - list index out of range
+Traceback (most recent call last):
+  File "D:\AutoTest\Code\TianchengInterface_Testing\MQmock\src\MockMQServer.py", line 32, in getMQMockDatai
+    ID = self.ModMockO.MQData_Key2ID(Key)
+  File "D:\AutoTest\Code\TianchengInterface_Testing\MQmock\src\ModMock.py", line 58, in MQData_Key2ID
+    return IDs[0]
+IndexError: list index out of range
+2016-02-02 16:42:34,196 - DEBUG - MockMQServer.py[66] - [MQServer] 获取响应数据: MQMockDatai: None

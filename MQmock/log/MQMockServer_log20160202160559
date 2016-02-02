@@ -1,0 +1,2 @@
+2016-02-02 16:05:59,256 - DEBUG - MockServerStart.py[22] - MQData_IDs: [1, 2, 3, 4]
+2016-02-02 16:05:59,256 - DEBUG - MockServerStart.py[26] - MQD_ID_Key: {1: u'defaultCCS', 2: u'defaultAFP', 3: u'450300199001011000', 4: u'3002196101160030'}
