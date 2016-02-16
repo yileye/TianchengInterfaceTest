@@ -1,0 +1,36 @@
+2016-02-16 14:16:46,115 - DEBUG - TianchengTest.py[192] - 测试开始时间: 2016-02-16 14:16:46
+2016-02-16 14:16:46,118 - DEBUG - TianchengTest.py[29] - 运行模式：部分执行
+2016-02-16 14:16:46,121 - DEBUG - TianchengTest.py[196] - 待执行用例: {'UPS': [5]}
+2016-02-16 14:16:46,125 - DEBUG - TianchengTest.py[206] - sheetid_identity_card: {}
+sheetid_UserMobile: {}
+2016-02-16 14:16:46,131 - DEBUG - Mock_HttpServer.py[189] - [HttpServerThread] Http Server is Start Running 192.168.10.93:5556...
+2016-02-16 14:16:47,148 - DEBUG - Mock_MQServer.py[100] - [MQServerThread] 消息订阅: ExchangeNamelist: ['QDP_REPS', 'QDP_YUANJIN', 'QDP_JUNXIN', 'QDP_BAIRONG', 'QDP_ZIMAXINYONG', 'QDP_YANGHANGZHENGXINQUERYSERVICE', 'QDP_PENGYUAN', 'QDP_LAOLAI_CHECK', 'QDP_ANRONG', 'QDP_QIANHAIZHENGXIN', 'QDP_TONGDUN']
+2016-02-16 14:16:47,263 - DEBUG - Mock_MQServer.py[107] - [MQServerThread] MQ cusume is running....
+2016-02-16 14:16:48,128 - DEBUG - TianchengTest.py[226] - Starting thread: TestRunThread
+2016-02-16 14:16:48,137 - DEBUG - TianchengTest.py[160] - [TestRunThread] 开始执行用例: (UPS, 5)
+---
+2016-02-16 14:16:48,151 - DEBUG - Interface_DriverEngine.py[75] - [TestRunThread] 驱动执行:headers:{'TOKEN': 'abcdefghijk', 'APPID': '10'} TestData:{"function_code":"600021","mobile_phone":15366300884}
+2016-02-16 14:16:48,167 - DEBUG - Interface_Driver.py[39] - [TestRunThread] params encode to utf-8
+2016-02-16 14:16:48,184 - DEBUG - Interface_DriverEngine.py[78] - [TestRunThread] 执行结果:DriverResult:<Response [200]>
+2016-02-16 14:16:49,134 - DEBUG - TianchengTest.py[233] - Starting thread: TestAssertThread
+2016-02-16 14:16:49,145 - DEBUG - TianchengTest.py[239] - 等待子线程TestRunThread结束...
+2016-02-16 14:16:49,148 - DEBUG - TianchengTest.py[85] - [TestAssertThread] 从队列taskassert_queue中取出一条任务: ('UPS', 5, u'0', 0, <Response [200]>)
+2016-02-16 14:16:49,174 - DEBUG - TianchengTest.py[109] - [TestAssertThread] 状态处理后timestate: {('UPS', 5): {'timeoutdelay': 0.0, 'timeouttask': 0.0}}
+2016-02-16 14:16:49,186 - DEBUG - TianchengTest.py[117] - [TestAssertThread] 调用断言模块进行处理: UPS 5 <Response [200]>
+2016-02-16 14:16:49,187 - DEBUG - TianchengTest.py[241] - 子线程：TestRunThread结束
+2016-02-16 14:16:49,191 - DEBUG - Interface_AssertEngine.py[61] - [TestAssertThread] 驱动断言:response:<Response [200]> paramsDict:{u'function_code': u'600021', u'mobile_phone': 15366300884L} ExpectationDict:
+2016-02-16 14:16:49,193 - DEBUG - TianchengTest.py[243] - 等待子线程TestAssertThread结束...
+2016-02-16 14:16:49,200 - DEBUG - Interface_Assert.py[32] - [TestAssertThread] connecting mongodb db: ups 192.168.18.69:27088 testuser/testuser
+2016-02-16 14:16:49,234 - DEBUG - Interface_Assert.py[41] - [TestAssertThread] init connecting mysql db: ubas_data_20151127 192.168.18.69:3306 root/niiwooroot
+2016-02-16 14:16:49,283 - DEBUG - ModUPS.py[229] - [TestAssertThread] 响应数据标签名: responseLabels_name: [u'\u672a\u5a5a', u'\u65e0\u5b50\u5973', u'90\u540e', u'\u5b9e\u540d\u8ba4\u8bc1']
+2016-02-16 14:16:52,490 - DEBUG - ModUPS.py[133] - [TestAssertThread] 通过手机号获得userid: result: (u'0009493e-0471-4c3c-976b-af650f7b1ca5',)
+2016-02-16 14:16:52,513 - DEBUG - ModUPS.py[143] - [TestAssertThread] 通过手机号获得标签id: result: {u'mobile_phone': u'15366300884', u'userId': u'0009493e-0471-4c3c-976b-af650f7b1ca5', u'lastUpdated': u'2016-01-23 10:18:16', u'labelIds': [1080005, 1050002, 1040002, 2170001], u'id_card_no': u'320721199110094227', u'_id': ObjectId('566a54b09008bfe275c94506'), u'user_name': u'\u8463\u91d1\u73b2'}
+2016-02-16 14:16:52,520 - DEBUG - ModUPS.py[253] - [TestAssertThread] 比较响应数据标签与期望标签: responseLabels: [1040002, 1050002, 1080005, 2170001] expectationLabels: [1080005, 1050002, 1040002, 2170001]
+2016-02-16 14:16:52,526 - DEBUG - Interface_Assert.py[55] - [TestAssertThread] Release  public resources
+2016-02-16 14:16:52,529 - DEBUG - TianchengTest.py[127] - [TestAssertThread] 结果放入测试结果中: UPS 5 ('PASS',)
+...
+2016-02-16 14:17:12,536 - DEBUG - TianchengTest.py[139] - [TestAssertThread] 从队列taskassert_queue中取任务超时
+2016-02-16 14:17:12,549 - DEBUG - TianchengTest.py[245] - 子线程：TestAssertThread结束
+2016-02-16 14:17:12,553 - DEBUG - TianchengTest.py[254] - 测试结束时间: 2016-02-16 14:17:12
+2016-02-16 14:17:12,556 - DEBUG - TianchengTest.py[258] - testcase_result: {('UPS', 5): ('PASS',)}
+2016-02-16 14:17:12,559 - DEBUG - GenerateReport.py[125] - 生成测试结果报告: ./result/Test_Report_Filename20160216141712.html

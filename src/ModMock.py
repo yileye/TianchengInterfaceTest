@@ -36,17 +36,17 @@ class ModMock(object):
         HTTPinfo = (HTTPhost, int(HTTPport))
         return HTTPinfo
 
-    def getRuncaseEnvironment_TABLE(self):
-        '''
-        获取环境信息:TABLE信息
-        '''
-        TABLEhost = Config.ConfigIni.get_TestEnvironment_Info('MOCK', 'TABLEhost')
-        TABLEport = Config.ConfigIni.get_TestEnvironment_Info('MOCK', 'TABLEport')
-        TABLEusername = Config.ConfigIni.get_TestEnvironment_Info('MOCK', 'TABLEusername')
-        TABLEpassword = Config.ConfigIni.get_TestEnvironment_Info('MOCK', 'TABLEpassword')
-        TABLEdbname = Config.ConfigIni.get_TestEnvironment_Info('MOCK', 'TABLEdbname')
-        TABLEinfo =  (TABLEhost, int(TABLEport), TABLEusername, TABLEpassword, TABLEdbname)
-        return TABLEinfo
+    # def getRuncaseEnvironment_TABLE(self):
+    #     '''
+    #     获取环境信息:TABLE信息
+    #     '''
+    #     TABLEhost = Config.ConfigIni.get_TestEnvironment_Info('MOCK', 'TABLEhost')
+    #     TABLEport = Config.ConfigIni.get_TestEnvironment_Info('MOCK', 'TABLEport')
+    #     TABLEusername = Config.ConfigIni.get_TestEnvironment_Info('MOCK', 'TABLEusername')
+    #     TABLEpassword = Config.ConfigIni.get_TestEnvironment_Info('MOCK', 'TABLEpassword')
+    #     TABLEdbname = Config.ConfigIni.get_TestEnvironment_Info('MOCK', 'TABLEdbname')
+    #     TABLEinfo =  (TABLEhost, int(TABLEport), TABLEusername, TABLEpassword, TABLEdbname)
+    #     return TABLEinfo
 
     def get_FunCode_DataKeyExchangeName(self):
         '''
