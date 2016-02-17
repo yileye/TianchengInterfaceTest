@@ -203,18 +203,22 @@ class ModCCS_Assert(object):
                         PrintLog('debug', '[%s] _检查BASE64加密字段: %s 数据与期望数据类型不一致: de_resultDict: %s', threading.currentThread().getName(), field, de_resultDict)
                         raise AssertionError, u'_检查BASE64加密字段: %s 数据与期望数据类型不一致' % field
 
+                    if 'fanyilist' in expvalue:
+                        PrintLog('debug', '[%s] 检查BASE64加密字段: %s中: %s字段', threading.currentThread().getName(), field, 'fanyilist')
+                        self.check_fanyilist(de_resultDict['fanyilist'], expvalue['fanyilist'])
+                        del expvalue['fanyilist']
                     for key in expvalue:
                         assert key in de_resultDict, u'检查BASE64加密字段: %s字段中无:%s字段' % (field, key)
                         if key == 'MsgBody':
                             MsgBody = expvalue['MsgBody']
                             if type(MsgBody) is dict:
+                                if 'fanyilist' in MsgBody:
+                                    PrintLog('debug', '[%s] 检查BASE64加密字段: %s中: %s中: %s字段', threading.currentThread().getName(), field, key, 'fanyilist')
+                                    self.check_fanyilist(de_resultDict[key]['fanyilist'], expvalue[key]['fanyilist'])
+                                    del MsgBody['fanyilist']
                                 for k in MsgBody:
-                                    if k == 'fanyilist':
-                                        PrintLog('debug', '[%s] 检查BASE64加密字段: %s中: %s中: %s字段', threading.currentThread().getName(), field, key, 'fanyilist')
-                                        self.check_fanyilist(de_resultDict[key][k], expvalue[key][k])
-                                    else:
-                                        PrintLog('debug', '[%s] 检查BASE64加密字段: %s中: %s中: %s字段', threading.currentThread().getName(), field, key, k)
-                                        assert de_resultDict[key][k] == expvalue[key][k], u'检查BASE64加密字段: %s中: %s中: %s字段数据与期望数据不一致' % (field, key, k)
+                                    PrintLog('debug', '[%s] 检查BASE64加密字段: %s中: %s中: %s字段', threading.currentThread().getName(), field, key, k)
+                                    assert de_resultDict[key][k] == expvalue[key][k], u'检查BASE64加密字段: %s中: %s中: %s字段数据与期望数据不一致' % (field, key, k)
                             else:
                                 PrintLog('debug', '[%s] 检查BASE64加密字段: %s 数据: de_resultDict[%s]: %s\nexpvalue[%s]: %s', threading.currentThread().getName(), field, 'MsgBody', de_resultDict['MsgBody'], 'MsgBody', expvalue['MsgBody'])
                                 assert de_resultDict['MsgBody'] == expvalue['MsgBody'], u'检查BASE64加密字段: %s中:MsgBody字段数据与期望数据不一致' % (field)
@@ -270,11 +274,11 @@ class ModCCS_Assert(object):
             ExpDict, BASE64_ExpDict = self.parseExpectationDict(ExpectationDict)
             PrintLog('debug', '[%s] 提取加密字段数据: ExpDict: %s\nBASE64_ExpDict: %s', threading.currentThread().getName(), ExpDict, BASE64_ExpDict)
 
-            #检查明文数据
-            self.checkExpDict(ExpDict, unique_id)
-
             #检查base64加密数据
             self.checkBASE64_ExpDict(BASE64_ExpDict, unique_id)
+
+            #检查明文数据
+            self.checkExpDict(ExpDict, unique_id)
             return 'PASS',
 
         except TableNoneError as e:
