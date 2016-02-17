@@ -205,9 +205,19 @@ class ModCCS_Assert(object):
 
                     for key in expvalue:
                         assert key in de_resultDict, u'检查BASE64加密字段: %s字段中无:%s字段' % (field, key)
-                        if key == 'fanyilist':
-                            PrintLog('debug', '[%s] 检查BASE64加密字段: %s中: %s字段', threading.currentThread().getName(), field, key)
-                            self.check_fanyilist(de_resultDict[key], expvalue[key])
+                        if key == 'MsgBody':
+                            MsgBody = expvalue['MsgBody']
+                            if type(MsgBody) is dict:
+                                for k in MsgBody:
+                                    if k == 'fanyilist':
+                                        PrintLog('debug', '[%s] 检查BASE64加密字段: %s中: %s中: %s字段', threading.currentThread().getName(), field, key, 'fanyilist')
+                                        self.check_fanyilist(de_resultDict[key][k], expvalue[key][k])
+                                    else:
+                                        PrintLog('debug', '[%s] 检查BASE64加密字段: %s中: %s中: %s字段', threading.currentThread().getName(), field, key, k)
+                                        assert de_resultDict[key][k] == expvalue[key][k], u'检查BASE64加密字段: %s中: %s中: %s字段数据与期望数据不一致' % (field, key, k)
+                            else:
+                                PrintLog('debug', '[%s] 检查BASE64加密字段: %s 数据: de_resultDict[%s]: %s\nexpvalue[%s]: %s', threading.currentThread().getName(), field, 'MsgBody', de_resultDict['MsgBody'], 'MsgBody', expvalue['MsgBody'])
+                                assert de_resultDict['MsgBody'] == expvalue['MsgBody'], u'检查BASE64加密字段: %s中:MsgBody字段数据与期望数据不一致' % (field)
                         else:
                             PrintLog('debug', '[%s] 检查BASE64加密字段: %s 数据: de_resultDict[%s]: %s\nexpvalue[%s]: %s', threading.currentThread().getName(), field, key, de_resultDict[key], key, expvalue[key])
                             assert de_resultDict[key] == expvalue[key], u'检查BASE64加密字段: %s中:%s字段数据与期望数据不一致' % (field, key)
