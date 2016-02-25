@@ -259,7 +259,15 @@ def TianchengTest():
         HtmlReportO = HtmlReport(testcase_result, end_time-start_time)
         HtmlReportO.generate_html()
 
+        resultValue = [x for x in testcase_result.values() if x[0] != 'PASS']
+        if len(resultValue) == 0:
+            exit(0)
+        else:
+            exit(-1)
+
     except ValueError as e:
         print unicode(e.args[0])
+        exit(-1)
     except Exception as e:
         print unicode(e)
+        exit(-1)

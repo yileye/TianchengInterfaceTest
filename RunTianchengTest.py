@@ -11,4 +11,4 @@ if __name__ == '__main__':
     from src import TianchengTest
     print 'RunTianchengTest Start...'
     TianchengTest.TianchengTest()
-    print 'RunTianchengTest End'
+    #print 'RunTianchengTest End'
