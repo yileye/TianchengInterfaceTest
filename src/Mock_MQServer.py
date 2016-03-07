@@ -31,19 +31,19 @@ class MQServer(object):
             #获取用例文件Mock数据
             sheet, tid = self.ModMockO.getSheetId_from_identity_card(identity_card)
             MockData = TestCase.TestCaseXls.get_MockData(sheet, tid)
-            PrintLog('debug', '[%s] sheet: %s id: %s', threading.currentThread().getName(), sheet, tid)
+            PrintLog('info', '[%s] sheet: %s id: %s', threading.currentThread().getName(), sheet, tid)
             MockData = self.ModMockO.parseMockData(MockData)
             if MockData is False:
-                PrintLog('debug', '[%s] getMQMockData is Fail', threading.currentThread().getName())
+                PrintLog('info', '[%s] getMQMockData is Fail', threading.currentThread().getName())
                 return None
             MQMockDate = MockData[1]
-            PrintLog('debug', '[%s] MQMockDate: %s ', threading.currentThread().getName(), MQMockDate)
+            PrintLog('info', '[%s] MQMockDate: %s ', threading.currentThread().getName(), MQMockDate)
             if MQMockDate == None:
                 raise ValueError(u'MQMockDate is None')
 
             #确定DataKey
             DataKey = self.FunCode_DataKeyExchangeName[funcode][0]
-            PrintLog('debug', '[%s] DataKey: %s', threading.currentThread().getName(), DataKey)
+            PrintLog('info', '[%s] DataKey: %s', threading.currentThread().getName(), DataKey)
             MQMockDatai = MQMockDate[DataKey]
             return json.dumps(MQMockDatai)
         except Exception as e:
@@ -55,30 +55,30 @@ class MQServer(object):
         消息接收回调函数
         '''
         ExchangeName = method.exchange
-        PrintLog('debug', '[%s] CallbackFunc from ExchangeName: %s', threading.currentThread().getName(), ExchangeName)
+        PrintLog('info', '[%s] CallbackFunc from ExchangeName: %s', threading.currentThread().getName(), ExchangeName)
 
         #解析body
         funcode,pdata,session_id = self.PketO.unpackPket(body)
-        PrintLog('debug', '[%s] 解包body结果: funcode: %s', threading.currentThread().getName(), funcode)
+        PrintLog('info', '[%s] 解包body结果: funcode: %s', threading.currentThread().getName(), funcode)
 
         response_topic, identity_card = self.ProBufO.Unserialize(pdata)
-        PrintLog('debug', '[%s] 解析body结果: response_topic: %s identity_card: %s', threading.currentThread().getName(), response_topic, identity_card)
+        PrintLog('info', '[%s] 解析body结果: response_topic: %s identity_card: %s', threading.currentThread().getName(), response_topic, identity_card)
 
         #获取响应数据
         MQMockDatai = self.getMQMockDatai(identity_card, funcode)
-        PrintLog('debug', '[%s] 获取响应数据: MQMockDatai: %s', threading.currentThread().getName(), MQMockDatai)
+        PrintLog('info', '[%s] 获取响应数据: MQMockDatai: %s', threading.currentThread().getName(), MQMockDatai)
 
         if MQMockDatai != None:
             #构造body
             pbdata = self.ProBufO.Serialize(MQMockDatai)
             resp_body = self.PketO.packPket(pbdata, funcode, session_id)
-            PrintLog('debug', '[%s] 构造响应body完成!', threading.currentThread().getName())
+            PrintLog('info', '[%s] 构造响应body完成!', threading.currentThread().getName())
 
             #发送
             ch.basic_publish(exchange=response_topic,
                         routing_key='',
                         body=resp_body)
-            PrintLog('debug', '[%s] 消息推送: [exchange]response_topic: %s\n', threading.currentThread().getName(), response_topic)
+            PrintLog('info', '[%s] 消息推送: [exchange]response_topic: %s\n', threading.currentThread().getName(), response_topic)
 
     def Start(self):
         '''
@@ -97,14 +97,14 @@ class MQServer(object):
             self.FunCode_DataKeyExchangeName = self.ModMockO.get_FunCode_DataKeyExchangeName()
             ExchangeNamelist = [x[1] for x in self.FunCode_DataKeyExchangeName.values()]
             ExchangeNamelist = list(set(ExchangeNamelist))
-            PrintLog('debug', '[%s] 消息订阅: ExchangeNamelist: %s', threading.currentThread().getName(), ExchangeNamelist)
+            PrintLog('info', '[%s] 消息订阅: ExchangeNamelist: %s', threading.currentThread().getName(), ExchangeNamelist)
             for ExchangeName in ExchangeNamelist:
                 QueueName = ExchangeName + '_AUTOTEST'
                 self.channel.queue_delete(queue=QueueName) #先删除保证不受残留消息的影响
                 self.channel.queue_declare(queue=QueueName, durable=False) #定义消息队列
                 self.channel.queue_bind(exchange=ExchangeName, queue=QueueName) #绑定到交换机
                 self.channel.basic_consume(self.CallbackFunc, queue=QueueName, no_ack=True)  #消息订阅
-            PrintLog('debug', '[%s] MQ cusume is running....', threading.currentThread().getName())
+            PrintLog('info', '[%s] MQ cusume is running....', threading.currentThread().getName())
             self.channel.start_consuming()
         except Exception as e:
             PrintLog('exception',e)

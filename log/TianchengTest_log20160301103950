@@ -1,0 +1,66 @@
+2016-03-01 10:39:50,246 - DEBUG - TianchengTest.py[192] - 测试开始时间: 2016-03-01 10:39:50
+2016-03-01 10:39:50,249 - DEBUG - TianchengTest.py[29] - 运行模式：部分执行
+2016-03-01 10:39:50,252 - DEBUG - TianchengTest.py[196] - 待执行用例: {'UPS': [1, 2, 3]}
+2016-03-01 10:39:50,253 - DEBUG - TianchengTest.py[206] - sheetid_identity_card: {}
+sheetid_UserMobile: {}
+2016-03-01 10:39:50,256 - DEBUG - TianchengTest.py[226] - Starting thread: TestRunThread
+2016-03-01 10:39:50,259 - DEBUG - TianchengTest.py[160] - [TestRunThread] 开始执行用例: (UPS, 1)
+---
+2016-03-01 10:39:50,263 - DEBUG - Interface_DriverEngine.py[75] - [TestRunThread] 驱动执行:headers:{'TOKEN': 'abcdefghijk', 'APPID': '10'} TestData:{"function_code":"600021","mobile_phone":"15366300884"}
+2016-03-01 10:39:50,267 - DEBUG - Interface_Driver.py[39] - [TestRunThread] params encode to utf-8
+2016-03-01 10:39:51,259 - DEBUG - TianchengTest.py[233] - Starting thread: TestAssertThread
+2016-03-01 10:39:51,260 - DEBUG - TianchengTest.py[239] - 等待子线程TestRunThread结束...
+2016-03-01 10:39:55,275 - ERROR - HTTPConnectionPool(host='192.168.18.84', port=8090): Read timed out. (read timeout=5)
+Traceback (most recent call last):
+  File "D:\AutoTest\Code\TianchengInterface_Testing\src\Interface_Driver.py", line 42, in post
+    return requests.post(self.url, data=params, headers=headers, timeout=5)
+  File "C:\Python27\lib\site-packages\requests\api.py", line 109, in post
+    return request('post', url, data=data, json=json, **kwargs)
+  File "C:\Python27\lib\site-packages\requests\api.py", line 50, in request
+    response = session.request(method=method, url=url, **kwargs)
+  File "C:\Python27\lib\site-packages\requests\sessions.py", line 465, in request
+    resp = self.send(prep, **send_kwargs)
+  File "C:\Python27\lib\site-packages\requests\sessions.py", line 573, in send
+    r = adapter.send(request, **kwargs)
+  File "C:\Python27\lib\site-packages\requests\adapters.py", line 433, in send
+    raise ReadTimeout(e, request=request)
+ReadTimeout: HTTPConnectionPool(host='192.168.18.84', port=8090): Read timed out. (read timeout=5)
+2016-03-01 10:39:55,308 - DEBUG - Interface_DriverEngine.py[78] - [TestRunThread] 执行结果:DriverResult:False
+2016-03-01 10:39:55,312 - DEBUG - TianchengTest.py[164] - [TestRunThread] 测试操作不成功: (UPS, 1)
+2016-03-01 10:39:56,315 - DEBUG - TianchengTest.py[160] - [TestRunThread] 开始执行用例: (UPS, 2)
+---
+2016-03-01 10:39:56,328 - DEBUG - Interface_DriverEngine.py[75] - [TestRunThread] 驱动执行:headers:{'TOKEN': 'abcdefghijk', 'APPID': '10'} TestData:{"function_code":"600021","mobile_phone":"13712345678"}
+2016-03-01 10:39:56,332 - DEBUG - Interface_Driver.py[39] - [TestRunThread] params encode to utf-8
+2016-03-01 10:39:56,538 - DEBUG - Interface_DriverEngine.py[78] - [TestRunThread] 执行结果:DriverResult:<Response [200]>
+2016-03-01 10:39:56,578 - DEBUG - TianchengTest.py[85] - [TestAssertThread] 从队列taskassert_queue中取出一条任务: ('UPS', 2, u'0', 0, <Response [200]>)
+2016-03-01 10:39:56,588 - DEBUG - TianchengTest.py[109] - [TestAssertThread] 状态处理后timestate: {('UPS', 2): {'timeoutdelay': 0.0, 'timeouttask': 0.0}}
+2016-03-01 10:39:56,599 - DEBUG - TianchengTest.py[117] - [TestAssertThread] 调用断言模块进行处理: UPS 2 <Response [200]>
+2016-03-01 10:39:56,605 - DEBUG - Interface_AssertEngine.py[61] - [TestAssertThread] 驱动断言:response:<Response [200]> paramsDict:{u'function_code': u'600021', u'mobile_phone': u'13712345678'} ExpectationDict:{u'result': {u'result_code': u'FAILED', u'result_msg': u'\u672a\u627e\u5230\u8be5\u7528\u6237\uff01'}}
+2016-03-01 10:39:56,609 - DEBUG - Interface_Assert.py[32] - [TestAssertThread] connecting mongodb db: ups 192.168.18.69:27088 testuser/testuser
+2016-03-01 10:39:56,890 - DEBUG - Interface_Assert.py[41] - [TestAssertThread] init connecting mysql db: ubas_data_20151127 192.168.18.85:3306 root/tc123
+2016-03-01 10:39:56,967 - DEBUG - ModUPS.py[221] - [TestAssertThread] 比较响应数据与期望数据: responseContentDict: {u'result': {u'result_code': u'FAILED', u'result_msg': u'\u672a\u627e\u5230\u8be5\u7528\u6237\uff01'}}  ExpectationDict: {u'result': {u'result_code': u'FAILED', u'result_msg': u'\u672a\u627e\u5230\u8be5\u7528\u6237\uff01'}}
+2016-03-01 10:39:56,973 - DEBUG - Interface_Assert.py[55] - [TestAssertThread] Release  public resources
+2016-03-01 10:39:56,974 - DEBUG - TianchengTest.py[127] - [TestAssertThread] 结果放入测试结果中: UPS 2 ('PASS',)
+...
+2016-03-01 10:39:57,548 - DEBUG - TianchengTest.py[160] - [TestRunThread] 开始执行用例: (UPS, 3)
+---
+2016-03-01 10:39:57,559 - DEBUG - Interface_DriverEngine.py[75] - [TestRunThread] 驱动执行:headers:{'TOKEN': 'abcdefghijk', 'APPID': '10'} TestData:{"function_code":"600021","mobile_phone":""}
+2016-03-01 10:39:57,572 - DEBUG - Interface_Driver.py[39] - [TestRunThread] params encode to utf-8
+2016-03-01 10:39:57,648 - DEBUG - Interface_DriverEngine.py[78] - [TestRunThread] 执行结果:DriverResult:<Response [200]>
+2016-03-01 10:39:58,657 - DEBUG - TianchengTest.py[241] - 子线程：TestRunThread结束
+2016-03-01 10:39:58,664 - DEBUG - TianchengTest.py[243] - 等待子线程TestAssertThread结束...
+2016-03-01 10:40:01,979 - DEBUG - TianchengTest.py[85] - [TestAssertThread] 从队列taskassert_queue中取出一条任务: ('UPS', 3, u'0', 0, <Response [200]>)
+2016-03-01 10:40:01,990 - DEBUG - TianchengTest.py[109] - [TestAssertThread] 状态处理后timestate: {('UPS', 2): {'timeoutdelay': 0.0, 'timeouttask': 0.0}, ('UPS', 3): {'timeoutdelay': 0.0, 'timeouttask': 0.0}}
+2016-03-01 10:40:02,000 - DEBUG - TianchengTest.py[117] - [TestAssertThread] 调用断言模块进行处理: UPS 3 <Response [200]>
+2016-03-01 10:40:02,003 - DEBUG - Interface_AssertEngine.py[61] - [TestAssertThread] 驱动断言:response:<Response [200]> paramsDict:{u'function_code': u'600021', u'mobile_phone': u''} ExpectationDict:{u'result': {u'result_code': u'FAILED', u'result_msg': u'\u67e5\u8be2\u53c2\u6570\u8eab\u4efd\u8bc1\u53f7\u548c\u624b\u673a\u53f7\u4e0d\u80fd\u540c\u65f6\u4e3a\u7a7a\uff01'}}
+2016-03-01 10:40:02,009 - DEBUG - Interface_Assert.py[32] - [TestAssertThread] connecting mongodb db: ups 192.168.18.69:27088 testuser/testuser
+2016-03-01 10:40:02,017 - DEBUG - Interface_Assert.py[41] - [TestAssertThread] init connecting mysql db: ubas_data_20151127 192.168.18.85:3306 root/tc123
+2016-03-01 10:40:02,022 - DEBUG - ModUPS.py[221] - [TestAssertThread] 比较响应数据与期望数据: responseContentDict: {u'result': {u'result_code': u'FAILED', u'result_msg': u'\u67e5\u8be2\u53c2\u6570\u8eab\u4efd\u8bc1\u53f7\u548c\u624b\u673a\u53f7\u4e0d\u80fd\u540c\u65f6\u4e3a\u7a7a\uff01'}}  ExpectationDict: {u'result': {u'result_code': u'FAILED', u'result_msg': u'\u67e5\u8be2\u53c2\u6570\u8eab\u4efd\u8bc1\u53f7\u548c\u624b\u673a\u53f7\u4e0d\u80fd\u540c\u65f6\u4e3a\u7a7a\uff01'}}
+2016-03-01 10:40:02,026 - DEBUG - Interface_Assert.py[55] - [TestAssertThread] Release  public resources
+2016-03-01 10:40:02,029 - DEBUG - TianchengTest.py[127] - [TestAssertThread] 结果放入测试结果中: UPS 3 ('PASS',)
+...
+2016-03-01 10:40:22,035 - DEBUG - TianchengTest.py[139] - [TestAssertThread] 从队列taskassert_queue中取任务超时
+2016-03-01 10:40:22,052 - DEBUG - TianchengTest.py[245] - 子线程：TestAssertThread结束
+2016-03-01 10:40:22,059 - DEBUG - TianchengTest.py[254] - 测试结束时间: 2016-03-01 10:40:22
+2016-03-01 10:40:22,069 - DEBUG - TianchengTest.py[258] - testcase_result: {('UPS', 1): ('ERROR', u'\u6d4b\u8bd5\u64cd\u4f5c\u4e0d\u6210\u529f'), ('UPS', 2): ('PASS',), ('UPS', 3): ('PASS',)}
+2016-03-01 10:40:22,072 - DEBUG - GenerateReport.py[125] - 生成测试结果报告: ./result/Test_Report_Filename20160301104022.html

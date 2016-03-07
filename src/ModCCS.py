@@ -139,7 +139,7 @@ class ModCCS_Assert(object):
             for field in fields:
                 query_fields = query_fields + field + ', '
             query_str = 'SELECT ' + query_fields[:-2] + ' FROM ' + table + ' WHERE uid = %s'
-            PrintLog('debug', '[%s] 执行SQL查询: query_str: %s %s', threading.currentThread().getName(), query_str, query_where)
+            PrintLog('info', '[%s] 执行SQL查询: query_str: %s %s', threading.currentThread().getName(), query_str, query_where)
             self.curMy.execute(query_str, query_where)
             self.obj.connMy.commit()
             result = self.curMy.fetchone()  #取查询结果第一条记录
@@ -147,7 +147,7 @@ class ModCCS_Assert(object):
                 raise  TableNoneError(u"%s is NONE" % table)
 
             expvalues = tuple(values)
-            PrintLog('debug', '[%s] 检查明文字段数据: result: %s\nexpvalues: %s', threading.currentThread().getName(), result, expvalues)
+            PrintLog('info', '[%s] 检查明文字段数据: result: %s\nexpvalues: %s', threading.currentThread().getName(), result, expvalues)
             for i in range(len(fields)):
                 expvalue = expvalues[i]
                 iresult = result[i]
@@ -159,15 +159,16 @@ class ModCCS_Assert(object):
                     for key in expvalue:
                         assert key in j_iresult, u'检查明文字段: %s字段中无:%s字段' % (fields[i], key)
                         if type(expvalue[key]) is dict:
-                            PrintLog('debug', '[%s] _检查明文字段数据: j_iresult[%s]: %s\nexpvalue[%s]: %s', threading.currentThread().getName(), key, j_iresult[key], key, expvalue[key])
+                            PrintLog('info', '[%s] _检查明文字段数据: j_iresult[%s]: %s\nexpvalue[%s]: %s', threading.currentThread().getName(), key, j_iresult[key], key, expvalue[key])
                             assert json_tools.diff(json.dumps(j_iresult[key]), json.dumps(expvalue[key])) == [], u'_检查明文字段: %s字段中:%s字段数据与期望数据不一致' % (fields[i], key)
                         else:
-                            PrintLog('debug', '[%s] 检查明文字段数据: j_iresult[%s]: %s\nexpvalue[%s]: %s', threading.currentThread().getName(), key, j_iresult[key], key, expvalue[key])
+                            PrintLog('info', '[%s] 检查明文字段数据: j_iresult[%s]: %s\nexpvalue[%s]: %s', threading.currentThread().getName(), key, j_iresult[key], key, expvalue[key])
                             assert j_iresult[key] == expvalue[key], u'检查明文字段: %s字段中:%s字段数据与期望数据不一致' % (fields[i], key)
                 else:
-                    PrintLog('debug', '[%s] 检查明文%s字段数据: iresult: %s\nexpvalue: %s', threading.currentThread().getName(), fields[i], iresult, expvalue)
+                    PrintLog('info', '[%s] 检查明文%s字段数据: iresult: %s\nexpvalue: %s', threading.currentThread().getName(), fields[i], iresult, expvalue)
                     assert iresult == expvalue, u'检查明文字段数据: %s字段数据与期望数据不一致' % fields[i]
 
+    #可使用递归进行优化
     def checkBASE64_ExpDict(self, BASE64_ExpDict, unique_id):
         '''
         检查BASE64加密字段
@@ -183,7 +184,7 @@ class ModCCS_Assert(object):
             for field in fields:
                 query_fields = query_fields + field + ', '
             query_str = 'SELECT ' + query_fields[:-2] + ' FROM ' + table + ' WHERE uid = %s'
-            PrintLog('debug', '[%s] 执行SQL查询: query_str: %s %s', threading.currentThread().getName(), query_str, query_where)
+            PrintLog('info', '[%s] 执行SQL查询: query_str: %s %s', threading.currentThread().getName(), query_str, query_where)
             self.curMy.execute(query_str, query_where)
             self.obj.connMy.commit()
             result = self.curMy.fetchone()  #取查询结果第一条记录
@@ -195,16 +196,16 @@ class ModCCS_Assert(object):
                 expvalue = expvalues[i]
                 field = fields[i]
                 de_result = EncryptLib.getde_base64(result[i])
-                PrintLog('debug', '[%s] 检查BASE64加密字段: %s 数据: de_result: %s\nexpvalue: %s', threading.currentThread().getName(), field, de_result, expvalue)
+                PrintLog('info', '[%s] 检查BASE64加密字段: %s 数据: de_result: %s\nexpvalue: %s', threading.currentThread().getName(), field, de_result, expvalue)
                 if type(expvalue) is dict:
                     try:
                         de_resultDict = json_tools.loads(de_result)
                     except:
-                        PrintLog('debug', '[%s] _检查BASE64加密字段: %s 数据与期望数据类型不一致: de_resultDict: %s', threading.currentThread().getName(), field, de_resultDict)
+                        PrintLog('info', '[%s] _检查BASE64加密字段: %s 数据与期望数据类型不一致: de_resultDict: %s', threading.currentThread().getName(), field, de_resultDict)
                         raise AssertionError, u'_检查BASE64加密字段: %s 数据与期望数据类型不一致' % field
 
                     if 'fanyilist' in expvalue:
-                        PrintLog('debug', '[%s] 检查BASE64加密字段: %s中: %s字段', threading.currentThread().getName(), field, 'fanyilist')
+                        PrintLog('info', '[%s] 检查BASE64加密字段: %s中: %s字段', threading.currentThread().getName(), field, 'fanyilist')
                         self.check_fanyilist(de_resultDict['fanyilist'], expvalue['fanyilist'])
                         del expvalue['fanyilist']
                     for key in expvalue:
@@ -213,20 +214,20 @@ class ModCCS_Assert(object):
                             MsgBody = expvalue['MsgBody']
                             if type(MsgBody) is dict:
                                 if 'fanyilist' in MsgBody:
-                                    PrintLog('debug', '[%s] 检查BASE64加密字段: %s中: %s中: %s字段', threading.currentThread().getName(), field, key, 'fanyilist')
+                                    PrintLog('info', '[%s] 检查BASE64加密字段: %s中: %s中: %s字段', threading.currentThread().getName(), field, key, 'fanyilist')
                                     self.check_fanyilist(de_resultDict[key]['fanyilist'], expvalue[key]['fanyilist'])
                                     del MsgBody['fanyilist']
                                 for k in MsgBody:
-                                    PrintLog('debug', '[%s] 检查BASE64加密字段: %s中: %s中: %s字段', threading.currentThread().getName(), field, key, k)
+                                    PrintLog('info', '[%s] 检查BASE64加密字段: %s中: %s中: %s字段', threading.currentThread().getName(), field, key, k)
                                     assert de_resultDict[key][k] == expvalue[key][k], u'检查BASE64加密字段: %s中: %s中: %s字段数据与期望数据不一致' % (field, key, k)
                             else:
-                                PrintLog('debug', '[%s] 检查BASE64加密字段: %s 数据: de_resultDict[%s]: %s\nexpvalue[%s]: %s', threading.currentThread().getName(), field, 'MsgBody', de_resultDict['MsgBody'], 'MsgBody', expvalue['MsgBody'])
+                                PrintLog('info', '[%s] 检查BASE64加密字段: %s 数据: de_resultDict[%s]: %s\nexpvalue[%s]: %s', threading.currentThread().getName(), field, 'MsgBody', de_resultDict['MsgBody'], 'MsgBody', expvalue['MsgBody'])
                                 assert de_resultDict['MsgBody'] == expvalue['MsgBody'], u'检查BASE64加密字段: %s中:MsgBody字段数据与期望数据不一致' % (field)
                         else:
-                            PrintLog('debug', '[%s] 检查BASE64加密字段: %s 数据: de_resultDict[%s]: %s\nexpvalue[%s]: %s', threading.currentThread().getName(), field, key, de_resultDict[key], key, expvalue[key])
+                            PrintLog('info', '[%s] 检查BASE64加密字段: %s 数据: de_resultDict[%s]: %s\nexpvalue[%s]: %s', threading.currentThread().getName(), field, key, de_resultDict[key], key, expvalue[key])
                             assert de_resultDict[key] == expvalue[key], u'检查BASE64加密字段: %s中:%s字段数据与期望数据不一致' % (field, key)
                 else:
-                    PrintLog('debug', '[%s] 检查BASE64加密%s字段数据: de_result: %s\nexpvalue: %s', threading.currentThread().getName(), fields[i], de_result, expvalue)
+                    PrintLog('info', '[%s] 检查BASE64加密%s字段数据: de_result: %s\nexpvalue: %s', threading.currentThread().getName(), fields[i], de_result, expvalue)
                     assert de_result == expvalue, u'检查BASE64加密字段: %s字段数据与期望数据不一致' % fields[i]
 
     def check_fanyilist(self, result, expvalue):
@@ -244,7 +245,7 @@ class ModCCS_Assert(object):
             assert 'weidu' in expvalue[i], u'检查fanyilist数据: 期望数据fanyilist中: %s模块无weidu字段' % expmokuai
             expweidu = expvalue[i]['weidu']
 
-            PrintLog('debug', '[%s] 检查fanyilist数据: fanyilist中:第%s项: mokuai: %s\nexpmokuai: %s', threading.currentThread().getName(), i, mokuai, expmokuai)
+            PrintLog('info', '[%s] 检查fanyilist数据: fanyilist中:第%s项: mokuai: %s\nexpmokuai: %s', threading.currentThread().getName(), i, mokuai, expmokuai)
             assert mokuai == expmokuai, u'检查fanyilist数据: fanyilist中: 第%d项mokuai字段数据与期望数据不一致' % i
 
             for j in xrange(len(weidu)):
@@ -257,10 +258,10 @@ class ModCCS_Assert(object):
                 PrintLog('debug', '[%s] 检查fanyilist数据: fanyilist中: %s模块: %s维度: result: %s\nexpvalue: %s', threading.currentThread().getName(), mokuai, weiduming, weidu[j], expweidu[j])
                 for k in expweidu[j]:
                     if type(expweidu[j][k]) is dict:
-                        PrintLog('debug', '[%s] _检查fanyilist数据: fanyilist中: %s模块: %s维度: %s字段: %s\nexpvalue: %s', threading.currentThread().getName(), mokuai, weiduming, k, weidu[j][k], expweidu[j][k])
+                        PrintLog('info', '[%s] _检查fanyilist数据: fanyilist中: %s模块: %s维度: %s字段: %s\nexpvalue: %s', threading.currentThread().getName(), mokuai, weiduming, k, weidu[j][k], expweidu[j][k])
                         assert json_tools.diff(json.dumps(weidu[j][k]), json.dumps(expweidu[j][k])) == [], u'检查fanyilist数据: fanyilist中: mokuai: %s: weidu: %s %s字段数据与期望数据不一致' % (mokuai, weiduming, k)
                     else:
-                        PrintLog('debug', '[%s] 检查fanyilist数据: fanyilist中: %s模块: %s维度: %s字段: %s\nexpvalue: %s', threading.currentThread().getName(), mokuai, weiduming, k, weidu[j][k], expweidu[j][k])
+                        PrintLog('info', '[%s] 检查fanyilist数据: fanyilist中: %s模块: %s维度: %s字段: %s\nexpvalue: %s', threading.currentThread().getName(), mokuai, weiduming, k, weidu[j][k], expweidu[j][k])
                         assert weidu[j][k] == expweidu[j][k], u'检查fanyilist数据: fanyilist中: mokuai: %s: weidu: %s \n%s字段数据与期望数据不一致' % (mokuai, weiduming, k)
 
     def CCSAssert(self, obj, ExpectationDict, unique_id):
@@ -282,10 +283,10 @@ class ModCCS_Assert(object):
             return 'PASS',
 
         except TableNoneError as e:
-            PrintLog('debug', '[%s] TableNoneError: TableName: %s', threading.currentThread().getName(), unicode(e))
+            PrintLog('info', '[%s] TableNoneError: TableName: %s', threading.currentThread().getName(), unicode(e))
             return 'NONE',unicode(e)
         except AssertionError as e:
-            PrintLog('debug', '[%s] AssertionError: %s', threading.currentThread().getName(),unicode(e.args[0]))
+            PrintLog('info', '[%s] AssertionError: %s', threading.currentThread().getName(),unicode(e.args[0]))
             return 'FAIL',unicode(e.args[0])
         except Exception as e:
             PrintLog('exception',e)

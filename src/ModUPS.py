@@ -159,7 +159,7 @@ class ModUPS_Assert(object):
         curMy = obj.connMy.cursor()
         curMy.execute("SELECT  UserID  FROM userbasicinfo WHERE UserIDCard = %s", (id_card,))
         result = curMy.fetchone()
-        PrintLog('debug', '[%s] 通过身份证号获得userid: result: %s', threading.currentThread().getName(), result)
+        PrintLog('info', '[%s] 通过身份证号获得userid: result: %s', threading.currentThread().getName(), result)
         if result is None:
             return []
         userid = result[0]
@@ -169,7 +169,7 @@ class ModUPS_Assert(object):
         query_where = {}
         query_where['userId'] = userid
         result = account.find_one(query_where)
-        PrintLog('debug', '[%s] 通过身份证号获得标签id: result: %s', threading.currentThread().getName(), result)
+        PrintLog('info', '[%s] 通过身份证号获得标签id: result: %s', threading.currentThread().getName(), result)
         if result is not  None:
             result = map(int,result['labelIds'])
         else:
@@ -283,10 +283,10 @@ class ModUPS_Assert(object):
             raise ValueError('Test Data function_code Error')
 
         except TableNoneError as e:
-            PrintLog('debug', '[%s] TableNoneError: TableName: %s', threading.currentThread().getName(), unicode(e))
+            PrintLog('info', '[%s] TableNoneError: TableName: %s', threading.currentThread().getName(), unicode(e))
             return 'NONE',unicode(e)
         except AssertionError as e:
-            PrintLog('debug', '[%s] AssertionError: %s', threading.currentThread().getName(),unicode(e.args[0]))
+            PrintLog('info', '[%s] AssertionError: %s', threading.currentThread().getName(),unicode(e.args[0]))
             return 'FAIL',unicode(e.args[0])
         except Exception as e:
             PrintLog('exception',e)

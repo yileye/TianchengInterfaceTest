@@ -90,6 +90,21 @@ class ConfigIni(object):
         return cls.confO.get('MOCK', 'FunCode_DataKeyExchangeName')
 
     @classmethod
+    def get_isSendMail(cls):
+        '''
+        是否发送邮件
+        '''
+        return cls.confO.get('DEFAULT', 'isSendMail')
+
+    @classmethod
+    def get_send_emladdr(cls):
+        '''
+        获取接收邮箱地址
+        '''
+        return cls.confO.get('DEFAULT', 'send_emladdr')
+
+
+    @classmethod
     def get_TestEnvironment_Info(cls, section, field):
         '''
         获取UBAS测试环境信息

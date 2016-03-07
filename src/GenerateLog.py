@@ -25,7 +25,7 @@ class GenerateTxtLog(object):
         '''
         global loggerfile, loggercontrol
         loggerfile.setLevel(logging.DEBUG)   #设置日志等级
-        loggercontrol.setLevel(logging.DEBUG)
+        loggercontrol.setLevel(logging.INFO)
 
         filename = os.path.basename(cls.logf_path)
         filepath = os.path.dirname(cls.logf_path)
@@ -36,9 +36,10 @@ class GenerateTxtLog(object):
 
         # handler
         logfile = logging.FileHandler(os.path.join(filepath, filename))
-        logfile.setLevel(logging.DEBUG)
+        #logfile.setLevel(logging.DEBUG)
+
         control = logging.StreamHandler()
-        control.setLevel(logging.DEBUG)
+        #control.setLevel(logging.DEBUG)
 
         # formatter
         #formatter = logging.Formatter('%(asctime)s - %(filename)s[line:%(lineno)d] - %(levelname)s - %(message)s')

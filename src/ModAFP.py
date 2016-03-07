@@ -149,7 +149,7 @@ class ModAFP_Assert(object):
         if 'unique' not in responseContentDict:
             raise AssertionError, u'检查响应: 响应responseContentDict中无唯一标示号unique'
         unique_id = responseContentDict['unique']
-        PrintLog('debug','[%s] 检查响应: unique_id: %s\nHTTPEXP: %s\nresponseContentDict: %s', threading.currentThread().getName(), unique_id, HTTPEXP, responseContentDict)
+        PrintLog('info','[%s] 检查响应: unique_id: %s\nHTTPEXP: %s\nresponseContentDict: %s', threading.currentThread().getName(), unique_id, HTTPEXP, responseContentDict)
 
         if HTTPEXP is not None:
             assert type(HTTPEXP) is dict , u'HTTPEXP数据格式错误：type of HTTPEXP is %s' % type(HTTPEXP)
@@ -166,14 +166,14 @@ class ModAFP_Assert(object):
             fields = ExpDict[table].keys()
             values = ExpDict[table].values()
             if not fields: continue
-            PrintLog('debug', '[%s] 检查明文字段数据: 用例中读取的fields: %s\nvalues: %s', threading.currentThread().getName(), fields, values)
+            PrintLog('info', '[%s] 检查明文字段数据: 用例中读取的fields: %s\nvalues: %s', threading.currentThread().getName(), fields, values)
 
             query_where = (unique_id,)
             query_fields = ''
             for field in fields:
                 query_fields = query_fields + field + ', '
             query_str = 'SELECT ' + query_fields[:-2] + ' FROM ' + table + ' WHERE UniqueID = %s'
-            PrintLog('debug', '[%s] 执行SQL查询: query_str: %s %s', threading.currentThread().getName(), query_str, query_where)
+            PrintLog('info', '[%s] 执行SQL查询: query_str: %s %s', threading.currentThread().getName(), query_str, query_where)
             self.curMy.execute(query_str, query_where)
             self.obj.connMy.commit()
             result = self.curMy.fetchone()  #取查询结果第一条记录
@@ -181,7 +181,7 @@ class ModAFP_Assert(object):
                 raise  TableNoneError(u"%s is NONE" % table)
 
             expvalues = tuple(values)
-            PrintLog('debug', '[%s] 检查明文字段数据: result: %s\nexpvalues: %s', threading.currentThread().getName(), result, expvalues)
+            PrintLog('info', '[%s] 检查明文字段数据: result: %s\nexpvalues: %s', threading.currentThread().getName(), result, expvalues)
             for i in range(len(fields)):
                 expvalue = expvalues[i]
                 iresult = result[i]
@@ -193,13 +193,13 @@ class ModAFP_Assert(object):
                     for key in expvalue:
                         assert key in j_iresult, u'检查明文字段: %s字段中无:%s字段' % (fields[i], key)
                         if type(expvalue[key]) is dict:
-                            PrintLog('debug', '[%s] _检查明文字段数据: j_iresult[%s]: %s  expvalue[%s]: %s', threading.currentThread().getName(), key, j_iresult[key], key, expvalue[key])
+                            PrintLog('info', '[%s] _检查明文字段数据: j_iresult[%s]: %s  expvalue[%s]: %s', threading.currentThread().getName(), key, j_iresult[key], key, expvalue[key])
                             assert json_tools.diff(json.dumps(j_iresult[key]), json.dumps(expvalue[key])) == [], u'_检查明文字段: %s字段中:%s字段数据与期望数据不一致' % (fields[i], key)
                         else:
-                            PrintLog('debug', '[%s] 检查明文字段数据: j_iresult[%s]: %s  expvalue[%s]: %s', threading.currentThread().getName(), key, j_iresult[key], key, expvalue[key])
+                            PrintLog('info', '[%s] 检查明文字段数据: j_iresult[%s]: %s  expvalue[%s]: %s', threading.currentThread().getName(), key, j_iresult[key], key, expvalue[key])
                             assert j_iresult[key] == expvalue[key], u'检查明文字段: %s字段中:%s字段数据与期望数据不一致' % (fields[i], key)
                 else:
-                    PrintLog('debug', '[%s] 检查明文字段%s数据: iresult: %s  expvalue: %s', threading.currentThread().getName(), fields[i], iresult, expvalue)
+                    PrintLog('info', '[%s] 检查明文字段%s数据: iresult: %s  expvalue: %s', threading.currentThread().getName(), fields[i], iresult, expvalue)
                     assert iresult == expvalue, u'检查明文字段数据: %s字段数据与期望数据不一致' % fields[i]
 
     def checkBASE64_ExpDict(self, BASE64_ExpDict, unique_id):
@@ -217,7 +217,7 @@ class ModAFP_Assert(object):
             for field in fields:
                 query_fields = query_fields + field + ', '
             query_str = 'SELECT ' + query_fields[:-2] + ' FROM ' + table + ' WHERE UniqueID = %s'
-            PrintLog('debug', '[%s] 执行SQL查询: query_str: %s %s', threading.currentThread().getName(), query_str, query_where)
+            PrintLog('info', '[%s] 执行SQL查询: query_str: %s %s', threading.currentThread().getName(), query_str, query_where)
             self.curMy.execute(query_str, query_where)
             self.obj.connMy.commit()
             result = self.curMy.fetchone()  #取查询结果第一条记录
@@ -228,24 +228,24 @@ class ModAFP_Assert(object):
             for i in range(len(fields)):
                 expvalue = expvalues[i]
                 de_result = EncryptLib.getde_base64(result[i])
-                PrintLog('debug', '[%s] 检查BASE64加密字段数据: de_result: %s\nexpvalue: %s', threading.currentThread().getName(), de_result, expvalue)
+                PrintLog('info', '[%s] 检查BASE64加密字段数据: de_result: %s\nexpvalue: %s', threading.currentThread().getName(), de_result, expvalue)
                 if type(expvalue) is dict:
                     try:
                         de_resultDict = json_tools.loads(de_result)
-                        PrintLog('debug', '[%s] 检查BASE64加密字段数据: de_resultDict: %s', threading.currentThread().getName(), de_resultDict)
+                        PrintLog('info', '[%s] 检查BASE64加密字段数据: de_resultDict: %s', threading.currentThread().getName(), de_resultDict)
                     except:
                         raise AssertionError, u'_检查BASE64加密字段: %s字段数据与期望数据不一致' % fields[i]
 
                     for key in expvalue:
                         assert key in de_resultDict, u'检查BASE64加密字段: %s字段中无:%s字段' % (fields[i], key)
                         if type(expvalue[key]) is dict:
-                            PrintLog('debug', '[%s] _检查BASE64加密字段数据: de_resultDict[%s]: %s  expvalue[%s]: %s', threading.currentThread().getName(), key, de_resultDict[key], key, expvalue[key])
+                            PrintLog('info', '[%s] _检查BASE64加密字段数据: de_resultDict[%s]: %s  expvalue[%s]: %s', threading.currentThread().getName(), key, de_resultDict[key], key, expvalue[key])
                             assert json_tools.diff(json.dumps(de_resultDict[key]), json.dumps(expvalue[key])) == [], u'_检查BASE64加密字段: %s字段中:%s字段数据与期望数据不一致' % (fields[i], key)
                         else:
-                            PrintLog('debug', '[%s] 检查BASE64加密字段数据: de_resultDict[%s]: %s  expvalue[%s]: %s', threading.currentThread().getName(), key, de_resultDict[key], key, expvalue[key])
+                            PrintLog('info', '[%s] 检查BASE64加密字段数据: de_resultDict[%s]: %s  expvalue[%s]: %s', threading.currentThread().getName(), key, de_resultDict[key], key, expvalue[key])
                             assert de_resultDict[key] == expvalue[key], u'检查BASE64加密字段: %s字段中:%s字段数据与期望数据不一致' % (fields[i], key)
                 else:
-                    PrintLog('debug', '[%s] 检查BASE64加密字段%s数据: de_result: %s  expvalue: %s', threading.currentThread().getName(), fields[i], de_result, expvalue)
+                    PrintLog('info', '[%s] 检查BASE64加密字段%s数据: de_result: %s  expvalue: %s', threading.currentThread().getName(), fields[i], de_result, expvalue)
                     assert de_result == expvalue, u'检查BASE64加密字段: %s字段数据与期望数据不一致' % fields[i]
 
     def parseExpectationDict(self, ExpectationDict):
@@ -284,7 +284,7 @@ class ModAFP_Assert(object):
             self.obj.connMy.select_db(self.obj.dbnameMy)   #选择数据库
             self.curMy = self.obj.connMy.cursor()
             HTTPEXP, ExpDict, BASE64_ExpDict = self.parseExpectationDict(ExpectationDict)
-            PrintLog('debug', '[%s] 提取加密字段数据: HTTPEXP: %s\nExpDict: %s\nBASE64_ExpDict: %s', threading.currentThread().getName(), HTTPEXP, ExpDict, BASE64_ExpDict)
+            PrintLog('info', '[%s] 提取加密字段数据: HTTPEXP: %s\nExpDict: %s\nBASE64_ExpDict: %s', threading.currentThread().getName(), HTTPEXP, ExpDict, BASE64_ExpDict)
 
             #检查响应
             unique_id = self.checkresponse(response, HTTPEXP)
@@ -297,10 +297,10 @@ class ModAFP_Assert(object):
             return 'PASS',
 
         except TableNoneError as e:
-            PrintLog('debug', '[%s] TableNoneError: TableName: %s', threading.currentThread().getName(), unicode(e))
+            PrintLog('info', '[%s] TableNoneError: TableName: %s', threading.currentThread().getName(), unicode(e))
             return 'NONE',unicode(e)
         except AssertionError as e:
-            PrintLog('debug', '[%s] AssertionError: %s', threading.currentThread().getName(),unicode(e.args[0]))
+            PrintLog('info', '[%s] AssertionError: %s', threading.currentThread().getName(),unicode(e.args[0]))
             return 'FAIL',unicode(e.args[0])
         except Exception as e:
             PrintLog('exception',e)

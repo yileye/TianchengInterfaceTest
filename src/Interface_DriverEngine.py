@@ -51,7 +51,7 @@ class Interface_DriverEngine():
         PrintLog('debug', '[%s] 驱动执行:headers:%s TestData:%s', threading.currentThread().getName(), headers, TestData)
         DriverO = Interface_Driver.Interface_Http(url)
         DriverResult = DriverO.post(headers, TestData)  #执行用例
-        PrintLog('debug', '[%s] 执行结果:DriverResult:%s', threading.currentThread().getName(), DriverResult)
+        PrintLog('info', '[%s] 执行结果:DriverResult:%s', threading.currentThread().getName(), DriverResult)
 
         #装载任务参数
         if DriverResult is False:
@@ -75,7 +75,7 @@ class Interface_DriverEngine():
         PrintLog('debug', '[%s] 驱动执行:headers:%s TestData:%s', threading.currentThread().getName(), headers, TestData)
         DriverO = Interface_Driver.Interface_Http(url)
         DriverResult = DriverO.post(headers, TestData)  #执行用例
-        PrintLog('debug', '[%s] 执行结果:DriverResult:%s', threading.currentThread().getName(), DriverResult)
+        PrintLog('info', '[%s] 执行结果:DriverResult:%s', threading.currentThread().getName(), DriverResult)
 
         #装载任务参数
         if DriverResult is False:
@@ -109,7 +109,7 @@ class Interface_DriverEngine():
         PrintLog('debug', '[%s] 驱动执行:TestData:%s CbFunction:%s', threading.currentThread().getName(), TestData, function.__name__)
         DriverO = Interface_Driver.Interface_DoData(dbinfo)
         DriverResult = DriverO.insert(TestData, function)    #执行用例
-        PrintLog('debug', '[%s] 执行结果:DriverResult:%s', threading.currentThread().getName(), DriverResult)
+        PrintLog('info', '[%s] 执行结果:DriverResult:%s', threading.currentThread().getName(), DriverResult)
 
         #装载任务参数
         if DriverResult is False:
@@ -142,7 +142,7 @@ class Interface_DriverEngine():
             PrintLog('debug', '[%s] 驱动执行:TableData:%s', threading.currentThread().getName(), TableData)
             TableO = Interface_Driver.Interface_DoData(isrdbinfo)
             TableResult = TableO.insert(TableData)    #插数据
-            PrintLog('debug', '[%s] 插数据结果:TableResult:%s', threading.currentThread().getName(), TableResult)
+            PrintLog('info', '[%s] 插数据结果:TableResult:%s', threading.currentThread().getName(), TableResult)
             if TableResult is False:
                 return False
         #发请求
@@ -150,7 +150,7 @@ class Interface_DriverEngine():
         PrintLog('debug', '[%s] 驱动执行:headers:%s ReqDate:%s', threading.currentThread().getName(), headers, ReqDate)
         DriverO = Interface_Driver.Interface_Http(url)
         DriverResult = DriverO.post(headers, ReqDate)     #执行用例
-        PrintLog('debug', '[%s] 执行结果:DriverResult:%s', threading.currentThread().getName(), DriverResult)
+        PrintLog('info', '[%s] 执行结果:DriverResult:%s', threading.currentThread().getName(), DriverResult)
 
         #装载任务参数
         if DriverResult is False:
@@ -180,7 +180,7 @@ class Interface_DriverEngine():
         PrintLog('debug', '[%s] 驱动执行:TestData:%s\nunique_id: %s', threading.currentThread().getName(), TestData, unique_id)
         DriverO = Interface_Driver.Interface_DoData(dbinfo)
         DriverResult = DriverO.insert(TestData)    #执行用例
-        PrintLog('debug', '[%s] 执行结果:DriverResult:%s', threading.currentThread().getName(), DriverResult)
+        PrintLog('info', '[%s] 执行结果:DriverResult:%s', threading.currentThread().getName(), DriverResult)
 
         #装载任务参数
         if DriverResult is False:
@@ -215,7 +215,7 @@ class Interface_DriverEngine():
                 RunResult = self.RunCCSCase(sheet, testid, TestData, TestEnvironment)
 
             else:
-                PrintLog('debug', 'TestType Value is Error')
+                PrintLog('info', 'TestType Value is Error')
                 return False
 
             if RunResult is False:

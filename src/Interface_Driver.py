@@ -36,7 +36,7 @@ class Interface_Http(object):
         '''
         try:
             if type(params) is unicode:
-                PrintLog('debug', '[%s] params encode to utf-8', threading.currentThread().getName())
+                PrintLog('info', '[%s] params encode to utf-8', threading.currentThread().getName())
                 params = params.encode('utf-8')   #对unicode编码为utf8后再发送，确保无中文编码问题
             #PrintLog('debug', '[%s] url: %s data: %s headers: %s  type(data): %s', threading.currentThread().getName(), self.url, params, headers, type(params))
             return requests.post(self.url, data=params, headers=headers, timeout=5)
@@ -54,7 +54,7 @@ class Interface_DoData(object):
         初始化-连接数据库
         '''
         host, port, username, passwd, dbname = dbinfo
-        PrintLog('debug', '[%s] connecting mysql db: %s %s:%s %s/%s', threading.currentThread().getName(), dbname, host, port, username, passwd)
+        PrintLog('info', '[%s] connecting mysql db: %s %s:%s %s/%s', threading.currentThread().getName(), dbname, host, port, username, passwd)
         self.conn = MySQLdb.connect(host=host,user=username,passwd=passwd,port=port,charset='utf8')  #连接数据库
         self.conn.select_db(dbname)  #选择数据库
         self.cur = self.conn.cursor()
@@ -64,7 +64,7 @@ class Interface_DoData(object):
         '''
         释放数据库连接
         '''
-        PrintLog('debug', '[%s] closing mysql db connection', threading.currentThread().getName())
+        PrintLog('info', '[%s] closing mysql db connection', threading.currentThread().getName())
         self.cur.close()
         self.conn.close()
 
@@ -118,7 +118,7 @@ class Interface_DoData(object):
         if function:
             PrintLog('debug', '[%s] 调用回调: 参数:%s', threading.currentThread().getName(), insert_datalist)
             cbresult = function[0](insert_datalist)
-            PrintLog('debug', '[%s] 回调结果:%s', threading.currentThread().getName(), cbresult)
+            PrintLog('info', '[%s] 回调结果:%s', threading.currentThread().getName(), cbresult)
             insert_datalist = cbresult[0]
             userid = cbresult[1]
         if self._insert(insert_datalist):

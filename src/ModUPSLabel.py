@@ -296,18 +296,18 @@ class ModUPSLabel_Assert(object):
                 values.append(expectation[table])
 
             if set(tables) == set(["userlabelquery", "userlabel"]):
-                PrintLog('debug', '[%s] 调用标签检查函数: _checkLabel  参数:%s', threading.currentThread().getName(), (obj, values, userid))
+                PrintLog('info', '[%s] 调用标签检查函数: _checkLabel  参数:%s', threading.currentThread().getName(), (obj, values, userid))
                 self._checkLabel(obj, values, userid)
             if set(tables) == set(["!userlabelquery", "!userlabel"]):
-                PrintLog('debug', '[%s] 调用标签检查函数: _checkNotLabel  参数: %s', threading.currentThread().getName(), (obj, values, userid))
+                PrintLog('info', '[%s] 调用标签检查函数: _checkNotLabel  参数: %s', threading.currentThread().getName(), (obj, values, userid))
                 self._checkNotLabel(obj, values, userid)
             return 'PASS',
 
         except TableNoneError as e:
-            PrintLog('debug', '[%s] TableNoneError: TableName: %s', threading.currentThread().getName(), unicode(e))
+            PrintLog('info', '[%s] TableNoneError: TableName: %s', threading.currentThread().getName(), unicode(e))
             return 'NONE',unicode(e)
         except AssertionError as e:
-            PrintLog('debug', '[%s] AssertionError: %s', threading.currentThread().getName(),unicode(e.args[0]))
+            PrintLog('info', '[%s] AssertionError: %s', threading.currentThread().getName(),unicode(e.args[0]))
             return 'FAIL',unicode(e.args[0])
         except Exception as e:
             PrintLog('exception',e)

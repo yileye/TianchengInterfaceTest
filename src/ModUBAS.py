@@ -128,7 +128,7 @@ class ModUBAS_Assert(object):
                 query_fields = query_fields + field + ','
             query_fields = query_fields[:-1]
             query_str = 'SELECT ' + query_fields + ' FROM ' + table + ' WHERE id = ' + query_id
-            PrintLog('debug', '[%s] 执行SQL查询: query_str: %s', threading.currentThread().getName(), query_str)
+            PrintLog('info', '[%s] 执行SQL查询: query_str: %s', threading.currentThread().getName(), query_str)
             curMy.execute(query_str)
             obj.connMy.commit()
             result = curMy.fetchone()
@@ -165,10 +165,10 @@ class ModUBAS_Assert(object):
             return 'PASS',
 
         except TableNoneError as e:
-            PrintLog('debug', '[%s] TableNoneError: TableName: %s', threading.currentThread().getName(), unicode(e))
+            PrintLog('info', '[%s] TableNoneError: TableName: %s', threading.currentThread().getName(), unicode(e))
             return 'NONE',unicode(e)
         except AssertionError as e:
-            PrintLog('debug', '[%s] AssertionError: %s', threading.currentThread().getName(),unicode(e.args[0]))
+            PrintLog('info', '[%s] AssertionError: %s', threading.currentThread().getName(),unicode(e.args[0]))
             return 'FAIL',unicode(e.args[0])
         except Exception as e:
             PrintLog('exception',e)

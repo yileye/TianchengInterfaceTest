@@ -1,0 +1,7 @@
+2016-03-07 09:26:55,023 - ERROR - (535, 'Error: authentication failed, system busy')
+Traceback (most recent call last):
+  File "D:\AutoTest\Code\TianchengInterface_Testing\src\SendMail.py", line 62, in sendmail
+    server.login(self.from_addr, self.password)
+  File "C:\Python27\lib\smtplib.py", line 622, in login
+    raise SMTPAuthenticationError(code, resp)
+SMTPAuthenticationError: (535, 'Error: authentication failed, system busy')

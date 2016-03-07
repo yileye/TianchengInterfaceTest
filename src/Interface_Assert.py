@@ -29,7 +29,7 @@ class Interface_Assert(object):
         host, port, username, passwd, dbname = dbinfo
         self.conn = pymongo.MongoClient(host=host,port=port)
         self.dbname = dbname
-        PrintLog('debug', '[%s] connecting mongodb db: %s %s:%s %s/%s', threading.currentThread().getName(), dbname, host, port, username, passwd)
+        PrintLog('info', '[%s] connecting mongodb db: %s %s:%s %s/%s', threading.currentThread().getName(), dbname, host, port, username, passwd)
 
     def SetPublic_Mysql(self, dbinfo):
         '''
@@ -38,7 +38,7 @@ class Interface_Assert(object):
         host, port, username, passwd, dbname = dbinfo
         self.connMy = MySQLdb.connect(host=host,user=username,passwd=passwd,port=port,charset='utf8')  #连接数据库
         self.dbnameMy = dbname
-        PrintLog('debug', '[%s] init connecting mysql db: %s %s:%s %s/%s', threading.currentThread().getName(), dbname, host, port, username, passwd)
+        PrintLog('info', '[%s] init connecting mysql db: %s %s:%s %s/%s', threading.currentThread().getName(), dbname, host, port, username, passwd)
 
     def __del__(self):
         '''
@@ -52,7 +52,7 @@ class Interface_Assert(object):
             self.curMy.close()
         if hasattr(self, 'connMy'):
             self.connMy.close()
-        PrintLog('debug', '[%s] Release  public resources', threading.currentThread().getName())
+        PrintLog('info', '[%s] Release  public resources', threading.currentThread().getName())
 
     def Assert_UPSLabel(self, expectation, useriduserid, *function):
         '''

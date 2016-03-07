@@ -132,7 +132,7 @@ class ModMock(object):
                     continue
         #查重
         if len(sheetid_identity_card.values()) != len(set(sheetid_identity_card.values())):
-            PrintLog('debug', 'sheetid_identity_card中存在重复数据: %s', sheetid_identity_card)
+            PrintLog('info', 'sheetid_identity_card中存在重复数据: %s', sheetid_identity_card)
             return False
         return sheetid_identity_card
 
@@ -161,6 +161,6 @@ class ModMock(object):
                     continue
         #查重
         if len(sheetid_UserMobile.values()) != len(set(sheetid_UserMobile.values())):
-            PrintLog('debug', 'sheetid_UserMobile中存在重复数据: %s', sheetid_UserMobile)
+            PrintLog('info', 'sheetid_UserMobile中存在重复数据: %s', sheetid_UserMobile)
             return False
         return sheetid_UserMobile

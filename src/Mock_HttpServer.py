@@ -24,16 +24,16 @@ class Custom_HTTPRequestHandler(BaseHTTPRequestHandler):
         Handle post request
         '''
         try:
-            PrintLog('debug', '[%s] got connection from %s', threading.currentThread().getName(), self.client_address)
+            PrintLog('info', '[%s] got connection from %s', threading.currentThread().getName(), self.client_address)
 
             # 解析请求参数
             path_list = self.path.split('?')
             request_params = path_list[-1]
             request_path = path_list[0]
 
-            PrintLog('debug', '[%s] get data! path: %s\nparams: %s ', threading.currentThread().getName(), request_path, request_params)
+            PrintLog('info', '[%s] get data! path: %s\nparams: %s ', threading.currentThread().getName(), request_path, request_params)
             data = self._getdata(request_path, request_params)
-            PrintLog('debug', '[%s] write data! data: %s', threading.currentThread().getName(), data)
+            PrintLog('info', '[%s] write data! data: %s', threading.currentThread().getName(), data)
             self._writedata(data)
 
         except Exception as e:
@@ -54,13 +54,13 @@ class Custom_HTTPRequestHandler(BaseHTTPRequestHandler):
         jsonStringDict = json.loads(jsonStringvalues)
 
         if '/NiwoPassport/PostGetUserIdByMobile' == request_path:
-            PrintLog('debug', '[%s] Interface: GetUserIdByMobile! jsonStringDict: %s ', threading.currentThread().getName(), jsonStringDict)
+            PrintLog('info', '[%s] Interface: GetUserIdByMobile! jsonStringDict: %s ', threading.currentThread().getName(), jsonStringDict)
             return self._getdata_GetUserIdByMobile(jsonStringDict)
         elif '/UserMoney/PostUserStatistMoneyInfo' == request_path:
-            PrintLog('debug', '[%s] Interface: UserStatistMoneyInfo! jsonStringDict: %s ', threading.currentThread().getName(), jsonStringDict)
+            PrintLog('info', '[%s] Interface: UserStatistMoneyInfo! jsonStringDict: %s ', threading.currentThread().getName(), jsonStringDict)
             return self._getdata_UserStatistMoneyInfo(jsonStringDict)
         elif '/Common/PostUserInfoNew' == request_path:
-            PrintLog('debug', '[%s] Interface: UserInfoNew! jsonStringDict: %s ', threading.currentThread().getName(), jsonStringDict)
+            PrintLog('info', '[%s] Interface: UserInfoNew! jsonStringDict: %s ', threading.currentThread().getName(), jsonStringDict)
             return self._getdata_UserInfoNew(jsonStringDict)
         else:
             return None
@@ -74,7 +74,7 @@ class Custom_HTTPRequestHandler(BaseHTTPRequestHandler):
         userid = userMobile     #将userMobile作为userid返回
         response['userId'] = userid
         response = json.dumps(response)
-        PrintLog('debug', '[%s] Response Data: %s', threading.currentThread().getName(), response)
+        PrintLog('info', '[%s] Response Data: %s', threading.currentThread().getName(), response)
         return response
 
     def _getdata_UserStatistMoneyInfo(self, jsonStringDict):
@@ -93,7 +93,7 @@ class Custom_HTTPRequestHandler(BaseHTTPRequestHandler):
 
         sheet, tid = self.ModMockO.getSheetId_from_UserMobile(userMobile)
         MockData = TestCase.TestCaseXls.get_MockData(sheet, tid)
-        PrintLog('debug', '[%s] sheet: %s id: %s\nMockData: %s ', threading.currentThread().getName(), sheet, tid, MockData)
+        PrintLog('info', '[%s] sheet: %s id: %s\nMockData: %s ', threading.currentThread().getName(), sheet, tid, MockData)
         MockData = self.ModMockO.parseMockData(MockData)
         if MockData is False:
             return None
@@ -104,7 +104,7 @@ class Custom_HTTPRequestHandler(BaseHTTPRequestHandler):
         response['RecentOneYearTotalLoanCount'] = RecentOneYearTotalLoanCount
         response['RecentOneYearTotalLoanMoney'] = RecentOneYearTotalLoanMoney
         response = json.dumps(response)
-        PrintLog('debug', '[%s] Response Data: %s', threading.currentThread().getName(), response)
+        PrintLog('info', '[%s] Response Data: %s', threading.currentThread().getName(), response)
         return response
 
     def _getdata_UserInfoNew(self, jsonStringDict):
@@ -119,7 +119,7 @@ class Custom_HTTPRequestHandler(BaseHTTPRequestHandler):
 
         sheet, tid = self.ModMockO.getSheetId_from_UserMobile(userMobile)
         MockData = TestCase.TestCaseXls.get_MockData(sheet, tid)
-        PrintLog('debug', '[%s] sheet: %s id: %s\nMockData: %s ', threading.currentThread().getName(), sheet, tid, MockData)
+        PrintLog('info', '[%s] sheet: %s id: %s\nMockData: %s ', threading.currentThread().getName(), sheet, tid, MockData)
         MockData = self.ModMockO.parseMockData(MockData)
         if MockData is False:
             return None
@@ -128,7 +128,7 @@ class Custom_HTTPRequestHandler(BaseHTTPRequestHandler):
         AvgDayDueInMoneyOneYear = HTTPMockDate["tuandai_amount"]
         response['AvgDayDueInMoneyOneYear'] = AvgDayDueInMoneyOneYear
         response = json.dumps(response)
-        PrintLog('debug', '[%s] Response Data: %s', threading.currentThread().getName(), response)
+        PrintLog('info', '[%s] Response Data: %s', threading.currentThread().getName(), response)
         return response
 
 
@@ -186,7 +186,7 @@ class HttpServer(object):
         try:
             self.Custom_httpd = HTTPServer(self.httpd_address, Custom_HTTPRequestHandler)
             #self.Custom_httpd = ThreadingTCPServer(self.httpd_address, Custom_HTTPRequestHandler)
-            PrintLog('debug', '[%s] Http Server is Start Running %s:%s...', threading.currentThread().getName(), self.host, self.port)
+            PrintLog('info', '[%s] Http Server is Start Running %s:%s...', threading.currentThread().getName(), self.host, self.port)
             self.Custom_httpd.serve_forever()
 
         except KeyboardInterrupt as e:

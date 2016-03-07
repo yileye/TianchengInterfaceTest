@@ -123,4 +123,4 @@ class HtmlReport(object):
         self._setfilename()
         page.printOut(self.filename)
         PrintLog('debug', '生成测试结果报告: %s', self.filename)
-        return True
+        return self.filename
